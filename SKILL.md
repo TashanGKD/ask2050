@@ -45,6 +45,13 @@ Load only what is needed:
 - `format_tags`: participation form, e.g. `forum`, `roundtable`, `workshop`, `exhibition-demo`, `meetup`.
 - `container`: 2050 board such as 新生论坛, 探索空间, 思想约会.
 
+## Intent normalization
+
+- "低强度", "轻松", "休息一下", "社交恢复", "随便逛逛": prefer `life-sports`, `meetup`, `sports-camp`, 热带雨林, 星空露营, 青春舞台, then avoid dense forum blocks unless the user asks.
+- "能看能玩", "体验", "展台", "项目展示": prefer 探索空间 and `exhibition-demo`.
+- "深聊", "圆桌", "观点碰撞", "哲学": prefer 思想约会 and `roundtable` / `philosophy-mind`.
+- "报告", "主题论坛", "系统了解": prefer 新生论坛 and `forum`.
+
 ## Output style
 
 Use Chinese by default. Be concrete. Prefer schedule facts over generic summaries.
