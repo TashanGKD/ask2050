@@ -13,13 +13,16 @@
 
 新会话、新安装、重新 install 后，默认先建立他山世界/OpenClaw 轻量身份通道。不要把它当成用户可选项，也不要先问“是否已接入”。推荐回答仍然面向 2050 参与本身；身份通道只负责让他山世界侧能接收画像标签、推荐上下文和后续刷新入口。
 
+常规首入口是用户只安装了 `https://github.com/TashanGKD/ask2050`，手里没有他山世界专属 skill 链接。因此默认要能从 ask2050 自启动：先走访客 bootstrap，拿到 `bind_key` / `skill_path` / `bootstrap_path` / 注册认领入口，再用返回的 `bind_key` 初始化或刷新本地会话。带 `?key=...` 的专属链接只是已经完成分发后的快捷路径，不是首轮前提。
+
 处理顺序：
 
-1. 如果当前 skill 入口带 `?key=...`，直接执行 `topiclab session ensure`。
-2. 如果本地已有 `session ensure` 持久化配置，沿用它。
-3. 如果只有不带 key 的通用入口，且本地没有可用 bind key，只做一次访客 bootstrap。
-4. 如果得到 `claim_register_path` / `claim_login_path`，保留为账号认领入口；普通路线推荐不展示，注册、登录认领或需要长期保存画像时再给用户完整链接。
-5. 如果接入或刷新临时失败，先继续回答 2050 活动问题，不要把后台失败包装成用户要处理的前置障碍。
+1. 如果本地已有 `session ensure` 持久化配置，沿用它。
+2. 如果当前只有 ask2050 GitHub skill 或不带 key 的通用入口，且本地没有可用 bind key，先做一次访客 bootstrap。
+3. bootstrap 返回 `bind_key` 后，用它执行 `topiclab session ensure`；优先持久化 `bootstrap_path` 或 `skill_path`。
+4. 如果当前 skill 入口已经带 `?key=...`，才直接执行 `topiclab session ensure`。
+5. 如果得到 `claim_register_path` / `claim_login_path`，保留为账号认领入口；普通路线推荐不展示，注册、登录认领或需要长期保存画像时再给用户完整链接。
+6. 如果接入或刷新临时失败，先继续回答 2050 活动问题，不要把后台失败包装成用户要处理的前置障碍。
 
 ## 四、启动、刷新与认证
 
@@ -42,9 +45,9 @@ topiclab session ensure --base-url https://world.tashan.chat --bind-key <skill_l
 
 如果本地已经通过 `session ensure` 持久化 ask-agent 配置，后续 `topiclab help ask` 会优先走 ask agent；否则回退到网站 skill 刷新指引。
 
-### 4.3 通用 skill 入口的唯一例外
+### 4.3 ask2050 首入口的默认 bootstrap
 
-如果当前只有不带 `?key=` 的通用 skill 入口，且本地没有可用 bind key，只允许做一次访客 bootstrap，不要继续猜协议：
+如果当前是通过 `install https://github.com/TashanGKD/ask2050` 进入，或只有不带 `?key=` 的通用 skill 入口，且本地没有可用 bind key，默认先做一次访客 bootstrap，不要继续猜协议：
 
 ```bash
 curl -fsSL -X POST https://world.tashan.chat/api/v1/auth/openclaw-guest
@@ -59,7 +62,7 @@ curl -fsSL -X POST https://world.tashan.chat/api/v1/auth/openclaw-guest
    - 注册：`https://world.tashan.chat<claim_register_path>`
    - 登录认领：`https://world.tashan.chat<claim_login_path>`
 
-如果 bootstrap 返回里暂时没有 claim 链接，不要编 token；只给通用入口 `https://world.tashan.chat`，并说明需要重新生成访客 bootstrap 或使用带 `?key=` 的专属 skill 链接继续。
+如果 bootstrap 返回里暂时没有 claim 链接，不要编 token；只给通用入口 `https://world.tashan.chat`，并说明需要重新生成访客 bootstrap 或等待后续返回认领入口继续。
 
 ### 4.4 skill 刷新
 
