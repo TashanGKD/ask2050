@@ -18,9 +18,6 @@ SCRIPT = ROOT / "scripts" / "search_activities.py"
 
 REQUIRED_FILES = [
     ROOT / "SKILL.md",
-    REF / "coverage_report.md",
-    REF / "evidence_status.md",
-    REF / "source_inventory.md",
     REF / "tashan_world_bridge.md",
     REF / "activity_index.min.json",
     REF / "activity_facets.json",
@@ -33,6 +30,14 @@ REQUIRED_FILES = [
     MANUAL / "article_aliases.json",
     SCRIPT,
 ]
+
+FORBIDDEN_REFERENCE_DOCS = {
+    "coverage_report.md",
+    "evidence_status.md",
+    "source_inventory.md",
+    "tag_index.md",
+    "test_report.md",
+}
 
 ALLOWED_TOP_LEVEL = {
     ".git",
@@ -227,6 +232,10 @@ def main() -> int:
     )
     if unexpected_top_level:
         fail(f"unexpected top-level skill artifacts: {unexpected_top_level}")
+
+    forbidden_docs = sorted(path.name for path in REF.glob("*.md") if path.name in FORBIDDEN_REFERENCE_DOCS)
+    if forbidden_docs:
+        fail(f"process/stat reference docs should not be packaged: {forbidden_docs}")
 
     missing = [path.relative_to(ROOT).as_posix() for path in REQUIRED_FILES if not path.exists()]
     if missing:

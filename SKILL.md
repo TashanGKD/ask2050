@@ -45,8 +45,8 @@ If reinstalling is unavailable, still answer from the packaged core information,
    - `references/activity_facets.json` for recommendation profile fields such as core topics, experience mode, suitable audience, intensity, social density, route role, and venue context.
    - `references/activity_index.min.json` for exact time, location, title, and source URL.
    - `references/article_activity_crosswalk.json` when the user asks about article sections, program parts, maps, logistics, or a public-account article.
-   - `references/article_facets.json` when the user asks how an article should be used in a route.
-   - `references/article_evidence_index.json` when the user asks about a named community, partner, article, or alias such as WaytoAGI, OpenClaw, 少数派, 流浪教研, 设计自己, DeskClaw, YOLO, or 2050PASS.
+   - `references/article_facets.json` when the user asks about a named community, partner, article, or alias such as WaytoAGI, OpenClaw, 少数派, 流浪教研, 设计自己, DeskClaw, YOLO, or 2050PASS, or asks how an article should be used in a route.
+   - `references/article_evidence_index.json` only when the user explicitly asks to audit source status, resolve a source-record conflict, or verify the deepest article URL evidence.
 5. Return a route, not a database dump. For each recommendation include time, place, what this part is for, why it matches the user, and the source.
 6. If a query is broad, group results into a few route choices instead of listing everything.
 7. If constraints conflict, keep date and location constraints hard, then relax secondary interests or intensity. Say "没有完全同时满足，下面是相近替代" and name the relaxed constraint.
@@ -55,7 +55,7 @@ If reinstalling is unavailable, still answer from the packaged core information,
 
 The installed skill contains core extracted evidence, not raw article dumps. Do not surface internal coverage counts, validation numbers, test cases, or packaging details in normal user answers. If the user asks for source reliability, explain it plainly: the answer is based on the current curated 2050@2026 schedule, public-account article evidence, and manual core extraction, while late official changes should be refreshed by reinstalling the skill.
 
-Do not quote long original article text. If exact wording is required, use the article URL in `article_evidence_index.json` as the deepest evidence layer and return only the relevant fact.
+Do not quote long original article text. If exact wording is required, use the article URL from the article facet/evidence layer as the deepest evidence pointer and return only the relevant fact.
 
 ## Intent shortcuts
 
