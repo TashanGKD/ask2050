@@ -81,6 +81,9 @@ QUERY_ALIASES = {
     "别太累": ["低强度", "放松"],
     "不想太累": ["低强度", "放松"],
     "晚上": ["夜间继续聊", "晚间活动"],
+    "罕见病 ai 医疗": ["从大模型到罕见病", "认真聊一聊AI+医疗", "五云厅", "OpenRD"],
+    "罕见病医疗": ["从大模型到罕见病", "认真聊一聊AI+医疗", "五云厅", "OpenRD"],
+    "ai医疗": ["AI+医疗", "从大模型到罕见病", "五云厅"],
 }
 STOP_TERMS = {"我", "想", "要", "可以", "适合", "参加", "2050", "活动", "推荐", "一下", "看看"}
 
@@ -390,8 +393,12 @@ def main() -> int:
     if FOCUS_SESSIONS.exists():
         focus_sessions = json.loads(FOCUS_SESSIONS.read_text(encoding="utf-8"))
     focus_terms_by_activity: dict[str, list[str]] = {}
+    focus_dates_by_activity: dict[str, set[str]] = {}
     for session in focus_sessions:
-        focus_terms_by_activity.setdefault(str(session.get("parent_activity_id")), []).extend(session_terms(session))
+        parent_activity_id = str(session.get("parent_activity_id"))
+        focus_terms_by_activity.setdefault(parent_activity_id, []).extend(session_terms(session))
+        if session.get("date"):
+            focus_dates_by_activity.setdefault(parent_activity_id, set()).add(str(session.get("date")))
     manual_ids = []
     if args.q and ARTICLE_ALIASES.exists():
         aliases = json.loads(ARTICLE_ALIASES.read_text(encoding="utf-8"))
@@ -414,7 +421,7 @@ def main() -> int:
             " ".join(facet_terms(activity_facets.get(activity_id))),
             " ".join(focus_terms_by_activity.get(activity_id, [])),
         ]).lower()
-        if args.date and args.date != item.get("date"):
+        if args.date and args.date != item.get("date") and args.date not in focus_dates_by_activity.get(activity_id, set()):
             continue
         if args.container and args.container not in item.get("container", ""):
             continue
@@ -438,7 +445,15 @@ def main() -> int:
 
     printed = 0
     for _, item in results[: args.limit]:
-        print(f"{item['date']} {item['time']} | {item['container']} | {item['title']} | {item['location']}")
+        item_focus_sessions = focus_sessions_for(str(item.get("activity_id")), focus_sessions, args.q, date=args.date)[:3]
+        display_date = item["date"]
+        display_time = item["time"]
+        display_location = item["location"]
+        if args.date and args.date != item.get("date") and item_focus_sessions:
+            display_date = item_focus_sessions[0].get("date") or display_date
+            display_time = item_focus_sessions[0].get("time") or display_time
+            display_location = item_focus_sessions[0].get("location") or display_location
+        print(f"{display_date} {display_time} | {item['container']} | {item['title']} | {display_location}")
         print(f"  标签: {', '.join(item_tags(item))}")
         facet = activity_facets.get(str(item.get("activity_id")))
         if facet:
@@ -447,7 +462,7 @@ def main() -> int:
             print(f"  推荐画像: {', '.join(facet.get('experience_modes', []))} | {intensity} | {social}")
             if facet.get("recommended_for"):
                 print(f"  适合: {', '.join(facet.get('recommended_for', [])[:4])}")
-        for session in focus_sessions_for(str(item.get("activity_id")), focus_sessions, args.q, date=args.date)[:3]:
+        for session in item_focus_sessions:
             print(f"  重点 part: {session.get('time')} | {session.get('title')} | {session.get('location')}")
             print(f"  part 内容: {session.get('summary')}")
             for talk in matching_talks(session, args.q):

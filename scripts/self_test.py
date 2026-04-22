@@ -16,6 +16,7 @@ MANUAL = REF / "manual"
 SCRIPT = ROOT / "scripts" / "search_activities.py"
 PLAN_SCRIPT = ROOT / "scripts" / "plan_itinerary.py"
 SOURCE_CHANNELS_SCRIPT = ROOT / "scripts" / "source_channels.py"
+REBUILD_SLICES_SCRIPT = ROOT / "scripts" / "rebuild_reference_slices.py"
 
 
 REQUIRED_FILES = [
@@ -34,6 +35,7 @@ REQUIRED_FILES = [
     SCRIPT,
     PLAN_SCRIPT,
     SOURCE_CHANNELS_SCRIPT,
+    REBUILD_SLICES_SCRIPT,
 ]
 
 FORBIDDEN_REFERENCE_DOCS = {
@@ -127,7 +129,7 @@ OUTPUT_CASES = [
     {"name": "first_time_itinerary_has_forum", "q": "第一次来 2050 安排一天", "require": ["新生论坛", "热带雨林"], "forbid": ["source |", "matched_activity_ids"]},
     {"name": "evening_itinerary_keeps_forum_anchor", "q": "晚上 放松 露营 音乐 2050 安排一天", "require": ["新生论坛", "星空露营"], "forbid": ["source |", "matched_activity_ids"]},
     {"name": "networking_query_has_connection_places", "q": "我想找人合作 做AI硬件", "require": ["探索空间", "推荐画像:"], "forbid": ["source |", "matched_activity_ids"]},
-    {"name": "ai4science_query_has_focus_session", "q": "AI4Science 科研 博士 天文学", "require": ["重点 part:", "AGI4Science：正在生长的科学地图", "A区 2F 2050学习节(五区) 云展厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "ai4science_query_has_focus_session", "q": "AI4Science 科研 博士 天文学", "require": ["重点 part:", "AGI4Science：正在生长的科学地图", "A区 2F 2050学习节(五云厅)"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "ai4science_report_tags", "q": "AI4Science 数学物理", "require": ["报告:", "AI如何解决上个世纪的数学与物理", "杜伟韬"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "eldercare_focus_report", "q": "助老智能体", "require": ["青智助老", "智慧未来：助老智能体共建", "A区 1F 慧云厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "agentic_building_focus_location", "q": "AI协商生成公共空间", "require": ["Agentic Building", "篮球场边", "设定AI性格"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
@@ -135,6 +137,34 @@ OUTPUT_CASES = [
     {"name": "latest_space_life_focus", "q": "探索空间 太空 生活 航天", "require": ["重点 part:", "未来在地球以外：星际生活场景体验", "探索空间1号展位"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "latest_parent_ai_focus", "q": "AI反哺 父母 养老", "require": ["重点 part:", "AI反哺计划：年轻人能用AI为父母做些什么", "探索空间74号展位"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
 ]
+
+EXPECTED_FORUM_LOCATIONS = {
+    "12260": "A区 3F 皓云厅",
+    "12491": "A区 1F 贤云厅",
+    "12309": "A区 2F 2050学习节(五云厅)",
+    "12402": "A区 2F 2050学习节(五云厅)",
+    "12298": "A区 1F 慧云厅",
+    "12275": "A区 1F 贤云厅",
+    "12741": "A区 2F 360环屏(千人云栖厅)",
+    "12429": "A区 3F 坚云厅",
+    "12633": "A区 3F 青云厅",
+    "12555": "A区 1F 慧云厅",
+    "12257": "A区 2F 360环屏(千人云栖厅)",
+    "12669": "A区 3F 德云厅",
+    "12308": "A区 1F 贤云厅",
+    "12411": "A区 1F 慧云厅",
+    "12360": "A区 3F 风云厅",
+    "12416": "A区 1F 慧云厅",
+    "12263": "A区 2F 360环屏(千人云栖厅)",
+    "12630": "A区 2F 360环屏(千人云栖厅)",
+    "12284": "A区 3F 德云厅",
+    "12365": "A区 3F 德云厅",
+    "12288": "A区 3F 青云厅",
+    "12334": "A区 2F 2050学习节(五云厅)",
+    "12241": "A区 2F 360环屏(千人云栖厅)",
+    "12372": "A区 3F 青云厅",
+    "12314": "A区 3F 皓云厅",
+}
 
 ITINERARY_PROFILE = (
     "身份 AI4S科研博士生 背景 天文学 AI交叉 兴趣 科普科教 开源技术 "
@@ -460,6 +490,17 @@ def main() -> int:
     )
     if missing_focus_parent_ids:
         fail(f"focus_sessions.min.json references unknown activity IDs: {missing_focus_parent_ids}")
+    activity_lookup = {str(item.get("activity_id")): item for item in activities}
+    location_mismatches = []
+    for activity_id, expected_location in EXPECTED_FORUM_LOCATIONS.items():
+        activity = activity_lookup.get(activity_id)
+        if not activity:
+            location_mismatches.append((activity_id, "missing", expected_location))
+        elif activity.get("location") != expected_location:
+            location_mismatches.append((activity_id, activity.get("location"), expected_location))
+    if location_mismatches:
+        fail(f"curated forum locations regressed: {location_mismatches[:10]}")
+
     for item in focus_sessions:
         for field in ["session_id", "parent_activity_id", "title", "container", "date", "time", "location", "summary", "source"]:
             if not item.get(field):
@@ -655,7 +696,7 @@ def main() -> int:
     except json.JSONDecodeError as exc:
         fail(f"plan_itinerary.py did not return valid JSON: {exc}")
     plan_text = json.dumps(plan, ensure_ascii=False)
-    for required_text in ["AI4Science 专场", "AGI4Science：正在生长的科学地图", "A区 2F 2050学习节(五区) 云展厅", "把AI装进硬件里", "太空时代开启", "suggested_window", "official_time"]:
+    for required_text in ["AI4Science 专场", "AGI4Science：正在生长的科学地图", "A区 2F 2050学习节(五云厅)", "把AI装进硬件里", "太空时代开启", "suggested_window", "official_time"]:
         if required_text not in plan_text:
             fail(f"plan_itinerary.py output missing expected route element: {required_text}")
     if "AI4Science 专场 | 云栖小镇国际会展中心（官方地点仅到总场馆" in plan_text:

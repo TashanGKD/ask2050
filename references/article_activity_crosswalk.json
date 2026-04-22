@@ -202,7 +202,7 @@
       "article_title": "新生论坛@2050@2026：500+脑暴席卷云栖，年青就要最大声分享！",
       "source_ocr_file": "008.md",
       "container": "新生论坛",
-      "crosswalk_status": "article_outline_complete_manual_id_partial",
+      "crosswalk_status": "article_outline_complete_forum_venues_curated_id_partial",
       "units": [
         {
           "section_title": "未来公园——百集绿色生活与智慧妙想的活力赛场",
@@ -214,7 +214,7 @@
             "2026-04-25"
           ],
           "time_range": "09:00-10:30",
-          "location_hint": "一楼智厅",
+          "location_hint": "A区 1F 智云厅",
           "topic_tags": [
             "future-city",
             "green-living",
@@ -230,7 +230,7 @@
             "2026-04-25"
           ],
           "time_range": "10:30-12:00",
-          "location_hint": "一楼智厅",
+          "location_hint": "A区 1F 智云厅",
           "topic_tags": [
             "art",
             "aesthetics"
@@ -247,7 +247,7 @@
             "2026-04-25"
           ],
           "time_range": "12:00-13:00",
-          "location_hint": "一楼智厅",
+          "location_hint": "A区 1F 智云厅",
           "topic_tags": [
             "art",
             "museum",
@@ -263,7 +263,7 @@
             "2026-04-25"
           ],
           "time_range": "13:00-13:30",
-          "location_hint": "一楼智厅",
+          "location_hint": "A区 1F 智云厅",
           "topic_tags": [
             "ai-memory",
             "elderly",
@@ -281,7 +281,7 @@
             "2026-04-25"
           ],
           "time_range": "13:30-14:30",
-          "location_hint": "一楼智厅",
+          "location_hint": "A区 1F 智云厅",
           "topic_tags": [
             "youth-film",
             "visual-culture"
@@ -298,7 +298,7 @@
             "2026-04-25"
           ],
           "time_range": "14:30-16:00",
-          "location_hint": "一楼智厅",
+          "location_hint": "A区 1F 智云厅",
           "topic_tags": [
             "ai-film",
             "children",
@@ -316,7 +316,7 @@
             "2026-04-25"
           ],
           "time_range": "16:00-18:00",
-          "location_hint": "一楼智厅",
+          "location_hint": "A区 1F 智云厅",
           "topic_tags": [
             "ai-film",
             "children",
@@ -332,7 +332,7 @@
             "2026-04-26"
           ],
           "time_range": "09:00-11:30",
-          "location_hint": "一楼智厅",
+          "location_hint": "A区 1F 智云厅",
           "topic_tags": [
             "ai-film",
             "young-director",
@@ -348,7 +348,7 @@
             "2026-04-26"
           ],
           "time_range": "11:30-12:45",
-          "location_hint": "一楼智厅",
+          "location_hint": "A区 1F 智云厅",
           "topic_tags": [
             "ai-culture",
             "language",
@@ -366,7 +366,7 @@
             "2026-04-26"
           ],
           "time_range": "13:00-15:30",
-          "location_hint": "一楼智厅",
+          "location_hint": "A区 1F 智云厅",
           "topic_tags": [
             "youth-voice",
             "ai-society",

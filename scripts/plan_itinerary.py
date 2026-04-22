@@ -125,6 +125,10 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str) -> i
         score += 14
     if role == "forum" and "ai4science" in text:
         score += 30
+    if role == "forum" and any(term in terms for term in ["太空", "宇宙", "地外文明", "物理"]) and (
+        "太空" in text or "宇宙" in text or "地外文明" in text or "物理" in text
+    ):
+        score += 35
     if "ai4science" in terms and "ai4science" in title:
         score += 90
     if "科学" in terms and "科学" in title:
@@ -142,6 +146,8 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str) -> i
         score += 55
     if role == "evening" and ("太空" in text or "地外文明" in text):
         score += 35
+    if not any(hint in str(item.get("location", "")) for hint in SPECIFIC_LOCATION_HINTS):
+        score -= 40
     return score
 
 

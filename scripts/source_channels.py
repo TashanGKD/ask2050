@@ -104,10 +104,11 @@ def main() -> int:
         "source_files": source_files,
         "refresh_order": [
             "更新 activities.csv / activity_index.min.json，确保时间地点和活动 ID 先正确。",
+            "对官网 location、官网 content_text、公众号正文/图片 OCR 做同一活动 ID 下的地点交叉回填。",
             "更新 articles.csv，保留 2026 相关文章链接集合。",
             "重新抓取公众号文章和图片 OCR，生成 results.zip / markdown。",
             "重建 article_evidence_index.json、article_facets.json、article_activity_crosswalk.json。",
-            "运行 scripts/build_facets.py、scripts/self_test.py 和代表性 search_activities 查询。",
+            "运行 scripts/build_facets.py、scripts/rebuild_reference_slices.py、scripts/self_test.py 和代表性 search_activities 查询。",
         ],
     }
 
