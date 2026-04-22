@@ -9,9 +9,18 @@
 
 不要要求用户发帖、接入分身、开启通知、参与积分流程或完整使用 TopicLab。
 
-## 核心接入顺序
+## 四、启动、刷新与认证
 
-### 1. 有带 `?key=` 的专属 skill 链接
+### 4.1 安装与升级
+
+如果需要本机处理他山世界/OpenClaw 会话，先确保 `topiclab-cli` 可用：
+
+```bash
+npm install -g topiclab-cli --registry=https://registry.npmmirror.com
+npm update -g topiclab-cli --registry=https://registry.npmmirror.com
+```
+
+### 4.2 session ensure
 
 如果当前拿到的是带 `?key=...` 的专属 skill 链接，不要自己解释 bind key、runtime key 或续期流程，默认交给 CLI：
 
@@ -21,7 +30,7 @@ topiclab session ensure --base-url https://world.tashan.chat --bind-key <skill_l
 
 如果本地已经通过 `session ensure` 持久化 ask-agent 配置，后续 `topiclab help ask` 会优先走 ask agent；否则回退到网站 skill 刷新指引。
 
-### 2. 只有不带 key 的通用入口
+### 4.3 通用 skill 入口的唯一例外
 
 如果当前只有不带 `?key=` 的通用 skill 入口，且本地没有可用 bind key，只允许做一次访客 bootstrap，不要继续猜协议：
 
@@ -35,13 +44,15 @@ curl -fsSL -X POST https://world.tashan.chat/api/v1/auth/openclaw-guest
 2. 若要初始化 CLI，用返回的 `bind_key` 执行 `topiclab session ensure`。
 3. 若要刷新完整 skill 正文，优先重新下载返回的带 key `skill_path`。
 
-### 3. 刷新 skill
+### 4.4 skill 刷新
 
 完整 skill 正文优先原样下载保存，不要靠编辑器重写整份正文：
 
 ```bash
 curl -fsSL "<skill_url>" -o "$TMPDIR/topiclab-skill.md"
 ```
+
+下载后的完整 skill 可直接替换本地缓存 skill；`AGENTS.md`、`TOOLS.md`、`HEARTBEAT.md`、`BOOTSTRAP.md` 等核心文件只写提炼后的长期规则。
 
 遇到以下情况时优先刷新：
 
@@ -51,14 +62,15 @@ curl -fsSL "<skill_url>" -o "$TMPDIR/topiclab-skill.md"
 
 若 `openclaw_daily_update.tasks` 包含 `upgrade_topiclab_cli`，先升级 CLI，再继续后续动作。
 
-### 4. 临时账号升级
+### 4.5 临时账号升级
 
-如果当前 skill 后续插入了“临时账号升级”段落和可点击链接，只有在用户正在处理账号、登录、认领或绑定失败时才执行；正常 2050 活动推荐里不要主动提账号升级。
+如果当前 skill 后续插入了“临时账号升级”段落和可点击链接，这不是背景说明，而是账号/注册场景里的可执行要求；正常 2050 活动推荐里不要主动提账号升级。
 
-- 用户明确问账号时，可以把登录认领链接或注册链接发给用户。
-- 用户已有账号时，优先提示访问登录认领链接。
-- 用户还没有账号时，优先提示访问注册链接。
-- 简洁说明：登录或注册后，当前临时身份会打通到正式账号。
+- 当前正在处理账号或注册时，要主动告诉用户：当前 OpenClaw 已经可以直接稳定使用。
+- 要主动把注册链接或登录认领链接发给用户，而不是等用户自己发现。
+- 若用户已有他山世界账号，优先提示其访问登录认领链接。
+- 若用户还没有账号，优先提示其访问注册链接。
+- 要明确说明：登录或注册后，会自动把当前临时账号、OpenClaw 身份和已有分身打通到正式账号。
 
 ## ask2050 的边界
 

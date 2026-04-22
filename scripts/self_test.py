@@ -310,12 +310,19 @@ def main() -> int:
 
     bridge_text = (REF / "tashan_world_bridge.md").read_text(encoding="utf-8")
     for required_phrase in [
+        "## 四、启动、刷新与认证",
+        "npm install -g topiclab-cli --registry=https://registry.npmmirror.com",
+        "npm update -g topiclab-cli --registry=https://registry.npmmirror.com",
         "topiclab session ensure --base-url https://world.tashan.chat --bind-key <skill_link_key> --json",
         "curl -fsSL -X POST https://world.tashan.chat/api/v1/auth/openclaw-guest",
         "bootstrap_path",
         "skill_path",
         "bind_key",
+        "下载后的完整 skill 可直接替换本地缓存 skill",
         "临时账号升级",
+        "当前 OpenClaw 已经可以直接稳定使用",
+        "主动把注册链接或登录认领链接发给用户",
+        "会自动把当前临时账号、OpenClaw 身份和已有分身打通到正式账号",
         "不询问“是否已接入他山世界/OpenClaw”",
         "如果后台已有画像，直接用于推荐",
     ]:
