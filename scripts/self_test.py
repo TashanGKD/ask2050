@@ -20,9 +20,11 @@ REQUIRED_FILES = [
     ROOT / "SKILL.md",
     REF / "coverage_report.md",
     REF / "evidence_status.md",
+    REF / "source_inventory.md",
     REF / "tashan_world_bridge.md",
     REF / "activity_index.min.json",
     REF / "article_activity_crosswalk.json",
+    REF / "article_evidence_index.json",
     REF / "articles_index.json",
     MANUAL / "article_curation.md",
     MANUAL / "article_aliases.json",
@@ -84,6 +86,14 @@ UNIT_CASES = [
     {"name": "ai_jargon_unit", "q": "黑话", "min_units": 1},
     {"name": "four_hundred_boxes_unit", "q": "四百盒子社区", "min_units": 1},
     {"name": "afterparty_unit", "q": "AfterParty", "min_units": 1},
+]
+
+SOURCE_CASES = [
+    {"name": "source_deskclaw", "q": "DeskClaw", "min_sources": 1, "include": {"12361", "12258", "12446"}},
+    {"name": "source_kaiyun_space", "q": "开运集团", "min_sources": 1, "include": {"12326", "12657", "12654", "12653"}},
+    {"name": "source_three_wishes", "q": "三个愿望", "min_sources": 1, "include": {"12207", "12206", "12437", "12439"}},
+    {"name": "source_pass_guide", "q": "2050PASS", "min_sources": 1},
+    {"name": "source_linggan_trade", "q": "灵感交易所", "min_sources": 1, "include": {"12206"}},
 ]
 
 ARTICLE_UNIT_COMPLETE_URLS = {
@@ -153,6 +163,23 @@ def unit_count_from_search(query: str) -> int:
     return int(match.group(1))
 
 
+def source_count_from_search(query: str) -> int:
+    completed = subprocess.run(
+        [sys.executable, str(SCRIPT), "--q", query, "--limit", "80"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if completed.returncode != 0:
+        fail(f"search_activities.py failed for {query}: {completed.stderr.strip()}")
+    match = re.search(r"matched_sources=(\d+)", completed.stdout)
+    if not match:
+        fail(f"query {query} did not report matched_sources")
+    return int(match.group(1))
+
+
 def main() -> int:
     missing = [path.relative_to(ROOT).as_posix() for path in REQUIRED_FILES if not path.exists()]
     if missing:
@@ -160,6 +187,7 @@ def main() -> int:
 
     activities = load_json(REF / "activity_index.min.json")
     crosswalk = load_json(REF / "article_activity_crosswalk.json")
+    evidence = load_json(REF / "article_evidence_index.json")
     articles = load_json(REF / "articles_index.json")
     aliases = load_json(MANUAL / "article_aliases.json")
 
@@ -167,6 +195,25 @@ def main() -> int:
         fail(f"activity index has {len(activities)} rows, expected at least 286")
     if len(articles) < 77:
         fail(f"article index has {len(articles)} rows, expected at least 77")
+    counts = evidence.get("counts", {})
+    expected_evidence_counts = {
+        "articles_csv_rows": 77,
+        "activity_rows": 286,
+        "result_markdown_files": 82,
+        "batch_success": 12,
+        "batch_failed": 1,
+        "batch_skipped": 69,
+        "matched_to_articles_csv": 77,
+        "unmatched_articles_csv": 0,
+    }
+    for key, expected in expected_evidence_counts.items():
+        if counts.get(key) != expected:
+            fail(f"article_evidence_index count {key} expected {expected}, got {counts.get(key)}")
+    if counts.get("manual_reviewed", 0) < 33:
+        fail(f"article_evidence_index manual_reviewed too low: {counts.get('manual_reviewed')}")
+    source_years = {str(record.get("article_published_at", ""))[:4] for record in evidence.get("records", []) if record.get("article_published_at")}
+    if source_years != {"2026"}:
+        fail(f"article evidence should only use 2026 article publish years, got {sorted(source_years)}")
     if not isinstance(crosswalk, dict) or not crosswalk.get("records"):
         fail("article_activity_crosswalk.json must be an object with non-empty records")
     forbidden_full_index = REF / ("activity_index." + "full.json")
@@ -225,6 +272,8 @@ def main() -> int:
         dirty_results = ids_from_search(dirty_query)
         if dirty_results:
             fail(f"query {dirty_query} should not return default activities: {sorted(dirty_results)}")
+        if dirty_query == "2025" and source_count_from_search(dirty_query) != 0:
+            fail("query 2025 should not return source matches in the default 2050@2026 route scope")
 
     for case in SEARCH_CASES:
         actual_ids = ids_from_search(
@@ -247,6 +296,17 @@ def main() -> int:
         actual_units = unit_count_from_search(case["q"])
         if actual_units < case["min_units"]:
             fail(f"case {case['name']} expected at least {case['min_units']} unit matches, got {actual_units}")
+
+    for case in SOURCE_CASES:
+        actual_sources = source_count_from_search(case["q"])
+        if actual_sources < case["min_sources"]:
+            fail(f"case {case['name']} expected at least {case['min_sources']} source matches, got {actual_sources}")
+        include = case.get("include", set())
+        if include:
+            actual_ids = ids_from_search(case["q"])
+            missing = include - actual_ids
+            if missing:
+                fail(f"source case {case['name']} missing IDs from search path: {sorted(missing)}")
 
     for record in crosswalk.get("records", []):
         if record.get("article_url") not in ARTICLE_UNIT_COMPLETE_URLS:
@@ -277,13 +337,13 @@ def main() -> int:
 
     print("OK: ask2050 packaged data and search path passed")
     print(f"activities={len(activities)} articles={len(articles)} raw_ocr_packaged=0")
-    print(f"manual_curation_ids={len(curation_ids)} alias_keys={len(aliases)}")
+    print(f"manual_curation_ids={len(curation_ids)} alias_keys={len(aliases)} manual_reviewed_sources={counts.get('manual_reviewed')}")
     checked_article_units = sum(
         len(record.get("units", []))
         for record in crosswalk.get("records", [])
         if record.get("article_url") in ARTICLE_UNIT_COMPLETE_URLS
     )
-    print(f"search_cases={len(EXPECTED_ALIAS_IDS) + len(SEARCH_CASES) + len(UNIT_CASES) + checked_article_units + 2}")
+    print(f"search_cases={len(EXPECTED_ALIAS_IDS) + len(SEARCH_CASES) + len(UNIT_CASES) + len(SOURCE_CASES) + checked_article_units + 2}")
     return 0
 
 

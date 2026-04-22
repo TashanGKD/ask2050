@@ -13,8 +13,9 @@
 - 公众号/OCR 源材料: **71/82** 份达到可检索文本阈值；raw markdown 不进入默认 skill 包
 - 未完成项: 公众号文章内的 part / 节目 / 单个报告到 `activity_id` 或独立知识条目的人工 crosswalk。
 - OCR 批处理状态: **12/82 成功，1/82 失败，69/82 跳过，70/82 未显示本批成功**；不可声称全部图片已 OCR。
-- OCR 优先补缺项: **12** 个，包括 11 个少于 300 字的 markdown 和 1 个批处理失败项。
-- OCR 优先补缺项已人工判读并补入 `references/manual/article_curation.md`；仍不等于全文 OCR。
+- 原图状态: 三个输入文件没有打包原始图片，只有 OCR/抓取后的 markdown 结果。
+- OCR/信源优先补缺项: **33** 个，包括低文本、失败、错位、重复拆分和重点集合文章。
+- OCR/信源优先补缺项已人工判读并补入 `references/manual/article_curation.md` 与 `references/article_evidence_index.json`；仍不等于全文 OCR。
 
 ## 按板块覆盖
 - 新生论坛: 96 条；丰富内容 90/96；主题标签 96/96

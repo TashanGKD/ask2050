@@ -9,6 +9,8 @@ description: Recommend and answer questions about 2050@2026 activities using a s
 
 2050 is for people. Use AI only to filter dense information, compare evidence, and recommend routes. Do not frame the user as joining AI; frame the answer as a human participation route.
 
+Default scope is 2050@2026 only. Use activities dated 2026-04-24 to 2026-04-26 and public-account articles published in 2026. Older-year mentions such as 2025 are background only and must not generate participation routes unless the user explicitly asks for historical context.
+
 Before final personalized matching, ask whether the user has registered Tashan World. Registration is a lightweight identity/profile step, not a full TopicLab workflow:
 
 - Registration target: `https://world.tashan.chat`
@@ -22,6 +24,7 @@ Load only what is needed:
 
 1. Start with `references/coverage_report.md` to know data quality.
    - Check `references/evidence_status.md` before relying on public-account article/OCR evidence.
+   - Load `references/source_inventory.md` if the user challenges source completeness, OCR coverage, or the three supplied files.
 2. Load `references/tashan_world_bridge.md` if the user has not registered or asks why registration matters.
 3. Load the human-curated layer first:
    - `references/manual/site_map.md` for venue and walking-cost reasoning.
@@ -36,9 +39,10 @@ Load only what is needed:
 8. For topic matching, load `references/by_topic/<topic>.md`.
 9. For location planning, load `references/by_location/<location_zone>.md`.
 10. For public-account article subparts, programs, talks, maps, or logistics, load `references/article_activity_crosswalk.json`; treat it as partial unless the record says otherwise.
-11. Raw OCR text is not packaged in the default skill because it contains source noise and historical context. Use `references/evidence_status.md` for OCR coverage state and `references/manual/article_curation.md` for human-checked recovery.
-12. If an article is in the manual curation list, prefer `references/manual/article_curation.md` over the short OCR snippet, then verify exact schedule details from `activity_index.min.json`.
-13. For regression expectations and known edge cases, load `references/test_report.md`.
+11. For public-account article/source lookup, load `references/article_evidence_index.json` before falling back to broad search. It contains all 82 markdown result files mapped back to 77 article links plus manual review status.
+12. Raw OCR text is not packaged in the default skill because it contains source noise and historical context. Use `references/evidence_status.md`, `references/source_inventory.md`, and `references/manual/article_curation.md` for OCR coverage state and human-checked recovery.
+13. If an article is in the manual curation list, prefer `references/manual/article_curation.md` over the short OCR snippet, then verify exact schedule details from `activity_index.min.json`.
+14. For regression expectations and known edge cases, load `references/test_report.md`.
 
 ## Mount validation
 

@@ -12,6 +12,39 @@ ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "references" / "activity_index.min.json"
 ARTICLE_ALIASES = ROOT / "references" / "manual" / "article_aliases.json"
 CROSSWALK = ROOT / "references" / "article_activity_crosswalk.json"
+ARTICLE_EVIDENCE = ROOT / "references" / "article_evidence_index.json"
+
+
+def source_activity_ids(record: dict, query: str) -> list[str]:
+    q_lower = query.lower()
+    weak_year_queries = {"2024", "2025", "2026"}
+    if q_lower.strip() in weak_year_queries:
+        return []
+    for rule in record.get("query_activity_rules", []):
+        keywords = [str(keyword).lower() for keyword in rule.get("keywords", [])]
+        if any(keyword in q_lower for keyword in keywords):
+            return [str(activity_id) for activity_id in rule.get("activity_ids", [])]
+    return [str(activity_id) for activity_id in record.get("matched_activity_ids", [])]
+
+
+def filter_activity_ids(
+    activity_ids: list[str],
+    activity_lookup: dict[str, dict],
+    *,
+    date: str | None = None,
+    container: str | None = None,
+) -> list[str]:
+    filtered = []
+    for activity_id in activity_ids:
+        activity = activity_lookup.get(activity_id)
+        if not activity:
+            continue
+        if date and date not in activity.get("date_tags", []):
+            continue
+        if container and container not in activity.get("container", ""):
+            continue
+        filtered.append(activity_id)
+    return filtered
 
 
 def main() -> int:
@@ -101,7 +134,47 @@ def main() -> int:
         else:
             print("  matched_activity_ids: none")
 
-    print(f"matched={len(results)} matched_units={len(unit_results)}")
+    source_results = []
+    if args.q and ARTICLE_EVIDENCE.exists():
+        evidence = json.loads(ARTICLE_EVIDENCE.read_text(encoding="utf-8"))
+        q_lower = args.q.lower()
+        old_year_only = q_lower.strip() in {"2024", "2025"}
+        if not old_year_only:
+            for record in evidence.get("records", []):
+                source_haystack = " ".join([
+                    record.get("title", ""),
+                    record.get("article_csv_title") or "",
+                    record.get("manual_summary", ""),
+                    record.get("search_text", ""),
+                    " ".join(str(activity_id) for activity_id in source_activity_ids(record, args.q)),
+                ]).lower()
+                if q_lower not in source_haystack:
+                    continue
+                source_results.append(record)
+
+    for record in source_results[: args.limit]:
+        ids = filter_activity_ids(
+            source_activity_ids(record, args.q),
+            activity_lookup,
+            date=args.date,
+            container=args.container,
+        )
+        print(f"source | {record.get('result_file')} | {record.get('batch_status')} | {record.get('title')}")
+        print(f"  review: {record.get('review_tier')} manual_reviewed={record.get('manual_reviewed')}")
+        if record.get("manual_summary"):
+            print(f"  summary: {record.get('manual_summary')}")
+        if record.get("article_url"):
+            print(f"  article_url: {record.get('article_url')}")
+        if ids:
+            print(f"  matched_activity_ids: {', '.join(ids)}")
+            for activity_id in ids:
+                activity = activity_lookup.get(activity_id)
+                if activity:
+                    print(f"  url: {activity['url']}")
+        else:
+            print("  matched_activity_ids: none")
+
+    print(f"matched={len(results)} matched_units={len(unit_results)} matched_sources={len(source_results)}")
     return 0
 
 
