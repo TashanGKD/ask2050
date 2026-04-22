@@ -70,6 +70,8 @@ QUERY_ALIASES = {
     "合作伙伴": ["找同伴", "想找合作伙伴的人", "青年团聚", "热带雨林", "探索空间"],
     "ai硬件": ["AI硬件", "硬件/机器人方向", "robotics-hardware", "探索空间", "动手工作坊"],
     "做ai硬件": ["AI硬件", "硬件/机器人方向", "robotics-hardware", "探索空间", "动手工作坊"],
+    "数学物理": ["数学", "物理", "math", "physics"],
+    "数学与物理": ["数学", "物理", "math", "physics"],
     "不懂ai": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
     "非技术": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
     "不是开发": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
@@ -256,6 +258,10 @@ def session_terms(session: dict) -> list[str]:
         value = session.get(key)
         if isinstance(value, list):
             terms.extend(str(item) for item in value)
+    for talk in session.get("talks", []):
+        if isinstance(talk, dict):
+            terms.extend(str(talk.get(key, "")) for key in ["title", "speaker"])
+            terms.extend(str(tag) for tag in talk.get("tags", []))
     return [str(term) for term in terms if term]
 
 
@@ -278,6 +284,27 @@ def focus_sessions_for(
         matched.append(session)
     matched.sort(key=lambda item: (item.get("time", ""), item.get("title", "")))
     return matched
+
+
+def matching_talks(session: dict, query: str) -> list[dict]:
+    talks = [talk for talk in session.get("talks", []) if isinstance(talk, dict)]
+    if not query:
+        return talks[:3]
+    matched = []
+    terms = query_terms(query)
+    for talk in talks:
+        haystack = " ".join(
+            [
+                str(talk.get("title", "")),
+                str(talk.get("speaker", "")),
+                " ".join(str(tag) for tag in talk.get("tags", [])),
+            ]
+        ).lower()
+        if query_matches(haystack, query) or any(term and term in haystack for term in terms):
+            matched.append(talk)
+    if matched:
+        return matched[:5]
+    return talks[:3]
 
 
 def source_activity_ids(record: dict, query: str) -> list[str]:
@@ -362,6 +389,9 @@ def main() -> int:
     focus_sessions = []
     if FOCUS_SESSIONS.exists():
         focus_sessions = json.loads(FOCUS_SESSIONS.read_text(encoding="utf-8"))
+    focus_terms_by_activity: dict[str, list[str]] = {}
+    for session in focus_sessions:
+        focus_terms_by_activity.setdefault(str(session.get("parent_activity_id")), []).extend(session_terms(session))
     manual_ids = []
     if args.q and ARTICLE_ALIASES.exists():
         aliases = json.loads(ARTICLE_ALIASES.read_text(encoding="utf-8"))
@@ -382,6 +412,7 @@ def main() -> int:
             item.get("location", ""),
             " ".join(item_tags(item)),
             " ".join(facet_terms(activity_facets.get(activity_id))),
+            " ".join(focus_terms_by_activity.get(activity_id, [])),
         ]).lower()
         if args.date and args.date != item.get("date"):
             continue
@@ -419,6 +450,8 @@ def main() -> int:
         for session in focus_sessions_for(str(item.get("activity_id")), focus_sessions, args.q, date=args.date)[:3]:
             print(f"  重点 part: {session.get('time')} | {session.get('title')} | {session.get('location')}")
             print(f"  part 内容: {session.get('summary')}")
+            for talk in matching_talks(session, args.q):
+                print(f"  报告: {talk.get('title')} | {talk.get('speaker')} | {', '.join(str(tag) for tag in talk.get('tags', []))}")
             if session.get("source"):
                 print(f"  part 来源: {session.get('source')}")
         print(f"  简介: {item['summary']}")

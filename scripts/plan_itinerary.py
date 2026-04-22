@@ -157,6 +157,10 @@ def session_haystack(session: dict) -> str:
         value = session.get(key)
         if isinstance(value, list):
             parts.extend(str(v) for v in value)
+    for talk in session.get("talks", []):
+        if isinstance(talk, dict):
+            parts.extend(str(talk.get(key, "")) for key in ["title", "speaker"])
+            parts.extend(str(tag) for tag in talk.get("tags", []))
     return " ".join(str(part).lower() for part in parts)
 
 

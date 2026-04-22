@@ -122,6 +122,9 @@ OUTPUT_CASES = [
     {"name": "evening_itinerary_keeps_forum_anchor", "q": "晚上 放松 露营 音乐 2050 安排一天", "require": ["新生论坛", "星空露营"], "forbid": ["source |", "matched_activity_ids"]},
     {"name": "networking_query_has_connection_places", "q": "我想找人合作 做AI硬件", "require": ["探索空间", "推荐画像:"], "forbid": ["source |", "matched_activity_ids"]},
     {"name": "ai4science_query_has_focus_session", "q": "AI4Science 科研 博士 天文学", "require": ["重点 part:", "AGI4Science：正在生长的科学地图", "A区 2F 2050学习节(五区) 云展厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "ai4science_report_tags", "q": "AI4Science 数学物理", "require": ["报告:", "AI如何解决上个世纪的数学与物理", "杜伟韬"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "eldercare_focus_report", "q": "助老智能体", "require": ["青智助老", "智慧未来：助老智能体共建", "A区 1F 慧云厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "agentic_building_focus_location", "q": "AI协商生成公共空间", "require": ["Agentic Building", "篮球场边", "设定AI性格"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
 ]
 
 ITINERARY_PROFILE = (
@@ -374,6 +377,7 @@ def main() -> int:
     activities = load_json(REF / "activity_index.min.json")
     crosswalk = load_json(REF / "article_activity_crosswalk.json")
     activity_facets = load_json(REF / "activity_facets.json")
+    focus_sessions = load_json(REF / "focus_sessions.min.json")
     article_facets = load_json(REF / "article_facets.json")
     evidence = load_json(REF / "article_evidence_index.json")
     articles = load_json(REF / "articles_index.json")
@@ -383,6 +387,8 @@ def main() -> int:
         fail(f"activity index has {len(activities)} rows, expected at least 286")
     if len(articles) < 77:
         fail(f"article index has {len(articles)} rows, expected at least 77")
+    if len(focus_sessions) < 12:
+        fail(f"focus_sessions.min.json has {len(focus_sessions)} rows, expected at least 12 curated focus sessions")
     counts = evidence.get("counts", {})
     expected_evidence_counts = {
         "articles_csv_rows": 77,
@@ -415,6 +421,19 @@ def main() -> int:
         fail("raw article_ocr markdown should not be packaged in the default skill")
 
     activity_ids = {str(item.get("activity_id")) for item in activities}
+    missing_focus_parent_ids = sorted(
+        str(item.get("parent_activity_id"))
+        for item in focus_sessions
+        if str(item.get("parent_activity_id")) not in activity_ids
+    )
+    if missing_focus_parent_ids:
+        fail(f"focus_sessions.min.json references unknown activity IDs: {missing_focus_parent_ids}")
+    for item in focus_sessions:
+        for field in ["session_id", "parent_activity_id", "title", "container", "date", "time", "location", "summary", "source"]:
+            if not item.get(field):
+                fail(f"focus session missing {field}: {item}")
+        if not isinstance(item.get("talks"), list) or not item.get("talks"):
+            fail(f"focus session needs talk-level tags: {item.get('session_id')}")
     facet_ids = set(activity_facets)
     if facet_ids != activity_ids:
         fail("activity_facets.json must cover exactly the packaged activity IDs")
