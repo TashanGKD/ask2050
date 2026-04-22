@@ -216,6 +216,14 @@ def main() -> int:
     if missing:
         fail(f"missing required files: {', '.join(missing)}")
 
+    size_budgets = {
+        REF / "activity_facets.json": 360_000,
+        REF / "article_facets.json": 90_000,
+    }
+    for path, max_bytes in size_budgets.items():
+        if path.stat().st_size > max_bytes:
+            fail(f"{path.relative_to(ROOT)} is too large: {path.stat().st_size} bytes > {max_bytes}")
+
     activities = load_json(REF / "activity_index.min.json")
     crosswalk = load_json(REF / "article_activity_crosswalk.json")
     activity_facets = load_json(REF / "activity_facets.json")

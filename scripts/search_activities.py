@@ -137,6 +137,19 @@ def field_boost(item: dict, query: str) -> int:
     return score
 
 
+def source_field_boost(record: dict, query: str) -> int:
+    terms = query_terms(query)
+    title = str(record.get("title", "")).lower()
+    summary = str(record.get("manual_summary", "")).lower()
+    score = 0
+    for term in terms:
+        if term in title:
+            score += 12
+        if term in summary:
+            score += 4
+    return score
+
+
 def item_tags(item: dict) -> list[str]:
     tags = item.get("recommendation_tags")
     if tags:
@@ -157,15 +170,28 @@ def facet_terms(facet: dict | None) -> list[str]:
     for key in [
         "primary_topics",
         "secondary_topics",
+        "extracted_topics",
         "experience_modes",
         "participation_style",
         "recommended_for",
+        "communities_or_aliases",
         "search_terms",
     ]:
         value = facet.get(key)
         if isinstance(value, list):
             terms.extend(str(item) for item in value)
-    for key in ["intensity", "social_density", "planning_role", "time_pattern", "venue_context", "route_note", "source_level"]:
+    for key in [
+        "intensity",
+        "social_density",
+        "planning_role",
+        "time_pattern",
+        "venue_context",
+        "route_note",
+        "source_level",
+        "source_role",
+        "route_use",
+        "confidence",
+    ]:
         if facet.get(key):
             terms.append(str(facet[key]))
     return terms
@@ -335,10 +361,12 @@ def main() -> int:
                 ]).lower()
                 if not query_matches(source_haystack, args.q):
                     continue
-                source_results.append(record)
+                score = query_score(source_haystack, args.q) + source_field_boost(record, args.q)
+                source_results.append((score, record))
 
     remaining = max(0, args.limit - printed)
-    for record in source_results[:remaining]:
+    source_results.sort(key=lambda pair: -pair[0])
+    for _, record in source_results[:remaining]:
         ids = filter_activity_ids(
             source_activity_ids(record, args.q),
             activity_lookup,

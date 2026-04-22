@@ -284,11 +284,6 @@ def infer_activity_facet(item: dict, article_linked_ids: set[str]) -> dict:
     route_note = item.get("summary") or f"{item.get('container')}中的{item.get('title')}"
 
     search_terms = [
-        str(item.get("activity_id", "")),
-        item.get("title", ""),
-        item.get("container", ""),
-        item.get("convener", ""),
-        item.get("location", ""),
         *INTENSITY_LABELS.get(intensity, []),
         *SOCIAL_LABELS.get(social_density, []),
         *ROLE_LABELS.get(planning_role, []),
@@ -297,11 +292,6 @@ def infer_activity_facet(item: dict, article_linked_ids: set[str]) -> dict:
             for tag in [*primary, *secondary]
             for label in TOPIC_LABELS.get(tag, [])
         ],
-        *primary,
-        *secondary,
-        *modes,
-        *styles,
-        *recommended_for,
     ]
 
     return {
@@ -327,7 +317,25 @@ def infer_source_role(record: dict) -> str:
         str(part)
         for part in [record.get("title", ""), record.get("manual_summary", ""), " ".join(record.get("search_terms", []))]
     )
-    if contains_any(text, ["交通", "餐饮", "PASS", "通行证", "攻略", "地图", "停车"]):
+    if contains_any(
+        text,
+        [
+            "交通、餐饮",
+            "交通餐饮",
+            "2050PASS",
+            "PASS获取",
+            "PASS 获取",
+            "入场",
+            "实名认证",
+            "补领",
+            "服务台",
+            "停车",
+            "餐饮",
+            "外卖",
+            "地图",
+            "生活指南",
+        ],
+    ):
         return "logistics-guide"
     if contains_any(text, ["日程", "活动全整理", "节目单", "三日活动"]):
         return "schedule-update"
@@ -377,7 +385,7 @@ def infer_article_facet(record: dict) -> dict:
         "participation_style": uniq(styles),
         "route_use": route_use_for_role(role),
         "confidence": confidence,
-        "search_terms": uniq([record.get("title", ""), record.get("manual_summary", ""), *aliases]),
+        "search_terms": uniq([str(term) for term in aliases if term]),
     }
 
 
@@ -413,11 +421,11 @@ def main() -> int:
     }
 
     (REF / "activity_facets.json").write_text(
-        json.dumps(activity_facets, ensure_ascii=False, indent=2) + "\n",
+        json.dumps(activity_facets, ensure_ascii=False, separators=(",", ":")) + "\n",
         encoding="utf-8",
     )
     (REF / "article_facets.json").write_text(
-        json.dumps(article_facets, ensure_ascii=False, indent=2) + "\n",
+        json.dumps(article_facets, ensure_ascii=False, separators=(",", ":")) + "\n",
         encoding="utf-8",
     )
     print(f"wrote {len(activity_facets)} activity facets and {len(article_facets)} article facets")
