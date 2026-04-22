@@ -274,7 +274,8 @@ def main() -> int:
         "不要为了第一轮匹配整篇加载很大的 `by_topic` 或 `by_location` 文件",
         "认知主线：至少安排一个相关的新生论坛",
         "不要因为低压力活动更容易匹配，就在正常行程里省掉新生论坛",
-        "意图速查不是用来排除新生论坛的",
+        "路线里都先找一个相关新生论坛做认知锚点",
+        "好的 2050 路线要有节奏",
         "低能量用户，不是删除新生论坛，而是降低强度",
         "先判断用户真正要解决什么",
         "要像一个熟悉 2050 的同伴",
@@ -298,6 +299,9 @@ def main() -> int:
     for forbidden_phrase in user_visible_forbidden:
         if forbidden_phrase in skill_text:
             fail(f"SKILL.md still exposes backend onboarding wording: {forbidden_phrase}")
+    for forbidden_phrase in ["匹配分", "N 个活动", "意图速查不是", "排除新生论坛", "--debug", "测试用例", "打包过程"]:
+        if forbidden_phrase in skill_text:
+            fail(f"SKILL.md still exposes implementation/debug wording: {forbidden_phrase}")
 
     agent_yaml = (ROOT / "agents" / "openai.yaml").read_text(encoding="utf-8")
     for forbidden_phrase in ["先确认", "轻量接入", "OpenClaw"]:
