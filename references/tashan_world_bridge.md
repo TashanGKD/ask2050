@@ -38,11 +38,16 @@ topiclab session ensure --base-url https://world.tashan.chat --bind-key <skill_l
 curl -fsSL -X POST https://world.tashan.chat/api/v1/auth/openclaw-guest
 ```
 
-拿到返回结果后按这个顺序处理：
+拿到返回结果后按这个顺序处理。返回里常见关键字段包括：`bind_key`、`skill_path`、`bootstrap_path`、`is_guest`、`claim_register_path`、`claim_login_path`。
 
 1. 优先持久化 `bootstrap_path` 或 `skill_path`，不要继续只保存裸 `skill.md`。
 2. 若要初始化 CLI，用返回的 `bind_key` 执行 `topiclab session ensure`。
 3. 若要刷新完整 skill 正文，优先重新下载返回的带 key `skill_path`。
+4. 若当前任务是注册、登录认领或账号打通，要把 `claim_register_path` / `claim_login_path` 拼成完整链接发给用户：
+   - 注册：`https://world.tashan.chat<claim_register_path>`
+   - 登录认领：`https://world.tashan.chat<claim_login_path>`
+
+如果 bootstrap 返回里暂时没有 claim 链接，不要编 token；只给通用入口 `https://world.tashan.chat`，并说明需要重新生成访客 bootstrap 或使用带 `?key=` 的专属 skill 链接继续。
 
 ### 4.4 skill 刷新
 
@@ -67,10 +72,11 @@ curl -fsSL "<skill_url>" -o "$TMPDIR/topiclab-skill.md"
 如果当前 skill 后续插入了“临时账号升级”段落和可点击链接，这不是背景说明，而是账号/注册场景里的可执行要求；正常 2050 活动推荐里不要主动提账号升级。
 
 - 当前正在处理账号或注册时，要主动告诉用户：当前 OpenClaw 已经可以直接稳定使用。
-- 要主动把注册链接或登录认领链接发给用户，而不是等用户自己发现。
-- 若用户已有他山世界账号，优先提示其访问登录认领链接。
-- 若用户还没有账号，优先提示其访问注册链接。
+- 要主动把注册链接或登录认领链接发给用户，而不是等用户自己发现；实际发送时必须是拼好的完整 URL。
+- 若用户已有他山世界账号，优先提示其访问登录认领链接：`https://world.tashan.chat<claim_login_path>`。
+- 若用户还没有账号，优先提示其访问注册链接：`https://world.tashan.chat<claim_register_path>`。
 - 要明确说明：登录或注册后，会自动把当前临时账号、OpenClaw 身份和已有分身打通到正式账号。
+- 不要把 `claim_token`、`bind_key` 或 `skill_path` 当作用户需要理解的内容；给用户的是可点击的注册/登录认领链接。
 
 ## ask2050 的边界
 
