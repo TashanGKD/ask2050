@@ -12,6 +12,7 @@
 - `articles.csv` 的 77 篇文章已经作为文章索引纳入。
 - `results.zip` 中的 markdown/OCR 文本已经作为证据原料纳入。
 - 还没有完成全量人工 crosswalk: 每篇公众号文章内部的 part、节目、报告、生活指南条目，需要逐项映射到 `activity_id`，或补成独立的知识条目。
+- 不能确认全部图片已经 OCR；OCR 批处理状态见 `references/ocr_coverage_report.md`。严格按本批成功状态，有 **70/82** 未显示成功；按文本可用性，优先补缺 **12** 个。
 
 ## 为什么会出现“286 全，但文章 part 不全”
 
@@ -72,7 +73,7 @@
 
 ## 下一层应该补什么
 
-建立 `article_activity_crosswalk.json`:
+继续扩充 `article_activity_crosswalk.json`:
 
 - `article_url`
 - `article_title`

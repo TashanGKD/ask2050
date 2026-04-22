@@ -21,6 +21,7 @@ Load only what is needed:
 
 1. Start with `references/coverage_report.md` to know data quality.
    - Also check `references/article_crosswalk_status.md` before claiming article-level completeness.
+   - Check `references/ocr_coverage_report.md` before relying on public-account image OCR.
 2. Load the human-curated layer first:
    - `references/manual/site_map.md` for venue and walking-cost reasoning.
    - `references/manual/recommendation_layer.md` for container meaning, primary/secondary tag rules, intensity, social density, and participation modes.
@@ -32,6 +33,7 @@ Load only what is needed:
 7. For topic matching, load `references/by_topic/<topic>.md`.
 8. For location planning, load `references/by_location/<location_zone>.md`.
 9. For evidence from public-account OCR, load `references/article_ocr_index.json`, then the specific `references/article_ocr/*.md` file.
+10. For article subparts, programs, talks, maps, or logistics, load `references/article_activity_crosswalk.json`; treat it as partial unless the record says otherwise.
 
 ## Recommendation workflow
 
@@ -54,6 +56,7 @@ Load only what is needed:
 - `topic_tags`: machine-generated candidate tags in `activity_index.*.json`; do not treat them as final when they conflict with title/summary/container.
 - `format_tags`: participation form, e.g. `forum`, `roundtable`, `workshop`, `exhibition-demo`, `meetup`.
 - `container`: 2050 board such as 新生论坛, 探索空间, 思想约会.
+- `crosswalk_status`: article-to-activity mapping quality. If it is `partial_manual` or `needs_manual_match`, do not present it as complete.
 
 ## Intent normalization
 

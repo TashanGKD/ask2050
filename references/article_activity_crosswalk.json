@@ -1,0 +1,404 @@
+{
+  "schema_version": "0.1",
+  "status": "partial_seed",
+  "scope_note": "This file is a manually curated article-to-unit crosswalk seed. It does not claim full coverage of all WeChat article parts.",
+  "records": [
+    {
+      "article_url": "https://mp.weixin.qq.com/s/Uc4LIsFOWVQIm1qA1wqJfQ",
+      "article_title": "青春舞台@2050@2026：节目单新鲜出炉！",
+      "ocr_file": "article_ocr/006.md",
+      "container": "青春舞台",
+      "crosswalk_status": "partial_manual",
+      "units": [
+        {
+          "section_title": "节目3：阿斯汤加的力与美",
+          "unit_type": "performance",
+          "matched_activity_ids": ["12580"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "19:00",
+          "topic_tags": ["body", "performance", "youth-stage"],
+          "confidence": "high"
+        },
+        {
+          "section_title": "节目4：壁画动画次大次",
+          "unit_type": "performance",
+          "matched_activity_ids": ["12702"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "19:00-21:00",
+          "topic_tags": ["music", "performance", "youth-stage"],
+          "confidence": "high"
+        },
+        {
+          "section_title": "节目5：歌曲《水仙与少年》",
+          "unit_type": "performance",
+          "matched_activity_ids": ["12410"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "19:00-21:00",
+          "topic_tags": ["music", "original-song", "youth-stage"],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "节目6：歌曲《重启》",
+          "unit_type": "performance",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "time_range": "19:00-21:00",
+          "topic_tags": ["ai-music", "digital-human", "youth-stage"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "节目7：接触即兴音乐（声·合体）",
+          "unit_type": "performance",
+          "matched_activity_ids": ["12428"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "19:00",
+          "topic_tags": ["sound", "body", "improvisation", "youth-stage"],
+          "confidence": "high"
+        },
+        {
+          "section_title": "节目8：AI原创音乐剧片段《彩虹卡司》",
+          "unit_type": "performance",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "time_range": "19:00-21:00",
+          "topic_tags": ["ai-theatre", "music-theatre", "youth-stage"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "节目9：《我喜欢》《月》《第二十五号底片》",
+          "unit_type": "performance_group",
+          "matched_activity_ids": ["12366", "12687", "12673"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "19:00-21:00",
+          "topic_tags": ["music", "inclusive-performance", "youth-stage"],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "节目10：合唱《一群无知少年的梦想》",
+          "unit_type": "performance",
+          "matched_activity_ids": ["12542"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "19:00-21:00",
+          "topic_tags": ["chorus", "youth-stage"],
+          "confidence": "high"
+        },
+        {
+          "section_title": "节目11：一起在2050过生日",
+          "unit_type": "performance_event",
+          "matched_activity_ids": ["12578"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "19:00",
+          "topic_tags": ["birthday", "social", "youth-stage"],
+          "confidence": "high"
+        },
+        {
+          "section_title": "WaytoAGI 三周年一起来庆祝",
+          "unit_type": "night_event",
+          "matched_activity_ids": ["12444"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "21:00",
+          "topic_tags": ["community", "celebration", "ai-community"],
+          "confidence": "high"
+        },
+        {
+          "section_title": "WaytoAGI 离谱音乐会",
+          "unit_type": "night_event",
+          "matched_activity_ids": ["12445"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "23:45",
+          "topic_tags": ["music", "community", "ai-community"],
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "article_url": "https://mp.weixin.qq.com/s/0pk6F8FvoqjysXBApdrrdA",
+      "article_title": "新生论坛@2050@2026：500+脑暴席卷云栖，年青就要最大声分享！",
+      "ocr_file": "article_ocr/008.md",
+      "container": "新生论坛",
+      "crosswalk_status": "partial_manual",
+      "units": [
+        {
+          "section_title": "未来公园——百集绿色生活与智慧妙想的活力赛场",
+          "unit_type": "forum_block",
+          "matched_activity_ids": ["12731"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "09:00-10:30",
+          "location_hint": "一楼智厅",
+          "topic_tags": ["future-city", "green-living", "public-space"],
+          "confidence": "high"
+        },
+        {
+          "section_title": "绘画的真理",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "time_range": "10:30-12:00",
+          "location_hint": "一楼智厅",
+          "topic_tags": ["art", "aesthetics"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "1000天后的美术馆",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "time_range": "12:00-13:00",
+          "location_hint": "一楼智厅",
+          "topic_tags": ["art", "museum", "future-culture"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "用AI逆袭记忆，解锁爷爷奶奶的《寻梦环游记》",
+          "unit_type": "talk",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "time_range": "13:00-13:30",
+          "location_hint": "一楼智厅",
+          "topic_tags": ["ai-memory", "elderly", "image-creation"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "《南都画报》青年影像分享会",
+          "unit_type": "sharing",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "time_range": "13:30-14:30",
+          "location_hint": "一楼智厅",
+          "topic_tags": ["youth-film", "visual-culture"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "当孩子成为导演，用AI画出会动的故事",
+          "unit_type": "screening_workshop",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "time_range": "14:30-16:00",
+          "location_hint": "一楼智厅",
+          "topic_tags": ["ai-film", "children", "education"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "10后导演 AI·电影节",
+          "unit_type": "festival_block",
+          "matched_activity_ids": ["12700"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "16:00-18:00",
+          "location_hint": "一楼智厅",
+          "topic_tags": ["ai-film", "children", "education"],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "青年导演 X AI 共创未来影像",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-26"],
+          "time_range": "09:00-11:30",
+          "location_hint": "一楼智厅",
+          "topic_tags": ["ai-film", "young-director", "media"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "让AI圈的黑话与话语权力",
+          "unit_type": "talk",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-26"],
+          "time_range": "11:30-12:45",
+          "location_hint": "一楼智厅",
+          "topic_tags": ["ai-culture", "language", "power"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "AI时代，如何让社会听到更多青年人的声音",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-26"],
+          "time_range": "13:00-15:30",
+          "location_hint": "一楼智厅",
+          "topic_tags": ["youth-voice", "ai-society", "public-discussion"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "青智助老进小班 志愿智暖银幕情",
+          "unit_type": "forum_block",
+          "matched_activity_ids": ["12555"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "09:00-10:00",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": ["elderly", "community-service", "ai-public-good"],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "未来编程：重新定义律师和远方",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "time_range": "10:00-11:00",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": ["programming", "law", "future-work"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "童星未来：当创新基因注入可持续发展",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "time_range": "11:00-12:00",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": ["sustainability", "youth", "innovation"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "物品重生：记忆永生",
+          "unit_type": "forum_block",
+          "matched_activity_ids": ["12411"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "12:30-13:30",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": ["ai-memory", "object-story", "emotional-tech"],
+          "confidence": "high"
+        },
+        {
+          "section_title": "为什么你越会和AI聊天，越不会谈恋爱？",
+          "unit_type": "talk",
+          "matched_activity_ids": ["12487"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "13:30-14:30",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": ["ai-relationship", "psychology", "social"],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "10后创业，求支持！！",
+          "unit_type": "pitch",
+          "matched_activity_ids": ["12416"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "13:30",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": ["youth-entrepreneurship", "maker"],
+          "confidence": "high"
+        },
+        {
+          "section_title": "在家学习夏令营（自学的年青人们）",
+          "unit_type": "learning_block",
+          "matched_activity_ids": ["12225"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "unknown",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": ["self-directed-learning", "education"],
+          "confidence": "low"
+        },
+        {
+          "section_title": "AI时代的教育与社会科学",
+          "unit_type": "forum_block",
+          "matched_activity_ids": ["12298"],
+          "date_tags": ["2026-04-25"],
+          "time_range": "unknown",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": ["education", "social-science", "ai"],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "2050无障碍游乐场",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "time_range": "unknown",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": ["accessibility", "inclusive-design"],
+          "confidence": "needs_manual_match"
+        }
+      ]
+    },
+    {
+      "article_url": "https://mp.weixin.qq.com/s/MaV0AlyUOu8ZmmaVeU5Y8A",
+      "article_title": "星空露营生活指南@2025@2026",
+      "ocr_file": "article_ocr/004.md",
+      "container": "星空露营",
+      "crosswalk_status": "partial_manual",
+      "units": [
+        {
+          "section_title": "星空露营坐标",
+          "unit_type": "logistics",
+          "matched_activity_ids": ["12221"],
+          "date_tags": ["2026-04-24", "2026-04-25", "2026-04-26"],
+          "topic_tags": ["camping", "location", "logistics"],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "星空露营场地配套指引区域",
+          "unit_type": "logistics",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-24", "2026-04-25", "2026-04-26"],
+          "topic_tags": ["camping", "facilities", "logistics"],
+          "confidence": "needs_manual_structuring"
+        },
+        {
+          "section_title": "星空餐&饮",
+          "unit_type": "logistics",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-24", "2026-04-25", "2026-04-26"],
+          "topic_tags": ["food", "drink", "camping"],
+          "confidence": "needs_manual_structuring"
+        },
+        {
+          "section_title": "欢乐派对",
+          "unit_type": "party",
+          "matched_activity_ids": ["12353", "12443"],
+          "date_tags": ["2026-04-24", "2026-04-25"],
+          "topic_tags": ["camping", "party", "social"],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "地图日程攻略",
+          "unit_type": "map_schedule",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-24", "2026-04-25", "2026-04-26"],
+          "topic_tags": ["map", "schedule", "logistics"],
+          "confidence": "needs_manual_structuring"
+        }
+      ]
+    },
+    {
+      "article_url": "https://mp.weixin.qq.com/s/w1DwPt9yp_h1Cl1wgvJEuw",
+      "article_title": "热带雨林@2050@2026：别看活动表，看了你也会觉得“离谱”！",
+      "ocr_file": "article_ocr/007.md",
+      "container": "热带雨林",
+      "crosswalk_status": "partial_manual",
+      "units": [
+        {
+          "section_title": "AI 生成公共空间参与流程",
+          "unit_type": "participation_flow",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "topic_tags": ["ai-public-space", "co-creation", "installation"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "关于AI生成公共空间的圆桌讨论",
+          "unit_type": "roundtable",
+          "matched_activity_ids": [],
+          "date_tags": ["2026-04-25"],
+          "topic_tags": ["ai-public-space", "roundtable", "community"],
+          "confidence": "needs_manual_match"
+        },
+        {
+          "section_title": "四百盒子社区",
+          "unit_type": "community_intro",
+          "matched_activity_ids": [],
+          "date_tags": [],
+          "topic_tags": ["community", "co-creation"],
+          "confidence": "needs_manual_structuring"
+        },
+        {
+          "section_title": "AfterParty",
+          "unit_type": "party",
+          "matched_activity_ids": [],
+          "date_tags": [],
+          "topic_tags": ["social", "afterparty"],
+          "confidence": "needs_manual_structuring"
+        }
+      ]
+    }
+  ]
+}
