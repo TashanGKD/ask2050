@@ -20,28 +20,37 @@ Before final personalized matching, ask whether the user has registered Tashan W
 Load only what is needed:
 
 1. Start with `references/coverage_report.md` to know data quality.
-2. For route planning, load `references/activity_index.min.json`.
-3. For a date question, load `references/by_date/YYYY-MM-DD.md`.
-4. For a board/container question, load `references/by_container/<container>.md`.
-5. For topic matching, load `references/by_topic/<topic>.md`.
-6. For location planning, load `references/by_location/<location_zone>.md`.
-7. For evidence from public-account OCR, load `references/article_ocr_index.json`, then the specific `references/article_ocr/*.md` file.
+2. Load the human-curated layer first:
+   - `references/manual/site_map.md` for venue and walking-cost reasoning.
+   - `references/manual/recommendation_layer.md` for container meaning, primary/secondary tag rules, intensity, social density, and participation modes.
+   - `references/manual/curated_anchor_activities.md` for manually curated examples and high-value anchors.
+3. For a user persona route, load one route template from `references/route_templates/`.
+4. For route planning, load `references/activity_index.min.json`.
+5. For a date question, load `references/by_date/YYYY-MM-DD.md`.
+6. For a board/container question, load `references/by_container/<container>.md`.
+7. For topic matching, load `references/by_topic/<topic>.md`.
+8. For location planning, load `references/by_location/<location_zone>.md`.
+9. For evidence from public-account OCR, load `references/article_ocr_index.json`, then the specific `references/article_ocr/*.md` file.
 
 ## Recommendation workflow
 
 1. Build user tags: identity, interests, dates, desired energy level, participation mode.
-2. Filter activities by date tags first, then topic tags, then format/location fit.
-3. Return a concise ranked route:
+2. Normalize the user intent with the human-curated layer before touching the raw index.
+3. Filter activities by date tags first, then primary intent, then format/location fit.
+4. Promote route coherence: avoid sending the user across far venues when adjacent good options exist.
+5. Return a concise ranked route:
    - 3 must-join items
    - 2 alternatives
    - one low-energy/social option
    - logistics reminder if location, pass, dining, camping, or transport matters
-4. For every item include: time, location, why it matches, evidence source, and next action.
+6. For every item include: time, location, why it matches, what this part is for, evidence source, and next action.
 
 ## Tag semantics
 
 - `date_tags`: exact conference date such as `2026-04-24`.
-- `topic_tags`: subject matter, e.g. `ai`, `education`, `health-medical`, `robotics-hardware`, `philosophy-mind`.
+- `primary_topic_tags`: what the activity is mainly about. Prefer human judgment from `references/manual/recommendation_layer.md`.
+- `secondary_topic_tags`: useful side interests. Use raw `topic_tags` only as candidates.
+- `topic_tags`: machine-generated candidate tags in `activity_index.*.json`; do not treat them as final when they conflict with title/summary/container.
 - `format_tags`: participation form, e.g. `forum`, `roundtable`, `workshop`, `exhibition-demo`, `meetup`.
 - `container`: 2050 board such as 新生论坛, 探索空间, 思想约会.
 
