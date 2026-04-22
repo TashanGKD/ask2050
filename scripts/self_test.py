@@ -85,6 +85,12 @@ SEARCH_CASES = [
     {"name": "facet_demo_audience", "q": "想看现场 demo", "include": {"12446"}},
     {"name": "facet_hands_on", "q": "动手工作坊", "include": {"12261", "12446"}},
     {"name": "facet_solo_ai_booth", "q": "一个人也能参加 AI 展台", "include": {"12375"}},
+    {"name": "natural_non_technical_art_relax", "q": "不懂AI 艺术 放松", "include": {"12221", "12378"}},
+    {"name": "natural_hardware_soft_constraint", "q": "硬件 低强度 看展体验", "include": {"12375", "12446"}},
+]
+
+RANKED_CASES = [
+    {"name": "hardware_hands_on_top", "q": "AI 硬件 动手工作坊", "first": "12375"},
 ]
 
 UNIT_CASES = [
@@ -103,6 +109,7 @@ SOURCE_CASES = [
     {"name": "source_three_wishes", "q": "三个愿望", "min_sources": 1, "include": {"12207", "12206", "12437", "12439"}},
     {"name": "source_pass_guide", "q": "2050PASS", "min_sources": 1},
     {"name": "source_linggan_trade", "q": "灵感交易所", "min_sources": 1, "include": {"12206"}},
+    {"name": "source_logistics_pass_traffic_food", "q": "2050PASS 交通 餐饮", "min_sources": 2},
 ]
 
 ARTICLE_UNIT_COMPLETE_URLS = {
@@ -187,6 +194,21 @@ def source_count_from_search(query: str) -> int:
     if not match:
         fail(f"query {query} did not report matched_sources")
     return int(match.group(1))
+
+
+def first_activity_id_from_search(query: str) -> str | None:
+    completed = subprocess.run(
+        [sys.executable, str(SCRIPT), "--q", query, "--limit", "10"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if completed.returncode != 0:
+        fail(f"search_activities.py failed for {query}: {completed.stderr.strip()}")
+    match = re.search(r"/activity/(\d+)", completed.stdout)
+    return match.group(1) if match else None
 
 
 def main() -> int:
@@ -387,6 +409,11 @@ def main() -> int:
             missing = include - actual_ids
             if missing:
                 fail(f"source case {case['name']} missing IDs from search path: {sorted(missing)}")
+
+    for case in RANKED_CASES:
+        actual_first = first_activity_id_from_search(case["q"])
+        if actual_first != case["first"]:
+            fail(f"ranked case {case['name']} expected first ID {case['first']}, got {actual_first}")
 
     for record in crosswalk.get("records", []):
         if record.get("article_url") not in ARTICLE_UNIT_COMPLETE_URLS:

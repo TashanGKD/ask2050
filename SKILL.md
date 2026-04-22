@@ -48,6 +48,8 @@ If reinstalling is unavailable, still answer from the packaged core information,
    - `references/article_facets.json` when the user asks how an article should be used in a route.
    - `references/article_evidence_index.json` when the user asks about a named community, partner, article, or alias such as WaytoAGI, OpenClaw, 少数派, 流浪教研, 设计自己, DeskClaw, YOLO, or 2050PASS.
 5. Return a route, not a database dump. For each recommendation include time, place, what this part is for, why it matches the user, and the source.
+6. If a query is broad, group results into a few route choices instead of listing everything.
+7. If constraints conflict, keep date and location constraints hard, then relax secondary interests or intensity. Say "没有完全同时满足，下面是相近替代" and name the relaxed constraint.
 
 ## Evidence boundary
 

@@ -104,7 +104,7 @@ MODE_KEYWORDS = [
 ]
 
 INTENSITY_LABELS = {
-    "low": ["低强度", "轻松", "低能量", "放松"],
+    "low": ["低强度", "轻松", "低能量", "放松", "低门槛", "不费脑"],
     "medium": ["中等强度", "适中"],
     "high": ["高强度", "投入", "烧脑"],
 }
@@ -124,6 +124,20 @@ ROLE_LABELS = {
     "evening-anchor": ["晚间活动", "晚上继续"],
     "logistics": ["后勤信息", "到场准备"],
     "wildcard": ["备选惊喜"],
+}
+TOPIC_LABELS = {
+    "ai": ["AI", "人工智能", "智能体"],
+    "education": ["教育", "学习", "老师", "学生"],
+    "health-medical": ["医疗", "健康", "生命科学"],
+    "robotics-hardware": ["硬件", "机器人", "具身智能", "芯片"],
+    "arts-media-design": ["艺术", "设计", "创作", "影像", "电影", "表演"],
+    "opensource-tech": ["开源", "技术", "开发", "编程"],
+    "startup-product": ["产品", "创业", "商业"],
+    "community-youth": ["社区", "社群", "年青人", "找同伴"],
+    "philosophy-mind": ["哲学", "思想", "关系", "社会议题"],
+    "life-sports": ["生活", "放松", "美食", "运动", "露营"],
+    "social-impact": ["公益", "乡村", "城市", "无障碍", "社会影响"],
+    "city-rural-future": ["城市", "乡村", "未来空间", "文旅"],
 }
 
 
@@ -236,6 +250,9 @@ def infer_activity_facet(item: dict, article_linked_ids: set[str]) -> dict:
         recommended_for.append("产品和创业者")
     if contains_any(semantic_text, ["社群", "团聚", "伙伴", "同伴", "合作"]):
         recommended_for.append("想找同伴的人")
+    if defaults["social_density"] == "solo-friendly" or defaults["intensity"] == "low":
+        recommended_for.append("非技术用户")
+        recommended_for.append("不懂AI也能参加的人")
 
     if "动手工作坊" in modes:
         planning_role = "hands-on-anchor"
@@ -275,6 +292,11 @@ def infer_activity_facet(item: dict, article_linked_ids: set[str]) -> dict:
         *INTENSITY_LABELS.get(intensity, []),
         *SOCIAL_LABELS.get(social_density, []),
         *ROLE_LABELS.get(planning_role, []),
+        *[
+            label
+            for tag in [*primary, *secondary]
+            for label in TOPIC_LABELS.get(tag, [])
+        ],
         *primary,
         *secondary,
         *modes,

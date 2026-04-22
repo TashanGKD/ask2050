@@ -25,6 +25,52 @@ KNOWN_CONTAINERS = [
     "星空露营",
     "热力运动",
 ]
+INTENSITY_LABELS = {
+    "low": "低强度",
+    "medium": "中等强度",
+    "high": "高强度",
+}
+SOCIAL_LABELS = {
+    "solo-friendly": "独自友好",
+    "small-group": "小范围交流",
+    "crowd": "大场听看",
+    "deep-talk": "深聊表达",
+}
+SOURCE_ROLE_LABELS = {
+    "schedule-update": "日程更新",
+    "program-guide": "活动说明",
+    "community-call": "社群召集",
+    "logistics-guide": "后勤攻略",
+    "map-guide": "地图动线",
+    "background": "背景说明",
+    "mixed": "补充线索",
+}
+QUERY_ALIASES = {
+    "不懂ai": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
+    "非技术": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
+    "不是开发": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
+    "轻松认识人": ["低社交压力", "找同伴", "小范围交流"],
+    "认识人": ["找同伴", "社交入口"],
+    "随便逛": ["看展体验", "低门槛"],
+    "别太累": ["低强度", "放松"],
+    "不想太累": ["低强度", "放松"],
+    "晚上": ["夜间继续聊", "晚间活动"],
+}
+STOP_TERMS = {"我", "想", "要", "可以", "适合", "参加", "2050", "活动", "推荐", "一下", "看看"}
+
+
+def query_terms(query: str) -> list[str]:
+    q_lower = query.lower().strip()
+    raw_terms = [term for term in q_lower.replace("，", " ").replace(",", " ").split() if term]
+    terms = [term for term in raw_terms if term not in STOP_TERMS]
+    for phrase, aliases in QUERY_ALIASES.items():
+        if phrase in q_lower:
+            terms.extend(alias.lower() for alias in aliases)
+    return list(dict.fromkeys(terms))
+
+
+def matched_term_count(haystack: str, terms: list[str]) -> int:
+    return sum(1 for term in terms if term and term in haystack)
 
 
 def query_matches(haystack: str, query: str, *, manual_match: bool = False) -> bool:
@@ -35,8 +81,12 @@ def query_matches(haystack: str, query: str, *, manual_match: bool = False) -> b
         return True
     if q_lower in haystack:
         return True
-    terms = [term for term in q_lower.split() if term]
+    terms = query_terms(query)
+    if any(term in haystack and (any(char.isdigit() for char in term) or len(term) >= 6) for term in terms):
+        return True
     if len(terms) > 1 and all(term in haystack for term in terms):
+        return True
+    if len(terms) >= 3 and matched_term_count(haystack, terms) >= 2:
         return True
 
     query_containers = [name for name in KNOWN_CONTAINERS if name.lower() in q_lower]
@@ -52,6 +102,39 @@ def query_matches(haystack: str, query: str, *, manual_match: bool = False) -> b
         remainder = remainder.replace(name.lower(), " ")
     terms = [term for term in remainder.split() if term]
     return all(term in haystack for term in terms)
+
+
+def query_score(haystack: str, query: str, *, manual_match: bool = False) -> int:
+    if manual_match:
+        return 100
+    q_lower = query.lower().strip()
+    if not q_lower:
+        return 1
+    score = 0
+    if q_lower in haystack:
+        score += 20
+    terms = query_terms(query)
+    score += matched_term_count(haystack, terms) * 5
+    for name in KNOWN_CONTAINERS:
+        if name.lower() in q_lower and name.lower() in haystack:
+            score += 8
+    return score
+
+
+def field_boost(item: dict, query: str) -> int:
+    terms = query_terms(query)
+    title = str(item.get("title", "")).lower()
+    summary = str(item.get("summary", "")).lower()
+    container = str(item.get("container", "")).lower()
+    score = 0
+    for term in terms:
+        if term in title:
+            score += 12
+        if term in summary:
+            score += 4
+        if term in container:
+            score += 6
+    return score
 
 
 def item_tags(item: dict) -> list[str]:
@@ -165,25 +248,32 @@ def main() -> int:
         if args.topic and not all(topic in tags for topic in args.topic):
             continue
         manual_match = activity_id in manual_ids
+        score = query_score(haystack, args.q, manual_match=manual_match) + field_boost(item, args.q)
         if args.q and not query_matches(haystack, args.q, manual_match=manual_match):
             continue
         if activity_id in seen:
             continue
         seen.add(activity_id)
-        results.append(item)
+        results.append((score, item))
 
     activity_lookup = {str(item.get("activity_id")): item for item in data}
 
-    for item in results[: args.limit]:
+    results.sort(key=lambda pair: (-pair[0], pair[1].get("date", ""), pair[1].get("time", "")))
+
+    printed = 0
+    for _, item in results[: args.limit]:
         print(f"{item['date']} {item['time']} | {item['container']} | {item['title']} | {item['location']}")
         print(f"  tags: {', '.join(item_tags(item))}")
         facet = activity_facets.get(str(item.get("activity_id")))
         if facet:
-            print(f"  profile: {', '.join(facet.get('experience_modes', []))} | {facet.get('intensity')} | {facet.get('social_density')}")
+            intensity = INTENSITY_LABELS.get(facet.get("intensity"), facet.get("intensity"))
+            social = SOCIAL_LABELS.get(facet.get("social_density"), facet.get("social_density"))
+            print(f"  profile: {', '.join(facet.get('experience_modes', []))} | {intensity} | {social}")
             if facet.get("recommended_for"):
                 print(f"  for: {', '.join(facet.get('recommended_for', [])[:4])}")
         print(f"  summary: {item['summary']}")
         print(f"  url: {item['url']}")
+        printed += 1
 
     unit_results = []
     if args.q and CROSSWALK.exists():
@@ -211,7 +301,8 @@ def main() -> int:
                     continue
                 unit_results.append((record, unit))
 
-    for record, unit in unit_results[: args.limit]:
+    remaining = max(0, args.limit - printed)
+    for record, unit in unit_results[:remaining]:
         ids = [str(activity_id) for activity_id in unit.get("matched_activity_ids", [])]
         print(f"unit | {record.get('container')} | {unit.get('section_title')} | {unit.get('time_range', 'unknown')} | {unit.get('location_hint', '')}")
         print(f"  article: {record.get('article_title')}")
@@ -224,6 +315,7 @@ def main() -> int:
                     print(f"  url: {activity['url']}")
         else:
             print("  matched_activity_ids: none")
+        printed += 1
 
     source_results = []
     if args.q and ARTICLE_EVIDENCE.exists():
@@ -244,7 +336,8 @@ def main() -> int:
                     continue
                 source_results.append(record)
 
-    for record in source_results[: args.limit]:
+    remaining = max(0, args.limit - printed)
+    for record in source_results[:remaining]:
         ids = filter_activity_ids(
             source_activity_ids(record, args.q),
             activity_lookup,
@@ -255,7 +348,8 @@ def main() -> int:
         print("  note: 已整理为 2050@2026 推荐线索")
         source_facet = article_facets.get(str(record.get("result_file")))
         if source_facet:
-            print(f"  role: {source_facet.get('source_role')} | {source_facet.get('route_use')}")
+            role = SOURCE_ROLE_LABELS.get(source_facet.get("source_role"), source_facet.get("source_role"))
+            print(f"  role: {role} | {source_facet.get('route_use')}")
         if record.get("manual_summary"):
             print(f"  summary: {record.get('manual_summary')}")
         if record.get("article_url"):
