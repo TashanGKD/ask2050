@@ -210,6 +210,7 @@ def main() -> int:
     parser.add_argument("--container")
     parser.add_argument("--q", default="")
     parser.add_argument("--limit", type=int, default=12)
+    parser.add_argument("--debug", action="store_true")
     args = parser.parse_args()
 
     data = json.loads(INDEX.read_text(encoding="utf-8"))
@@ -363,7 +364,8 @@ def main() -> int:
         else:
             print("  matched_activity_ids: none")
 
-    print(f"matched={len(results)} matched_units={len(unit_results)} matched_sources={len(source_results)}")
+    if args.debug:
+        print(f"matched={len(results)} matched_units={len(unit_results)} matched_sources={len(source_results)}")
     return 0
 
 

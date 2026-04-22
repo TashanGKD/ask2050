@@ -164,7 +164,7 @@ def ids_from_search(
 
 def unit_count_from_search(query: str) -> int:
     completed = subprocess.run(
-        [sys.executable, str(SCRIPT), "--q", query, "--limit", "80"],
+        [sys.executable, str(SCRIPT), "--q", query, "--limit", "80", "--debug"],
         cwd=ROOT,
         check=False,
         capture_output=True,
@@ -181,7 +181,7 @@ def unit_count_from_search(query: str) -> int:
 
 def source_count_from_search(query: str) -> int:
     completed = subprocess.run(
-        [sys.executable, str(SCRIPT), "--q", query, "--limit", "80"],
+        [sys.executable, str(SCRIPT), "--q", query, "--limit", "80", "--debug"],
         cwd=ROOT,
         check=False,
         capture_output=True,
