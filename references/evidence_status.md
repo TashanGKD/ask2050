@@ -19,7 +19,7 @@
 - OCR markdown 源材料: 82 份原料，其中 71 份达到可检索文本阈值；默认 skill 包不再携带这些 raw markdown。
 - OCR 批处理摘要: 12/82 显示成功，1/82 失败，69/82 跳过。
 - 原始图片状态: 三个输入文件中没有 `.png/.jpg/.webp` 原图，只有 markdown 结果；因此不能声称图片已全量重跑 OCR。
-- 优先补缺: 33 个短文本、失败、错位、重复拆分或重点集合项已人工看过并补入 `manual/article_curation.md` / `article_evidence_index.json`。
+- 人工核查: 82/82 个 markdown 结果已人工过一遍并补入核心摘要；其中 33 个短文本、失败、错位、重复拆分或重点集合项补了更细活动 ID 线索。
 - 信源映射: 82 份 markdown 已全部映射回 77 篇 `articles.csv`，没有未匹配文章；重复/拆分关系见 `article_evidence_index.json`。
 - 文章 outline 检索: `新生论坛@2050@2026` 的 19 个 unit 和 `热带雨林@2050@2026` 的 4 个 unit 已全部进入 `article_activity_crosswalk.json`，可被检索；其中一部分没有独立 `activity_id`，只能作为文章 unit 回答。
 

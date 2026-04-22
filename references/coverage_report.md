@@ -14,8 +14,8 @@
 - 未完成项: 公众号文章内的 part / 节目 / 单个报告到 `activity_id` 或独立知识条目的人工 crosswalk。
 - OCR 批处理状态: **12/82 成功，1/82 失败，69/82 跳过，70/82 未显示本批成功**；不可声称全部图片已 OCR。
 - 原图状态: 三个输入文件没有打包原始图片，只有 OCR/抓取后的 markdown 结果。
-- OCR/信源优先补缺项: **33** 个，包括低文本、失败、错位、重复拆分和重点集合文章。
-- OCR/信源优先补缺项已人工判读并补入 `references/manual/article_curation.md` 与 `references/article_evidence_index.json`；仍不等于全文 OCR。
+- OCR/信源人工核查: **82/82** 个 markdown 结果已人工过一遍并补入核心摘要；其中 **33** 个低文本、失败、错位、重复拆分和重点集合文章补了更细活动 ID 线索。
+- 人工核查结果已补入 `references/manual/article_curation.md` 与 `references/article_evidence_index.json`；仍不等于全文 OCR。
 
 ## 按板块覆盖
 - 新生论坛: 96 条；丰富内容 90/96；主题标签 96/96

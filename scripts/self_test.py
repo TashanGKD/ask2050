@@ -209,8 +209,8 @@ def main() -> int:
     for key, expected in expected_evidence_counts.items():
         if counts.get(key) != expected:
             fail(f"article_evidence_index count {key} expected {expected}, got {counts.get(key)}")
-    if counts.get("manual_reviewed", 0) < 33:
-        fail(f"article_evidence_index manual_reviewed too low: {counts.get('manual_reviewed')}")
+    if counts.get("manual_reviewed") != 82:
+        fail(f"article_evidence_index manual_reviewed expected 82, got {counts.get('manual_reviewed')}")
     source_years = {str(record.get("article_published_at", ""))[:4] for record in evidence.get("records", []) if record.get("article_published_at")}
     if source_years != {"2026"}:
         fail(f"article evidence should only use 2026 article publish years, got {sorted(source_years)}")
@@ -244,6 +244,18 @@ def main() -> int:
     missing_curation_ids = sorted(curation_ids - activity_ids)
     if missing_curation_ids:
         fail(f"manual curation references unknown activity IDs: {missing_curation_ids}")
+
+    evidence_ids = {
+        str(activity_id)
+        for record in evidence.get("records", [])
+        for activity_id in record.get("matched_activity_ids", [])
+    }
+    for record in evidence.get("records", []):
+        for rule in record.get("query_activity_rules", []):
+            evidence_ids.update(str(activity_id) for activity_id in rule.get("activity_ids", []))
+    missing_evidence_ids = sorted(evidence_ids - activity_ids)
+    if missing_evidence_ids:
+        fail(f"article evidence references unknown activity IDs: {missing_evidence_ids}")
 
     crosswalk_ids = set()
     for record in crosswalk.get("records", []):

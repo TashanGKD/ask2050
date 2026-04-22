@@ -14,7 +14,7 @@
 - 82 份 markdown 对应的文章发布时间均为 2026 年；默认推荐只使用 2026 年发布的文章和 2026-04-24 至 2026-04-26 的活动。
 - 71/82 份达到 300 字以上的可检索文本阈值。
 - 11/82 份低文本，需要人工补录。
-- 当前人工已读并补入推荐线索: 33 份，包括低文本、失败、标题错位、重复拆分和重点集合文章。
+- 当前 82 份 markdown 结果已全部人工过一遍并补入核心摘要；其中 33 份属于低文本、失败、标题错位、重复拆分或重点集合文章，做了更细的活动 ID 线索补录。
 
 ## 使用口径
 
@@ -37,7 +37,7 @@
 - `counts`: 全局统计。
 - `records[].batch_status`: `✅` / `❌` / `skipped`。
 - `records[].review_tier`: `ocr_batch_success`、`text_extracted_ocr_not_confirmed`、`low_text_manual_required`、`ocr_failed_manual_required` 等。
-- `records[].manual_reviewed`: 是否人工看过并补了推荐线索。
+- `records[].manual_reviewed`: 是否人工看过并补了核心摘要；当前为 82/82。
 - `records[].matched_activity_ids`: 可以回查活动主表的候选活动 ID。
 - `records[].search_terms`: 核心检索词，只放标题、人工摘要、别名和活动 ID；不放正文摘录。
 

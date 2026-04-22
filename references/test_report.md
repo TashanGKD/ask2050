@@ -5,7 +5,7 @@
 ### 数据完整性
 
 - `scripts/self_test.py`: 已扩展并通过，用于新挂载后自动验证核心索引、人工策展、别名检索、日期/板块分布、主题过滤、板块过滤、冲突排除和负样例。
-- `article_evidence_index.json`: 已加入自测，要求 77 篇文章、82 份 markdown、12 个 OCR 成功、1 个失败、69 个 skipped、82 份结果全量映射回文章清单，且人工补录信源不少于 33 份。
+- `article_evidence_index.json`: 已加入自测，要求 77 篇文章、82 份 markdown、12 个 OCR 成功、1 个失败、69 个 skipped、82 份结果全量映射回文章清单，且 82/82 份都有核心人工摘要。
 - `新生论坛@2050@2026` 与 `热带雨林@2050@2026` 的文章内 unit 已加入完整可检索测试；逐个 section title 查询必须返回至少 1 个 unit。
 - 外部安装测试必须从 `https://github.com/TashanGKD/ask2050` 安装整个仓库；不要用 raw 单文件入口替代。
 - 已用全新临时目录从 GitHub 克隆整个仓库作为 `ask2050` skill，并通过 `scripts/self_test.py`。
