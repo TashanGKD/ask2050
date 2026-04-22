@@ -108,6 +108,12 @@ SEARCH_CASES = [
     {"name": "natural_non_technical_art_relax", "q": "不懂AI 艺术 放松", "include": {"12221", "12378"}},
     {"name": "natural_hardware_soft_constraint", "q": "硬件 低强度 看展体验", "include": {"12375", "12446"}},
     {"name": "natural_networking_hardware", "q": "我想找人合作 做AI硬件", "include": {"12375", "12446"}},
+    {"name": "latest_youth_waytoagi", "q": "WaytoAGI 社区 青年团聚", "date": "2026-04-24", "include": {"12432"}},
+    {"name": "latest_youth_agent_builder", "q": "Agent Builder 青年团聚", "date": "2026-04-24", "include": {"12373"}},
+    {"name": "latest_explorer_space_life", "q": "探索空间 太空 生活 航天", "date": "2026-04-25", "include": {"12657", "12724"}},
+    {"name": "latest_explorer_chip", "q": "芯片 RISC-V 自己设计", "date": "2026-04-25", "include": {"12246"}},
+    {"name": "latest_explorer_parent_ai", "q": "AI反哺 父母 养老", "date": "2026-04-25", "include": {"12753"}},
+    {"name": "latest_explorer_mr", "q": "文旅 MR 空间计算", "date": "2026-04-25", "include": {"12235"}},
 ]
 
 RANKED_CASES = [
@@ -125,6 +131,9 @@ OUTPUT_CASES = [
     {"name": "ai4science_report_tags", "q": "AI4Science 数学物理", "require": ["报告:", "AI如何解决上个世纪的数学与物理", "杜伟韬"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "eldercare_focus_report", "q": "助老智能体", "require": ["青智助老", "智慧未来：助老智能体共建", "A区 1F 慧云厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "agentic_building_focus_location", "q": "AI协商生成公共空间", "require": ["Agentic Building", "篮球场边", "设定AI性格"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "latest_waytoagi_youth_focus", "q": "WaytoAGI 社区 青年团聚", "require": ["重点 part:", "WaytoAGI 社区青年团聚", "云栖小镇国际会展中心-3F蔚云厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "latest_space_life_focus", "q": "探索空间 太空 生活 航天", "require": ["重点 part:", "未来在地球以外：星际生活场景体验", "探索空间1号展位"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "latest_parent_ai_focus", "q": "AI反哺 父母 养老", "require": ["重点 part:", "AI反哺计划：年轻人能用AI为父母做些什么", "探索空间74号展位"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
 ]
 
 ITINERARY_PROFILE = (
