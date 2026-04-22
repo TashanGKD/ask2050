@@ -66,6 +66,7 @@ python scripts/plan_itinerary.py --profile "<身份、兴趣、偏好、限制>"
    - `references/by_topic/<topic>.md`：按兴趣主题匹配时使用。
    - `references/by_location/<location_zone>.md`：按附近活动或动线匹配时使用。
    - `references/activity_facets.json`：需要推荐画像字段时使用，比如核心主题、体验方式、适合人群、强度、社交密度、路线角色、地点语境。
+   - `references/official_detail_terms.json`：需要核对官网正文压缩关键词来源时使用；正常推荐通过 `activity_facets.json` 间接使用。
    - `references/focus_sessions.min.json`：当父活动是长时段论坛/展区，但文章或 OCR 已抽出具体 part、厅和时间时使用；做行程时优先用这里的子日程粒度。
    - `references/activity_index.min.json`：需要准确时间、地点、标题、活动 URL 时使用。
    - `references/article_activity_crosswalk.json`：用户问文章小节、节目 part、地图、攻略或公众号文章时使用。

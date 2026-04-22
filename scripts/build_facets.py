@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REF = ROOT / "references"
+OFFICIAL_DETAIL_TERMS = REF / "official_detail_terms.json"
 
 
 CONTAINER_DEFAULTS = {
@@ -223,7 +224,11 @@ def adjust_intensity(base: str, text: str, time_range: str) -> str:
     return base
 
 
-def infer_activity_facet(item: dict, article_linked_ids: set[str]) -> dict:
+def infer_activity_facet(
+    item: dict,
+    article_linked_ids: set[str],
+    official_detail_terms: dict[str, list[str]],
+) -> dict:
     defaults = CONTAINER_DEFAULTS.get(item.get("container"), CONTAINER_DEFAULTS["热带雨林"])
     text = text_for(item)
     semantic_text = text_for(item, include_location=False)
@@ -292,6 +297,7 @@ def infer_activity_facet(item: dict, article_linked_ids: set[str]) -> dict:
             for tag in [*primary, *secondary]
             for label in TOPIC_LABELS.get(tag, [])
         ],
+        *official_detail_terms.get(str(item.get("activity_id")), []),
     ]
 
     return {
@@ -404,6 +410,14 @@ def route_use_for_role(role: str) -> str:
 def main() -> int:
     activities = json.loads((REF / "activity_index.min.json").read_text(encoding="utf-8"))
     evidence = json.loads((REF / "article_evidence_index.json").read_text(encoding="utf-8"))
+    official_detail_terms: dict[str, list[str]] = {}
+    if OFFICIAL_DETAIL_TERMS.exists():
+        official_payload = json.loads(OFFICIAL_DETAIL_TERMS.read_text(encoding="utf-8"))
+        official_detail_terms = {
+            str(activity_id): [str(term) for term in record.get("detail_terms", [])]
+            for activity_id, record in official_payload.get("activities", {}).items()
+            if isinstance(record, dict)
+        }
 
     article_linked_ids = {
         str(activity_id)
@@ -412,7 +426,7 @@ def main() -> int:
     }
 
     activity_facets = {
-        str(item.get("activity_id")): infer_activity_facet(item, article_linked_ids)
+        str(item.get("activity_id")): infer_activity_facet(item, article_linked_ids, official_detail_terms)
         for item in activities
     }
     article_facets = {

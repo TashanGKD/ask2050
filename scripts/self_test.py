@@ -17,6 +17,7 @@ SCRIPT = ROOT / "scripts" / "search_activities.py"
 PLAN_SCRIPT = ROOT / "scripts" / "plan_itinerary.py"
 SOURCE_CHANNELS_SCRIPT = ROOT / "scripts" / "source_channels.py"
 REBUILD_SLICES_SCRIPT = ROOT / "scripts" / "rebuild_reference_slices.py"
+EXTRACT_OFFICIAL_DETAIL_SCRIPT = ROOT / "scripts" / "extract_official_detail_terms.py"
 
 
 REQUIRED_FILES = [
@@ -30,12 +31,14 @@ REQUIRED_FILES = [
     REF / "article_evidence_index.json",
     REF / "articles_index.json",
     REF / "extraction_schema.md",
+    REF / "official_detail_terms.json",
     MANUAL / "article_curation.md",
     MANUAL / "article_aliases.json",
     SCRIPT,
     PLAN_SCRIPT,
     SOURCE_CHANNELS_SCRIPT,
     REBUILD_SLICES_SCRIPT,
+    EXTRACT_OFFICIAL_DETAIL_SCRIPT,
 ]
 
 FORBIDDEN_REFERENCE_DOCS = {
@@ -116,6 +119,8 @@ SEARCH_CASES = [
     {"name": "latest_explorer_chip", "q": "芯片 RISC-V 自己设计", "date": "2026-04-25", "include": {"12246"}},
     {"name": "latest_explorer_parent_ai", "q": "AI反哺 父母 养老", "date": "2026-04-25", "include": {"12753"}},
     {"name": "latest_explorer_mr", "q": "文旅 MR 空间计算", "date": "2026-04-25", "include": {"12235"}},
+    {"name": "official_fshd_detail", "q": "FSHD 患者 罕见特殊人群", "include": {"12368"}},
+    {"name": "official_family_movie_detail", "q": "家庭故事 小电影", "include": {"12344"}},
 ]
 
 RANKED_CASES = [
@@ -420,12 +425,15 @@ def main() -> int:
     article_facets = load_json(REF / "article_facets.json")
     evidence = load_json(REF / "article_evidence_index.json")
     articles = load_json(REF / "articles_index.json")
+    official_detail_terms = load_json(REF / "official_detail_terms.json")
     aliases = load_json(MANUAL / "article_aliases.json")
 
     if len(activities) < 286:
         fail(f"activity index has {len(activities)} rows, expected at least 286")
     if len(articles) < 77:
         fail(f"article index has {len(articles)} rows, expected at least 77")
+    if set(official_detail_terms.get("activities", {})) != {str(item.get("activity_id")) for item in activities}:
+        fail("official_detail_terms.json must cover exactly the packaged activity IDs")
     if len(focus_sessions) < 12:
         fail(f"focus_sessions.min.json has {len(focus_sessions)} rows, expected at least 12 curated focus sessions")
     counts = evidence.get("counts", {})
