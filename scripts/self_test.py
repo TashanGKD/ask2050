@@ -444,6 +444,8 @@ def main() -> int:
     for path in ROOT.rglob("*"):
         if not path.is_file() or ".git" in path.parts:
             continue
+        if "__pycache__" in path.parts or path.suffix == ".pyc":
+            continue
         text = path.read_text(encoding="utf-8", errors="ignore")
         if any(pattern in text for pattern in dirty_patterns):
             dirty_hits.append(path.relative_to(ROOT).as_posix())
