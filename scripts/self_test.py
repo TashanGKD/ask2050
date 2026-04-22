@@ -116,6 +116,7 @@ OUTPUT_CASES = [
     {"name": "article_unit_output", "q": "AI生成公共空间", "require": ["文章小节", "来源文章"], "forbid": ["unit |", "matched_activity_ids", "unknown"]},
     {"name": "activity_output_labels", "q": "WaytoAGI", "require": ["标签:", "推荐画像:", "来源:"], "forbid": ["tags:", "profile:", "summary:", "url:"]},
     {"name": "first_time_itinerary_has_forum", "q": "第一次来 2050 安排一天", "require": ["新生论坛", "热带雨林"], "forbid": ["source |", "matched_activity_ids"]},
+    {"name": "evening_itinerary_keeps_forum_anchor", "q": "晚上 放松 露营 音乐 2050 安排一天", "require": ["新生论坛", "星空露营"], "forbid": ["source |", "matched_activity_ids"]},
     {"name": "networking_query_has_connection_places", "q": "我想找人合作 做AI硬件", "require": ["探索空间", "推荐画像:"], "forbid": ["source |", "matched_activity_ids"]},
 ]
 
@@ -273,6 +274,8 @@ def main() -> int:
         "不要为了第一轮匹配整篇加载很大的 `by_topic` 或 `by_location` 文件",
         "认知主线：至少安排一个相关的新生论坛",
         "不要因为低压力活动更容易匹配，就在正常行程里省掉新生论坛",
+        "意图速查不是用来排除新生论坛的",
+        "低能量用户，不是删除新生论坛，而是降低强度",
         "先判断用户真正要解决什么",
         "要像一个熟悉 2050 的同伴",
         "区分事实和推荐判断",
@@ -325,6 +328,13 @@ def main() -> int:
         text = path.read_text(encoding="utf-8")
         if "新生论坛" not in text:
             fail(f"{path.relative_to(ROOT)} must mention 新生论坛 route anchoring")
+        if path == MANUAL / "recommendation_layer.md":
+            for required_phrase in [
+                "低能量不是删除论坛的理由",
+                "短听、可提前离场、只听最相关一场",
+            ]:
+                if required_phrase not in text:
+                    fail(f"{path.relative_to(ROOT)} missing forum intensity guidance: {required_phrase}")
 
     size_budgets = {
         REF / "activity_facets.json": 360_000,

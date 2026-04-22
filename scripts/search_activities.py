@@ -90,6 +90,11 @@ def is_itinerary_query(query: str) -> bool:
     )
 
 
+def wants_evening_buffer(query: str) -> bool:
+    q_lower = query.lower()
+    return any(phrase in q_lower for phrase in ["晚上", "夜间", "露营", "音乐", "放松", "收尾"])
+
+
 def query_terms(query: str) -> list[str]:
     q_lower = query.lower().strip()
     raw_terms = [term for term in q_lower.replace("，", " ").replace(",", " ").split() if term]
@@ -267,7 +272,7 @@ def filter_activity_ids(
     return filtered
 
 
-def itinerary_reordered(results: list[tuple[int, dict]]) -> list[tuple[int, dict]]:
+def itinerary_reordered(results: list[tuple[int, dict]], query: str = "") -> list[tuple[int, dict]]:
     ordered = []
     seen = set()
 
@@ -282,6 +287,8 @@ def itinerary_reordered(results: list[tuple[int, dict]]) -> list[tuple[int, dict
                 return
 
     take_first(lambda container: "新生论坛" in container)
+    if wants_evening_buffer(query):
+        take_first(lambda container: "星空露营" in container or "青春舞台" in container)
     take_first(lambda container: "热带雨林" in container or "青年团聚" in container)
     take_first(lambda container: "探索空间" in container)
     take_first(lambda container: "思想约会" in container)
@@ -353,7 +360,7 @@ def main() -> int:
 
     results.sort(key=lambda pair: (-pair[0], pair[1].get("date", ""), pair[1].get("time", "")))
     if is_itinerary_query(args.q):
-        results = itinerary_reordered(results)
+        results = itinerary_reordered(results, args.q)
 
     printed = 0
     for _, item in results[: args.limit]:
