@@ -278,12 +278,28 @@ def main() -> int:
         "区分事实和推荐判断",
         "用户想找人或合作时，要告诉他去哪里遇见人、适合用什么开场问题",
         "用户问交通、通行证、吃饭、地图时，先解决实际问题",
-        "他山世界/OpenClaw 轻量接入",
-        "普通事实问答不要先谈接入",
-        "只有当用户要个性化路线、按个人标签推荐、记录偏好或持续刷新推荐时",
+        "他山世界/OpenClaw 是后台画像和身份通道，不是用户对话里的流程提示",
+        "不要问用户“是否已接入”",
+        "后台如果已经有画像标签，静默用于匹配",
+        "如果用户没有给足标签，主动问 1-3 个最影响推荐的问题",
+        "个性化路线也不要先谈后台接入",
     ]:
         if required_phrase not in skill_text:
             fail(f"SKILL.md missing service guidance: {required_phrase}")
+
+    user_visible_forbidden = [
+        "先确认：你是否已完成",
+        "未接入也可以先给你一版预览路线",
+        "你的参与标签：",
+    ]
+    for forbidden_phrase in user_visible_forbidden:
+        if forbidden_phrase in skill_text:
+            fail(f"SKILL.md still exposes backend onboarding wording: {forbidden_phrase}")
+
+    agent_yaml = (ROOT / "agents" / "openai.yaml").read_text(encoding="utf-8")
+    for forbidden_phrase in ["先确认", "轻量接入", "OpenClaw"]:
+        if forbidden_phrase in agent_yaml:
+            fail(f"agents/openai.yaml default prompt exposes backend onboarding wording: {forbidden_phrase}")
 
     bridge_text = (REF / "tashan_world_bridge.md").read_text(encoding="utf-8")
     for required_phrase in [
@@ -293,6 +309,8 @@ def main() -> int:
         "skill_path",
         "bind_key",
         "临时账号升级",
+        "不询问“是否已接入他山世界/OpenClaw”",
+        "如果后台已有画像，直接用于推荐",
     ]:
         if required_phrase not in bridge_text:
             fail(f"tashan_world_bridge.md missing OpenClaw auth guidance: {required_phrase}")
