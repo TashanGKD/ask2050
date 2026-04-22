@@ -45,10 +45,10 @@ Load only what is needed:
 External agents should install the whole repository as the skill, not a raw single-file URL. The repo root is the skill folder:
 
 ```bash
-python install-skill-from-github.py --repo TashanGKD/ask2050 --path . --name ask2050 --ref master
+install https://github.com/TashanGKD/ask2050
 ```
 
-After installing from GitHub for the first time, or after changing any reference file, run from the installed `ask2050` directory:
+Equivalently, clone the repo as the installed `ask2050` skill directory. After installing from GitHub for the first time, or after changing any reference file, run from the installed `ask2050` directory:
 
 ```bash
 python scripts/self_test.py
