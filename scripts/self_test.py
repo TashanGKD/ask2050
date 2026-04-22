@@ -71,7 +71,25 @@ SEARCH_CASES = [
     {"name": "topic_education_date", "date": "2026-04-25", "topic": ["education"], "include": {"12243", "12267", "12415"}},
     {"name": "topic_hardware_date", "date": "2026-04-25", "topic": ["robotics-hardware"], "include": {"12446", "12375"}},
     {"name": "travel_mindnet", "q": "旅行", "container": "思想约会", "include": {"12224"}},
+    {"name": "next_gen_public_voice", "q": "社会听到更多青年人的声音", "container": "新生论坛", "include": {"12688"}},
+    {"name": "rainforest_public_space", "q": "AI生成公共空间", "include": {"12248"}},
+    {"name": "accessibility_playground_unit", "q": "2050无障碍游乐场", "include": {"12507"}},
 ]
+
+UNIT_CASES = [
+    {"name": "painting_truth_unit", "q": "绘画的真理", "min_units": 1},
+    {"name": "future_programming_unit", "q": "未来编程", "min_units": 1},
+    {"name": "sustainable_youth_unit", "q": "童星未来", "min_units": 1},
+    {"name": "young_director_unit", "q": "青年导演 X AI", "min_units": 1},
+    {"name": "ai_jargon_unit", "q": "黑话", "min_units": 1},
+    {"name": "four_hundred_boxes_unit", "q": "四百盒子社区", "min_units": 1},
+    {"name": "afterparty_unit", "q": "AfterParty", "min_units": 1},
+]
+
+ARTICLE_UNIT_COMPLETE_URLS = {
+    "https://mp.weixin.qq.com/s/w1DwPt9yp_h1Cl1wgvJEuw",
+    "https://mp.weixin.qq.com/s/0pk6F8FvoqjysXBApdrrdA",
+}
 
 
 def fail(message: str) -> None:
@@ -116,6 +134,23 @@ def ids_from_search(
     if completed.returncode != 0:
         fail(f"search_activities.py failed for {query}: {completed.stderr.strip()}")
     return set(re.findall(r"/activity/(\d+)", completed.stdout))
+
+
+def unit_count_from_search(query: str) -> int:
+    completed = subprocess.run(
+        [sys.executable, str(SCRIPT), "--q", query, "--limit", "80"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if completed.returncode != 0:
+        fail(f"search_activities.py failed for {query}: {completed.stderr.strip()}")
+    match = re.search(r"matched_units=(\d+)", completed.stdout)
+    if not match:
+        fail(f"query {query} did not report matched_units")
+    return int(match.group(1))
 
 
 def main() -> int:
@@ -208,6 +243,22 @@ def main() -> int:
         if expected_exact is not None and actual_ids != expected_exact:
             fail(f"case {case['name']} expected exact IDs {sorted(expected_exact)}, got {sorted(actual_ids)}")
 
+    for case in UNIT_CASES:
+        actual_units = unit_count_from_search(case["q"])
+        if actual_units < case["min_units"]:
+            fail(f"case {case['name']} expected at least {case['min_units']} unit matches, got {actual_units}")
+
+    for record in crosswalk.get("records", []):
+        if record.get("article_url") not in ARTICLE_UNIT_COMPLETE_URLS:
+            continue
+        for unit in record.get("units", []):
+            section_title = unit.get("section_title", "")
+            if not section_title:
+                fail(f"article unit without section title in {record.get('article_title')}")
+            actual_units = unit_count_from_search(section_title)
+            if actual_units < 1:
+                fail(f"article unit is not searchable: {section_title}")
+
     dirty_hits = []
     dirty_patterns = [
         "2025" + "年度",
@@ -227,7 +278,12 @@ def main() -> int:
     print("OK: ask2050 packaged data and search path passed")
     print(f"activities={len(activities)} articles={len(articles)} raw_ocr_packaged=0")
     print(f"manual_curation_ids={len(curation_ids)} alias_keys={len(aliases)}")
-    print(f"search_cases={len(EXPECTED_ALIAS_IDS) + len(SEARCH_CASES) + 2}")
+    checked_article_units = sum(
+        len(record.get("units", []))
+        for record in crosswalk.get("records", [])
+        if record.get("article_url") in ARTICLE_UNIT_COMPLETE_URLS
+    )
+    print(f"search_cases={len(EXPECTED_ALIAS_IDS) + len(SEARCH_CASES) + len(UNIT_CASES) + checked_article_units + 2}")
     return 0
 
 

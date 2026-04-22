@@ -17,6 +17,7 @@
 - OCR markdown 源材料: 82 份原料，其中 71 份达到可检索文本阈值；默认 skill 包不再携带这些 raw markdown。
 - OCR 批处理摘要: 12/82 显示成功，1/82 失败，69/82 跳过。
 - 优先补缺: 12 个短文本、失败或错位项已人工看过并补入 `manual/article_curation.md`。
+- 文章 outline 检索: `新生论坛@2050@2026` 的 19 个 unit 和 `热带雨林@2050@2026` 的 4 个 unit 已全部进入 `article_activity_crosswalk.json`，可被检索；其中一部分没有独立 `activity_id`，只能作为文章 unit 回答。
 
 ## 使用规则
 
