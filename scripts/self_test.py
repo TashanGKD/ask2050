@@ -108,6 +108,12 @@ RANKED_CASES = [
     {"name": "hardware_hands_on_top", "q": "AI 硬件 动手工作坊", "first": "12375"},
 ]
 
+OUTPUT_CASES = [
+    {"name": "logistics_source_output", "q": "2050PASS 交通 餐饮", "require": ["文章线索", "公众号"], "forbid": ["source |", "matched_activity_ids", "@2025@2026"]},
+    {"name": "article_unit_output", "q": "AI生成公共空间", "require": ["文章小节", "来源文章"], "forbid": ["unit |", "matched_activity_ids", "unknown"]},
+    {"name": "activity_output_labels", "q": "WaytoAGI", "require": ["标签:", "推荐画像:", "来源:"], "forbid": ["tags:", "profile:", "summary:", "url:"]},
+]
+
 UNIT_CASES = [
     {"name": "painting_truth_unit", "q": "绘画的真理", "min_units": 1},
     {"name": "future_programming_unit", "q": "未来编程", "min_units": 1},
@@ -224,6 +230,20 @@ def first_activity_id_from_search(query: str) -> str | None:
         fail(f"search_activities.py failed for {query}: {completed.stderr.strip()}")
     match = re.search(r"/activity/(\d+)", completed.stdout)
     return match.group(1) if match else None
+
+
+def output_from_search(query: str, *, limit: int = 5) -> str:
+    completed = subprocess.run(
+        [sys.executable, str(SCRIPT), "--q", query, "--limit", str(limit)],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if completed.returncode != 0:
+        fail(f"search_activities.py failed for {query}: {completed.stderr.strip()}")
+    return completed.stdout
 
 
 def main() -> int:
@@ -447,6 +467,15 @@ def main() -> int:
         actual_first = first_activity_id_from_search(case["q"])
         if actual_first != case["first"]:
             fail(f"ranked case {case['name']} expected first ID {case['first']}, got {actual_first}")
+
+    for case in OUTPUT_CASES:
+        output = output_from_search(case["q"])
+        missing = [text for text in case["require"] if text not in output]
+        if missing:
+            fail(f"output case {case['name']} missing display text: {missing}")
+        forbidden = [text for text in case["forbid"] if text in output]
+        if forbidden:
+            fail(f"output case {case['name']} leaked internal display text: {forbidden}")
 
     for record in crosswalk.get("records", []):
         if record.get("article_url") not in ARTICLE_UNIT_COMPLETE_URLS:

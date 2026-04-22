@@ -45,6 +45,18 @@ SOURCE_ROLE_LABELS = {
     "background": "背景说明",
     "mixed": "补充线索",
 }
+
+
+def display_source_title(title: str | None) -> str:
+    value = str(title or "").strip()
+    replacements = {
+        "@2025@2026": "@2026",
+        "2025@2026": "2026",
+        "@2025": "",
+    }
+    for old, new in replacements.items():
+        value = value.replace(old, new)
+    return value.strip("｜| -")
 QUERY_ALIASES = {
     "不懂ai": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
     "非技术": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
@@ -290,16 +302,16 @@ def main() -> int:
     printed = 0
     for _, item in results[: args.limit]:
         print(f"{item['date']} {item['time']} | {item['container']} | {item['title']} | {item['location']}")
-        print(f"  tags: {', '.join(item_tags(item))}")
+        print(f"  标签: {', '.join(item_tags(item))}")
         facet = activity_facets.get(str(item.get("activity_id")))
         if facet:
             intensity = INTENSITY_LABELS.get(facet.get("intensity"), facet.get("intensity"))
             social = SOCIAL_LABELS.get(facet.get("social_density"), facet.get("social_density"))
-            print(f"  profile: {', '.join(facet.get('experience_modes', []))} | {intensity} | {social}")
+            print(f"  推荐画像: {', '.join(facet.get('experience_modes', []))} | {intensity} | {social}")
             if facet.get("recommended_for"):
-                print(f"  for: {', '.join(facet.get('recommended_for', [])[:4])}")
-        print(f"  summary: {item['summary']}")
-        print(f"  url: {item['url']}")
+                print(f"  适合: {', '.join(facet.get('recommended_for', [])[:4])}")
+        print(f"  简介: {item['summary']}")
+        print(f"  来源: {item['url']}")
         printed += 1
 
     unit_results = []
@@ -331,17 +343,17 @@ def main() -> int:
     remaining = max(0, args.limit - printed)
     for record, unit in unit_results[:remaining]:
         ids = [str(activity_id) for activity_id in unit.get("matched_activity_ids", [])]
-        print(f"unit | {record.get('container')} | {unit.get('section_title')} | {unit.get('time_range', 'unknown')} | {unit.get('location_hint', '')}")
-        print(f"  article: {record.get('article_title')}")
-        print(f"  tags: {', '.join(unit.get('topic_tags', []))}")
+        time_range = unit.get("time_range") or "时间待确认"
+        location_hint = unit.get("location_hint") or "地点待确认"
+        print(f"文章小节 | {record.get('container')} | {unit.get('section_title')} | {time_range} | {location_hint}")
+        print(f"  来源文章: {display_source_title(record.get('article_title'))}")
+        print(f"  主题: {', '.join(unit.get('topic_tags', []))}")
         if ids:
-            print(f"  matched_activity_ids: {', '.join(ids)}")
+            print(f"  关联活动: {', '.join(ids)}")
             for activity_id in ids:
                 activity = activity_lookup.get(activity_id)
                 if activity:
-                    print(f"  url: {activity['url']}")
-        else:
-            print("  matched_activity_ids: none")
+                    print(f"  来源: {activity['url']}")
         printed += 1
 
     source_results = []
@@ -373,24 +385,21 @@ def main() -> int:
             date=args.date,
             container=args.container,
         )
-        print(f"source | {record.get('title')}")
-        print("  note: 已整理为 2050@2026 推荐线索")
+        print(f"文章线索 | {display_source_title(record.get('title'))}")
         source_facet = article_facets.get(str(record.get("result_file")))
         if source_facet:
             role = SOURCE_ROLE_LABELS.get(source_facet.get("source_role"), source_facet.get("source_role"))
-            print(f"  role: {role} | {source_facet.get('route_use')}")
+            print(f"  用途: {role} | {source_facet.get('route_use')}")
         if record.get("manual_summary"):
-            print(f"  summary: {record.get('manual_summary')}")
+            print(f"  摘要: {record.get('manual_summary')}")
         if record.get("article_url"):
-            print(f"  article_url: {record.get('article_url')}")
+            print(f"  公众号: {record.get('article_url')}")
         if ids:
-            print(f"  matched_activity_ids: {', '.join(ids)}")
+            print(f"  关联活动: {', '.join(ids)}")
             for activity_id in ids:
                 activity = activity_lookup.get(activity_id)
                 if activity:
-                    print(f"  url: {activity['url']}")
-        else:
-            print("  matched_activity_ids: none")
+                    print(f"  来源: {activity['url']}")
 
     if args.debug:
         print(f"matched={len(results)} matched_units={len(unit_results)} matched_sources={len(source_results)}")
