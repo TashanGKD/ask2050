@@ -76,6 +76,8 @@ SEARCH_CASES = [
     {"name": "next_gen_public_voice", "q": "社会听到更多青年人的声音", "container": "新生论坛", "include": {"12688"}},
     {"name": "rainforest_public_space", "q": "AI生成公共空间", "include": {"12248"}},
     {"name": "accessibility_playground_unit", "q": "2050无障碍游乐场", "include": {"12507"}},
+    {"name": "multi_container_or_mindnet_explorer", "q": "思想约会 探索空间", "include": {"12243", "12404"}},
+    {"name": "multi_container_or_forum_rainforest", "q": "新生论坛 热带雨林", "include": {"12636", "12261"}},
 ]
 
 UNIT_CASES = [

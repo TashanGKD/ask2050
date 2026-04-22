@@ -13,6 +13,40 @@ INDEX = ROOT / "references" / "activity_index.min.json"
 ARTICLE_ALIASES = ROOT / "references" / "manual" / "article_aliases.json"
 CROSSWALK = ROOT / "references" / "article_activity_crosswalk.json"
 ARTICLE_EVIDENCE = ROOT / "references" / "article_evidence_index.json"
+KNOWN_CONTAINERS = [
+    "新生论坛",
+    "探索空间",
+    "思想约会",
+    "热带雨林",
+    "青年团聚",
+    "青春舞台",
+    "星空露营",
+    "热力运动",
+]
+
+
+def query_matches(haystack: str, query: str, *, manual_match: bool = False) -> bool:
+    if manual_match:
+        return True
+    q_lower = query.lower().strip()
+    if not q_lower:
+        return True
+    if q_lower in haystack:
+        return True
+
+    query_containers = [name for name in KNOWN_CONTAINERS if name.lower() in q_lower]
+    if not query_containers:
+        return False
+
+    container_match = any(name.lower() in haystack for name in query_containers)
+    if not container_match:
+        return False
+
+    remainder = q_lower
+    for name in query_containers:
+        remainder = remainder.replace(name.lower(), " ")
+    terms = [term for term in remainder.split() if term]
+    return all(term in haystack for term in terms)
 
 
 def item_tags(item: dict) -> list[str]:
@@ -98,7 +132,7 @@ def main() -> int:
         if args.topic and not all(topic in tags for topic in args.topic):
             continue
         manual_match = activity_id in manual_ids
-        if args.q and args.q.lower() not in haystack and not manual_match:
+        if args.q and not query_matches(haystack, args.q, manual_match=manual_match):
             continue
         if activity_id in seen:
             continue
@@ -130,7 +164,7 @@ def main() -> int:
                     unit.get("location_hint", ""),
                     " ".join(unit.get("topic_tags", [])),
                 ]).lower()
-                if q_lower not in unit_haystack:
+                if not query_matches(unit_haystack, args.q):
                     continue
                 unit_results.append((record, unit))
 
@@ -162,7 +196,7 @@ def main() -> int:
                     " ".join(str(term) for term in record.get("search_terms", [])),
                     " ".join(str(activity_id) for activity_id in source_activity_ids(record, args.q)),
                 ]).lower()
-                if q_lower not in source_haystack:
+                if not query_matches(source_haystack, args.q):
                     continue
                 source_results.append(record)
 
