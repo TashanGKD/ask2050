@@ -14,6 +14,24 @@ ROOT = Path(__file__).resolve().parents[1]
 REF = ROOT / "references"
 
 
+SOURCE_ROLE_LABELS = {
+    "program-guide": "节目/板块指南",
+    "community-call": "社区/伙伴召集",
+    "background": "背景说明",
+    "schedule-update": "日程更新",
+    "logistics-guide": "后勤攻略",
+    "mixed": "混合类型",
+    "unknown": "未标注",
+}
+
+BATCH_STATUS_LABELS = {
+    "✅": "抓取/OCR 成功",
+    "❌": "抓取/OCR 失败",
+    "skipped": "批处理中跳过",
+    "unknown": "未知状态",
+}
+
+
 def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -45,8 +63,14 @@ def main() -> int:
     activity_channels = Counter(channel_for_url(str(item.get("url", ""))) for item in activities)
     article_channels = Counter(channel_for_url(str(item.get("链接", ""))) for item in articles)
     article_hosts = Counter(host(str(item.get("链接", ""))) for item in articles)
-    source_roles = Counter(str(facet.get("source_role", "unknown")) for facet in article_facets.values())
-    batch_status = Counter(str(record.get("batch_status", "unknown")) for record in evidence.get("records", []))
+    source_roles_raw = Counter(str(facet.get("source_role", "unknown")) for facet in article_facets.values())
+    source_roles = Counter(
+        {SOURCE_ROLE_LABELS.get(role, role): count for role, count in source_roles_raw.items()}
+    )
+    batch_status_raw = Counter(str(record.get("batch_status", "unknown")) for record in evidence.get("records", []))
+    batch_status = Counter(
+        {BATCH_STATUS_LABELS.get(status, status): count for status, count in batch_status_raw.items()}
+    )
     publish_days = Counter(str(item.get("发布时间", "")).split(" ")[0] for item in articles)
     source_files = evidence.get("source_files", {})
 

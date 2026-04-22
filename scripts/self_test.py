@@ -279,6 +279,8 @@ def main() -> int:
         "用户想找人或合作时，要告诉他去哪里遇见人、适合用什么开场问题",
         "用户问交通、通行证、吃饭、地图时，先解决实际问题",
         "他山世界/OpenClaw 轻量接入",
+        "普通事实问答不要先谈接入",
+        "只有当用户要个性化路线、按个人标签推荐、记录偏好或持续刷新推荐时",
     ]:
         if required_phrase not in skill_text:
             fail(f"SKILL.md missing service guidance: {required_phrase}")
@@ -532,7 +534,15 @@ def main() -> int:
     )
     if source_channels.returncode != 0:
         fail(f"source_channels.py failed: {source_channels.stderr.strip()}")
-    for required_text in ["2050 官网活动页", "微信公众号文章", "本地抓取/OCR 结果", "后续更新顺序"]:
+    for required_text in [
+        "2050 官网活动页",
+        "微信公众号文章",
+        "本地抓取/OCR 结果",
+        "节目/板块指南",
+        "抓取/OCR 成功",
+        "批处理中跳过",
+        "后续更新顺序",
+    ]:
         if required_text not in source_channels.stdout:
             fail(f"source_channels.py output missing: {required_text}")
 
