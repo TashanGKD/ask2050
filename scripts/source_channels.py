@@ -109,7 +109,7 @@ def main() -> int:
             "更新 articles.csv，保留 2026 相关文章链接集合。",
             "重新抓取公众号文章和图片 OCR，生成 results.zip / markdown。",
             "重建 article_evidence_index.json、article_facets.json、article_activity_crosswalk.json。",
-            "运行 scripts/extract_official_detail_terms.py、scripts/build_facets.py、scripts/rebuild_reference_slices.py、scripts/self_test.py 和代表性 search_activities 查询。",
+            "运行 scripts/check_official_activity_sync.py、scripts/extract_official_detail_terms.py、scripts/build_facets.py、scripts/rebuild_reference_slices.py、scripts/self_test.py 和代表性 search_activities 查询。",
         ],
     }
 

@@ -225,7 +225,9 @@
         {
           "section_title": "绘画的真理",
           "unit_type": "forum_block",
-          "matched_activity_ids": [],
+          "matched_activity_ids": [
+            "12787"
+          ],
           "date_tags": [
             "2026-04-25"
           ],
@@ -235,7 +237,7 @@
             "art",
             "aesthetics"
           ],
-          "confidence": "needs_manual_match"
+          "confidence": "manual_match"
         },
         {
           "section_title": "1000天后的美术馆",

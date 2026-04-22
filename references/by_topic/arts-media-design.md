@@ -290,14 +290,6 @@
 - 这 part 是干嘛的: "授人以鱼不如授人以渔"——不是帮助他们翻译，而是让听障人群掌握文字沟通的能力。
 - 来源: https://2050.org/#/activity/12715
 
-### 09:00-15:30 以唇语为引，以键盘为声
-- 容器: 青年团聚
-- 地点: 云栖小镇国际会展中心
-- 召集人: 张舒晨
-- 标签: `2026-04-25` `青年团聚` `education` `health-medical` `startup-product` `arts-media-design` `community-youth` `hackathon` `exhibition-demo` `meetup`
-- 这 part 是干嘛的: "授人以鱼不如授人以渔"——不是帮助他们翻译，而是让听障人群掌握文字沟通的能力。
-- 来源: https://2050.org/#/activity/12711
-
 ### 09:00-15:30 以唇语为引，以键盘为声"
 - 容器: 热带雨林
 - 地点: 云栖小镇国际会展中心
@@ -577,6 +569,14 @@
 - 标签: `2026-04-25` `热带雨林` `education` `arts-media-design` `life-sports` `opensource-tech` `meetup`
 - 这 part 是干嘛的: 自己给种子打孔，打磨，抛光，设计搭配，甚至切割……最后做一串绝无重复的世界上独一无二的手串。
 - 来源: https://2050.org/#/activity/12526
+
+### 10:30-12:00 绘画的真理
+- 容器: 新生论坛
+- 地点: 云栖小镇国际会展中心 A区一楼 智云厅
+- 召集人: 赵德利
+- 标签: `2026-04-25` `新生论坛` `arts-media-design` `education` `philosophy-mind` `ai` `forum` `roundtable`
+- 这 part 是干嘛的: 在当代的社会空间问题和技术问题语境下，分享和讨论绘画是如何贡献每个人的观察力、想象力、创造力的。
+- 来源: https://2050.org/#/activity/12787
 
 ### 11:00-12:00 当AI通过了所有考试，别让教室成为孤岛：一场关于“真实学习”的跨界重构
 - 容器: 热带雨林

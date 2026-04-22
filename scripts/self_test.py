@@ -79,16 +79,16 @@ CONFLICT_EXCLUDED = {
 
 EXPECTED_DATE_COUNTS = {
     "2026-04-24": 54,
-    "2026-04-25": 197,
+    "2026-04-25": 196,
     "2026-04-26": 35,
 }
 
 EXPECTED_CONTAINER_COUNTS = {
-    "新生论坛": 96,
+    "新生论坛": 97,
     "热带雨林": 57,
-    "青年团聚": 48,
+    "青年团聚": 47,
     "探索空间": 44,
-    "思想约会": 20,
+    "思想约会": 19,
     "青春舞台": 13,
     "星空露营": 4,
     "热力运动": 4,
@@ -121,6 +121,7 @@ SEARCH_CASES = [
     {"name": "latest_explorer_mr", "q": "文旅 MR 空间计算", "date": "2026-04-25", "include": {"12235"}},
     {"name": "official_fshd_detail", "q": "FSHD 患者 罕见特殊人群", "include": {"12368"}},
     {"name": "official_family_movie_detail", "q": "家庭故事 小电影", "include": {"12344"}},
+    {"name": "official_painting_truth_live", "q": "绘画的真理 观察力 想象力 创造力", "include": {"12787"}},
 ]
 
 RANKED_CASES = [
@@ -169,6 +170,7 @@ EXPECTED_FORUM_LOCATIONS = {
     "12241": "A区 2F 360环屏(千人云栖厅)",
     "12372": "A区 3F 青云厅",
     "12314": "A区 3F 皓云厅",
+    "12787": "云栖小镇国际会展中心 A区一楼 智云厅",
 }
 
 ITINERARY_PROFILE = (
@@ -428,8 +430,8 @@ def main() -> int:
     official_detail_terms = load_json(REF / "official_detail_terms.json")
     aliases = load_json(MANUAL / "article_aliases.json")
 
-    if len(activities) < 286:
-        fail(f"activity index has {len(activities)} rows, expected at least 286")
+    if len(activities) != 285:
+        fail(f"activity index has {len(activities)} rows, expected 285 from current 2050 official list")
     if len(articles) < 77:
         fail(f"article index has {len(articles)} rows, expected at least 77")
     if set(official_detail_terms.get("activities", {})) != {str(item.get("activity_id")) for item in activities}:
@@ -439,7 +441,7 @@ def main() -> int:
     counts = evidence.get("counts", {})
     expected_evidence_counts = {
         "articles_csv_rows": 77,
-        "activity_rows": 286,
+        "activity_rows": 285,
         "result_markdown_files": 82,
         "batch_success": 12,
         "batch_failed": 1,
