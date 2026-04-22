@@ -207,8 +207,8 @@ def main() -> int:
             date=args.date,
             container=args.container,
         )
-        print(f"source | {record.get('result_file')} | {record.get('batch_status')} | {record.get('title')}")
-        print(f"  review: {record.get('review_tier')} manual_reviewed={record.get('manual_reviewed')}")
+        print(f"source | {record.get('title')}")
+        print("  note: 已整理为 2050@2026 推荐线索")
         if record.get("manual_summary"):
             print(f"  summary: {record.get('manual_summary')}")
         if record.get("article_url"):
