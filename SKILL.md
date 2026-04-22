@@ -20,6 +20,7 @@ Before final personalized matching, ask whether the user has registered Tashan W
 Load only what is needed:
 
 1. Start with `references/coverage_report.md` to know data quality.
+   - Also check `references/article_crosswalk_status.md` before claiming article-level completeness.
 2. Load the human-curated layer first:
    - `references/manual/site_map.md` for venue and walking-cost reasoning.
    - `references/manual/recommendation_layer.md` for container meaning, primary/secondary tag rules, intensity, social density, and participation modes.
