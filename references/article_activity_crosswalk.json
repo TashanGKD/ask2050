@@ -6,7 +6,7 @@
     {
       "article_url": "https://mp.weixin.qq.com/s/Uc4LIsFOWVQIm1qA1wqJfQ",
       "article_title": "青春舞台@2050@2026：节目单新鲜出炉！",
-      "ocr_file": "article_ocr/006.md",
+      "source_ocr_file": "006.md",
       "container": "青春舞台",
       "crosswalk_status": "partial_manual",
       "units": [
@@ -114,7 +114,7 @@
     {
       "article_url": "https://mp.weixin.qq.com/s/0pk6F8FvoqjysXBApdrrdA",
       "article_title": "新生论坛@2050@2026：500+脑暴席卷云栖，年青就要最大声分享！",
-      "ocr_file": "article_ocr/008.md",
+      "source_ocr_file": "008.md",
       "container": "新生论坛",
       "crosswalk_status": "partial_manual",
       "units": [
@@ -313,7 +313,7 @@
     {
       "article_url": "https://mp.weixin.qq.com/s/MaV0AlyUOu8ZmmaVeU5Y8A",
       "article_title": "星空露营生活指南@2025@2026",
-      "ocr_file": "article_ocr/004.md",
+      "source_ocr_file": "004.md",
       "container": "星空露营",
       "crosswalk_status": "partial_manual",
       "units": [
@@ -362,7 +362,7 @@
     {
       "article_url": "https://mp.weixin.qq.com/s/w1DwPt9yp_h1Cl1wgvJEuw",
       "article_title": "热带雨林@2050@2026：别看活动表，看了你也会觉得“离谱”！",
-      "ocr_file": "article_ocr/007.md",
+      "source_ocr_file": "007.md",
       "container": "热带雨林",
       "crosswalk_status": "partial_manual",
       "units": [

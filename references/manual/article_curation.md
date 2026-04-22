@@ -7,7 +7,7 @@
 使用规则:
 
 - 先按本文找到候选 `activity_id`。
-- 再从 `activity_index.min.json` 或 `activity_index.full.json` 读取准确时间、地点、简介。
+- 再从 `activity_index.min.json` 读取准确时间、地点、简介。
 - 不引用短文本或错位文章的长段正文。
 - `confidence=high` 表示标题/摘要与活动强匹配；`medium` 表示主题可用但正文不足；`low` 只作探索线索。
 

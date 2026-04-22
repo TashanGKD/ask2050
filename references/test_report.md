@@ -5,6 +5,7 @@
 ### 数据完整性
 
 - `scripts/self_test.py`: 本轮新增并通过，用于新挂载后自动验证核心索引、人工策展和别名检索。
+- 默认 skill 包已移除 raw OCR markdown 与 full activity index，避免外部向量库默认检索到历史年份/OCR 错年内容。
 - `article_activity_crosswalk.json`: JSON 校验通过。
 - `manual/article_aliases.json`: JSON 校验通过。
 - `manual/article_curation.md` 中引用的 28 个 `activity_id` 均存在于 `activity_index.min.json`。
@@ -39,6 +40,8 @@
   - `12444` WaytoAGI 三周年庆生
   - `12445` 离谱村音乐会：科技就像音乐
 - `OpenClaw` 同时命中主表中的 OpenClaw 活动与 WaytoAGI/Agent 相关人工别名活动。
+- `waytoagi` 小写命中同一组 6 个 2026 活动。
+- 历史年份和非 2050 会议类查询在默认检索路径中不返回活动。
 
 ### 推荐场景
 

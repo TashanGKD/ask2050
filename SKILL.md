@@ -35,8 +35,8 @@ Load only what is needed:
 7. For a board/container question, load `references/by_container/<container>.md`.
 8. For topic matching, load `references/by_topic/<topic>.md`.
 9. For location planning, load `references/by_location/<location_zone>.md`.
-10. For evidence from public-account articles, load `references/article_ocr_index.json`, then the specific `references/article_ocr/*.md` file only if needed.
-11. For article subparts, programs, talks, maps, or logistics, load `references/article_activity_crosswalk.json`; treat it as partial unless the record says otherwise.
+10. For public-account article subparts, programs, talks, maps, or logistics, load `references/article_activity_crosswalk.json`; treat it as partial unless the record says otherwise.
+11. Raw OCR text is not packaged in the default skill because it contains source noise and historical context. Use `references/evidence_status.md` for OCR coverage state and `references/manual/article_curation.md` for human-checked recovery.
 12. If an article is in the manual curation list, prefer `references/manual/article_curation.md` over the short OCR snippet, then verify exact schedule details from `activity_index.min.json`.
 13. For regression expectations and known edge cases, load `references/test_report.md`.
 

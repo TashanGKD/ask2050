@@ -24,7 +24,6 @@ REQUIRED_FILES = [
     REF / "activity_index.min.json",
     REF / "article_activity_crosswalk.json",
     REF / "articles_index.json",
-    REF / "article_ocr_index.json",
     MANUAL / "article_curation.md",
     MANUAL / "article_aliases.json",
     SCRIPT,
@@ -34,6 +33,7 @@ EXPECTED_ALIAS_IDS = {
     "YOLO": {"12224", "12251", "12276"},
     "AI芯片": {"12220"},
     "WaytoAGI": {"12432", "12430", "12446", "12588", "12444", "12445"},
+    "waytoagi": {"12432", "12430", "12446", "12588", "12444", "12445"},
     "课创黑客松": {"12267"},
     "设计自己": {"12424", "12420", "12633"},
 }
@@ -77,19 +77,19 @@ def main() -> int:
     activities = load_json(REF / "activity_index.min.json")
     crosswalk = load_json(REF / "article_activity_crosswalk.json")
     articles = load_json(REF / "articles_index.json")
-    ocr_index = load_json(REF / "article_ocr_index.json")
     aliases = load_json(MANUAL / "article_aliases.json")
 
     if len(activities) < 286:
         fail(f"activity index has {len(activities)} rows, expected at least 286")
     if len(articles) < 77:
         fail(f"article index has {len(articles)} rows, expected at least 77")
-    if len(list((REF / "article_ocr").glob("*.md"))) < 82:
-        fail("article_ocr markdown count is below 82")
     if not isinstance(crosswalk, dict) or not crosswalk.get("records"):
         fail("article_activity_crosswalk.json must be an object with non-empty records")
-    if not isinstance(ocr_index, list) or not ocr_index:
-        fail("article_ocr_index.json must be a non-empty list")
+    forbidden_full_index = REF / ("activity_index." + "full.json")
+    if forbidden_full_index.exists():
+        fail("full activity index should not be packaged in the default skill")
+    if any((REF / "article_ocr").glob("*.md")):
+        fail("raw article_ocr markdown should not be packaged in the default skill")
 
     activity_ids = {str(item.get("activity_id")) for item in activities}
     curation_text = (MANUAL / "article_curation.md").read_text(encoding="utf-8")
@@ -107,7 +107,10 @@ def main() -> int:
         fail(f"crosswalk references unknown activity IDs: {missing_crosswalk_ids}")
 
     for alias, expected_ids in EXPECTED_ALIAS_IDS.items():
-        actual_alias_ids = {str(item) for item in aliases.get(alias, [])}
+        actual_alias_ids = set()
+        for alias_key, ids in aliases.items():
+            if alias.lower() == alias_key.lower():
+                actual_alias_ids.update(str(item) for item in ids)
         missing_alias_ids = expected_ids - actual_alias_ids
         if missing_alias_ids:
             fail(f"alias {alias} missing IDs in article_aliases.json: {sorted(missing_alias_ids)}")
@@ -122,8 +125,29 @@ def main() -> int:
         if unexpected:
             fail(f"query {alias} unexpectedly mixed conflict IDs: {sorted(unexpected)}")
 
+    for dirty_query in ["2025", "技术" + "峰会"]:
+        dirty_results = ids_from_search(dirty_query)
+        if dirty_results:
+            fail(f"query {dirty_query} should not return default activities: {sorted(dirty_results)}")
+
     print("OK: ask2050 packaged data and search path passed")
-    print(f"activities={len(activities)} articles={len(articles)} ocr_md={len(list((REF / 'article_ocr').glob('*.md')))}")
+    dirty_hits = []
+    dirty_patterns = [
+        "2025" + "年度",
+        "AI " + "技术" + "峰会",
+        "AI" + "技术" + "峰会",
+        "技术" + "峰会",
+    ]
+    for path in ROOT.rglob("*"):
+        if not path.is_file() or ".git" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        if any(pattern in text for pattern in dirty_patterns):
+            dirty_hits.append(path.relative_to(ROOT).as_posix())
+    if dirty_hits:
+        fail(f"dirty non-2050 meeting terms found: {sorted(set(dirty_hits))}")
+
+    print(f"activities={len(activities)} articles={len(articles)} raw_ocr_packaged=0")
     print(f"manual_curation_ids={len(curation_ids)} alias_keys={len(aliases)}")
     return 0
 
