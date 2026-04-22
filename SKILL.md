@@ -26,6 +26,7 @@ Load only what is needed:
    - `references/manual/site_map.md` for venue and walking-cost reasoning.
    - `references/manual/recommendation_layer.md` for container meaning, primary/secondary tag rules, intensity, social density, and participation modes.
    - `references/manual/curated_anchor_activities.md` for manually curated examples and high-value anchors.
+   - `references/manual/low_ocr_manual_review.md` when an article OCR file is short, failed, or mismatched with `articles.csv`.
 3. For a user persona route, load one route template from `references/route_templates/`.
 4. For route planning, load `references/activity_index.min.json`.
 5. For a date question, load `references/by_date/YYYY-MM-DD.md`.
@@ -34,6 +35,7 @@ Load only what is needed:
 8. For location planning, load `references/by_location/<location_zone>.md`.
 9. For evidence from public-account OCR, load `references/article_ocr_index.json`, then the specific `references/article_ocr/*.md` file.
 10. For article subparts, programs, talks, maps, or logistics, load `references/article_activity_crosswalk.json`; treat it as partial unless the record says otherwise.
+11. If an article is in the low-OCR list, prefer the manual review file over the short OCR snippet, then verify exact schedule details from `activity_index.min.json`.
 
 ## Recommendation workflow
 

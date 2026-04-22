@@ -13,6 +13,7 @@
 - `results.zip` 中的 markdown/OCR 文本已经作为证据原料纳入。
 - 还没有完成全量人工 crosswalk: 每篇公众号文章内部的 part、节目、报告、生活指南条目，需要逐项映射到 `activity_id`，或补成独立的知识条目。
 - 不能确认全部图片已经 OCR；OCR 批处理状态见 `references/ocr_coverage_report.md`。严格按本批成功状态，有 **70/82** 未显示成功；按文本可用性，优先补缺 **12** 个。
+- 这 12 个低 OCR/失败项已人工判读并补入 `references/manual/low_ocr_manual_review.md`，用于推荐候选和主题标签，不等于全文 OCR。
 
 ## 为什么会出现“286 全，但文章 part 不全”
 
