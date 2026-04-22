@@ -23,6 +23,7 @@ REQUIRED_FILES = [
     REF / "tashan_world_bridge.md",
     REF / "activity_index.min.json",
     REF / "activity_facets.json",
+    REF / "focus_sessions.min.json",
     REF / "article_activity_crosswalk.json",
     REF / "article_facets.json",
     REF / "article_evidence_index.json",
@@ -120,6 +121,7 @@ OUTPUT_CASES = [
     {"name": "first_time_itinerary_has_forum", "q": "第一次来 2050 安排一天", "require": ["新生论坛", "热带雨林"], "forbid": ["source |", "matched_activity_ids"]},
     {"name": "evening_itinerary_keeps_forum_anchor", "q": "晚上 放松 露营 音乐 2050 安排一天", "require": ["新生论坛", "星空露营"], "forbid": ["source |", "matched_activity_ids"]},
     {"name": "networking_query_has_connection_places", "q": "我想找人合作 做AI硬件", "require": ["探索空间", "推荐画像:"], "forbid": ["source |", "matched_activity_ids"]},
+    {"name": "ai4science_query_has_focus_session", "q": "AI4Science 科研 博士 天文学", "require": ["重点 part:", "AGI4Science：正在生长的科学地图", "A区 2F 2050学习节(五区) 云展厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
 ]
 
 ITINERARY_PROFILE = (
@@ -592,9 +594,11 @@ def main() -> int:
     except json.JSONDecodeError as exc:
         fail(f"plan_itinerary.py did not return valid JSON: {exc}")
     plan_text = json.dumps(plan, ensure_ascii=False)
-    for required_text in ["AI4Science 专场", "把AI装进硬件里", "太空时代开启", "suggested_window", "official_time"]:
+    for required_text in ["AI4Science 专场", "AGI4Science：正在生长的科学地图", "A区 2F 2050学习节(五区) 云展厅", "把AI装进硬件里", "太空时代开启", "suggested_window", "official_time"]:
         if required_text not in plan_text:
             fail(f"plan_itinerary.py output missing expected route element: {required_text}")
+    if "AI4Science 专场 | 云栖小镇国际会展中心（官方地点仅到总场馆" in plan_text:
+        fail("plan_itinerary.py still uses generic venue for AI4Science instead of the focused session")
     for forbidden_text in ["晨读", "带上喜欢的文字"]:
         if forbidden_text in plan_text:
             fail(f"plan_itinerary.py added unrelated low-energy starter: {forbidden_text}")

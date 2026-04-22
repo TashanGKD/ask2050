@@ -15,6 +15,7 @@ CROSSWALK = ROOT / "references" / "article_activity_crosswalk.json"
 ARTICLE_EVIDENCE = ROOT / "references" / "article_evidence_index.json"
 ACTIVITY_FACETS = ROOT / "references" / "activity_facets.json"
 ARTICLE_FACETS = ROOT / "references" / "article_facets.json"
+FOCUS_SESSIONS = ROOT / "references" / "focus_sessions.min.json"
 KNOWN_CONTAINERS = [
     "新生论坛",
     "探索空间",
@@ -240,6 +241,45 @@ def facet_terms(facet: dict | None) -> list[str]:
     return terms
 
 
+def session_terms(session: dict) -> list[str]:
+    terms = [
+        session.get("session_id", ""),
+        session.get("parent_activity_id", ""),
+        session.get("parent_title", ""),
+        session.get("title", ""),
+        session.get("container", ""),
+        session.get("time", ""),
+        session.get("location", ""),
+        session.get("summary", ""),
+    ]
+    for key in ["recommended_for", "topic_tags"]:
+        value = session.get(key)
+        if isinstance(value, list):
+            terms.extend(str(item) for item in value)
+    return [str(term) for term in terms if term]
+
+
+def focus_sessions_for(
+    activity_id: str,
+    sessions: list[dict],
+    query: str,
+    *,
+    date: str | None = None,
+) -> list[dict]:
+    matched = []
+    for session in sessions:
+        if str(session.get("parent_activity_id")) != activity_id:
+            continue
+        if date and session.get("date") != date:
+            continue
+        haystack = " ".join(session_terms(session)).lower()
+        if query and not query_matches(haystack, query):
+            continue
+        matched.append(session)
+    matched.sort(key=lambda item: (item.get("time", ""), item.get("title", "")))
+    return matched
+
+
 def source_activity_ids(record: dict, query: str) -> list[str]:
     q_lower = query.lower()
     weak_year_queries = {"2024", "2025", "2026"}
@@ -319,6 +359,9 @@ def main() -> int:
     article_facets = {}
     if ARTICLE_FACETS.exists():
         article_facets = json.loads(ARTICLE_FACETS.read_text(encoding="utf-8"))
+    focus_sessions = []
+    if FOCUS_SESSIONS.exists():
+        focus_sessions = json.loads(FOCUS_SESSIONS.read_text(encoding="utf-8"))
     manual_ids = []
     if args.q and ARTICLE_ALIASES.exists():
         aliases = json.loads(ARTICLE_ALIASES.read_text(encoding="utf-8"))
@@ -373,6 +416,11 @@ def main() -> int:
             print(f"  推荐画像: {', '.join(facet.get('experience_modes', []))} | {intensity} | {social}")
             if facet.get("recommended_for"):
                 print(f"  适合: {', '.join(facet.get('recommended_for', [])[:4])}")
+        for session in focus_sessions_for(str(item.get("activity_id")), focus_sessions, args.q, date=args.date)[:3]:
+            print(f"  重点 part: {session.get('time')} | {session.get('title')} | {session.get('location')}")
+            print(f"  part 内容: {session.get('summary')}")
+            if session.get("source"):
+                print(f"  part 来源: {session.get('source')}")
         print(f"  简介: {item['summary']}")
         print(f"  来源: {item['url']}")
         printed += 1

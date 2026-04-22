@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REF = ROOT / "references"
+FOCUS_SESSIONS = REF / "focus_sessions.min.json"
 
 INTENSITY_LABELS = {"low": "低", "medium": "中", "high": "高"}
 LONG_WINDOW_CONTAINERS = {"新生论坛", "探索空间", "思想约会"}
@@ -144,6 +145,60 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str) -> i
     return score
 
 
+def session_haystack(session: dict) -> str:
+    parts = [
+        session.get("title", ""),
+        session.get("parent_title", ""),
+        session.get("container", ""),
+        session.get("summary", ""),
+        session.get("location", ""),
+    ]
+    for key in ["recommended_for", "topic_tags"]:
+        value = session.get(key)
+        if isinstance(value, list):
+            parts.extend(str(v) for v in value)
+    return " ".join(str(part).lower() for part in parts)
+
+
+def score_session(session: dict, terms: list[str], role: str) -> int:
+    text = session_haystack(session)
+    title = str(session.get("title", "")).lower()
+    score = 0
+    for term in terms:
+        if term in title:
+            score += 20
+        if term in text:
+            score += 8
+    if role == "forum":
+        score += 35
+    if "ai4science" in text:
+        score += 45
+    if "ai4science" in terms and "ai4science" in text:
+        score += 80
+    if "科学" in terms and ("science" in text or "科学" in text):
+        score += 25
+    return score
+
+
+def focus_session_for(item: dict, terms: list[str], role: str) -> dict | None:
+    if not FOCUS_SESSIONS.exists():
+        return None
+    parent_id = str(item.get("activity_id"))
+    candidates = []
+    for session in load_json(FOCUS_SESSIONS):
+        if str(session.get("parent_activity_id")) != parent_id:
+            continue
+        if session.get("date") != item.get("date"):
+            continue
+        if not parse_time_range(str(session.get("time", ""))):
+            continue
+        score = score_session(session, terms, role)
+        if score > 0:
+            candidates.append((score, session))
+    candidates.sort(key=lambda pair: (-pair[0], pair[1].get("time", ""), pair[1].get("title", "")))
+    return candidates[0][1] if candidates else None
+
+
 def location_note(location: str) -> str:
     value = str(location or "").strip()
     if not value:
@@ -206,6 +261,19 @@ def planned_window(item: dict, role: str, occupied: list[tuple[int, int]]) -> tu
     return official
 
 
+def effective_item(item: dict, terms: list[str], role: str) -> tuple[dict, dict | None]:
+    session = focus_session_for(item, terms, role)
+    if not session:
+        return item, None
+    merged = dict(item)
+    merged["title"] = f"{session.get('title')}（{item.get('title')}内）"
+    merged["time"] = session.get("time", item.get("time", ""))
+    merged["location"] = session.get("location", item.get("location", ""))
+    merged["summary"] = session.get("summary", item.get("summary", ""))
+    merged["source"] = session.get("source", item.get("url", ""))
+    return merged, session
+
+
 def overlaps(candidate: tuple[int, int], occupied: list[tuple[int, int]]) -> bool:
     start, end = candidate
     return any(start < other_end and other_start < end for other_start, other_end in occupied)
@@ -237,7 +305,8 @@ def build_plan(profile: str, date: str) -> dict:
         )
         if not item:
             continue
-        window = planned_window(item, role, occupied)
+        route_item, session = effective_item(item, terms, role)
+        window = planned_window(route_item, role, occupied)
         if overlaps(window, occupied):
             continue
         activity_id = str(item.get("activity_id"))
@@ -248,16 +317,17 @@ def build_plan(profile: str, date: str) -> dict:
             {
                 "label": label,
                 "activity_id": activity_id,
-                "title": item.get("title", ""),
-                "container": item.get("container", ""),
-                "date": item.get("date", ""),
-                "official_time": item.get("time", ""),
+                "session_id": session.get("session_id") if session else "",
+                "title": route_item.get("title", ""),
+                "container": route_item.get("container", ""),
+                "date": route_item.get("date", ""),
+                "official_time": route_item.get("time", ""),
                 "suggested_window": f"{fmt(window[0])}-{fmt(window[1])}",
-                "location": location_note(str(item.get("location", ""))),
+                "location": location_note(str(route_item.get("location", ""))),
                 "reason": reason,
-                "why_fit": facet.get("route_note") or item.get("summary", ""),
+                "why_fit": route_item.get("summary") or facet.get("route_note") or item.get("summary", ""),
                 "intensity": INTENSITY_LABELS.get(str(facet.get("intensity", "")), str(facet.get("intensity", "")) or "待判断"),
-                "source": item.get("url", ""),
+                "source": route_item.get("source") or item.get("url", ""),
             }
         )
     rows.sort(key=lambda row: minutes(row["suggested_window"].split("-")[0]))
