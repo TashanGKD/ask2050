@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "references" / "activity_index.min.json"
+LOW_OCR_ALIASES = ROOT / "references" / "manual" / "low_ocr_alias_index.json"
 
 
 def main() -> int:
@@ -22,9 +23,20 @@ def main() -> int:
     args = parser.parse_args()
 
     data = json.loads(INDEX.read_text(encoding="utf-8"))
+    manual_ids = []
+    if args.q and LOW_OCR_ALIASES.exists():
+        aliases = json.loads(LOW_OCR_ALIASES.read_text(encoding="utf-8"))
+        q_lower = args.q.lower()
+        for alias, ids in aliases.items():
+            if q_lower in alias.lower() or alias.lower() in q_lower:
+                manual_ids.extend(str(activity_id) for activity_id in ids)
+
     results = []
+    seen = set()
     for item in data:
+        activity_id = str(item.get("activity_id", ""))
         haystack = " ".join([
+            activity_id,
             item.get("title", ""),
             item.get("summary", ""),
             item.get("container", ""),
@@ -37,8 +49,12 @@ def main() -> int:
             continue
         if args.topic and not all(topic in item.get("recommendation_tags", []) for topic in args.topic):
             continue
-        if args.q and args.q.lower() not in haystack:
+        manual_match = activity_id in manual_ids
+        if args.q and args.q.lower() not in haystack and not manual_match:
             continue
+        if activity_id in seen:
+            continue
+        seen.add(activity_id)
         results.append(item)
 
     for item in results[: args.limit]:
