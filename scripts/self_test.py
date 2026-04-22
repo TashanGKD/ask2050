@@ -430,6 +430,29 @@ def main() -> int:
         fail("raw article_ocr markdown should not be packaged in the default skill")
 
     activity_ids = {str(item.get("activity_id")) for item in activities}
+    required_activity_fields = {
+        "activity_id",
+        "title",
+        "date",
+        "time",
+        "container",
+        "location",
+        "summary",
+        "url",
+    }
+    incomplete_activities = []
+    for item in activities:
+        activity_id = str(item.get("activity_id"))
+        if not required_activity_fields.issubset(item) or any(
+            not str(item.get(field, "")).strip() for field in required_activity_fields
+        ):
+            incomplete_activities.append(activity_id)
+            continue
+        if not str(item.get("url", "")).startswith("https://2050.org/#/activity/"):
+            fail(f"activity {activity_id} has non-official URL: {item.get('url')}")
+    if incomplete_activities:
+        fail(f"activity_index.min.json has incomplete core facts: {incomplete_activities[:10]}")
+
     missing_focus_parent_ids = sorted(
         str(item.get("parent_activity_id"))
         for item in focus_sessions
@@ -441,8 +464,14 @@ def main() -> int:
         for field in ["session_id", "parent_activity_id", "title", "container", "date", "time", "location", "summary", "source"]:
             if not item.get(field):
                 fail(f"focus session missing {field}: {item}")
+        for field in ["recommended_for", "topic_tags"]:
+            if not isinstance(item.get(field), list) or not item.get(field):
+                fail(f"focus session missing {field}: {item.get('session_id')}")
         if not isinstance(item.get("talks"), list) or not item.get("talks"):
             fail(f"focus session needs talk-level tags: {item.get('session_id')}")
+        for talk in item.get("talks", []):
+            if not isinstance(talk, dict) or not talk.get("title") or not talk.get("tags"):
+                fail(f"focus session talk needs title and tags: {item.get('session_id')}")
     facet_ids = set(activity_facets)
     if facet_ids != activity_ids:
         fail("activity_facets.json must cover exactly the packaged activity IDs")
@@ -469,6 +498,10 @@ def main() -> int:
         or not facet.get("primary_topics")
         or not facet.get("experience_modes")
         or not facet.get("recommended_for")
+        or not facet.get("participation_style")
+        or not facet.get("route_note")
+        or not facet.get("search_terms")
+        or facet.get("activity_id") != activity_id
     ]
     if incomplete_facets:
         fail(f"activity facets missing recommendation fields: {incomplete_facets[:10]}")
