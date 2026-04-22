@@ -23,9 +23,12 @@ REQUIRED_FILES = [
     REF / "source_inventory.md",
     REF / "tashan_world_bridge.md",
     REF / "activity_index.min.json",
+    REF / "activity_facets.json",
     REF / "article_activity_crosswalk.json",
+    REF / "article_facets.json",
     REF / "article_evidence_index.json",
     REF / "articles_index.json",
+    REF / "extraction_schema.md",
     MANUAL / "article_curation.md",
     MANUAL / "article_aliases.json",
     SCRIPT,
@@ -78,6 +81,10 @@ SEARCH_CASES = [
     {"name": "accessibility_playground_unit", "q": "2050无障碍游乐场", "include": {"12507"}},
     {"name": "multi_container_or_mindnet_explorer", "q": "思想约会 探索空间", "include": {"12243", "12404"}},
     {"name": "multi_container_or_forum_rainforest", "q": "新生论坛 热带雨林", "include": {"12636", "12261"}},
+    {"name": "facet_low_energy", "q": "低能量用户", "include": {"12276"}},
+    {"name": "facet_demo_audience", "q": "想看现场 demo", "include": {"12446"}},
+    {"name": "facet_hands_on", "q": "动手工作坊", "include": {"12261", "12446"}},
+    {"name": "facet_solo_ai_booth", "q": "一个人也能参加 AI 展台", "include": {"12375"}},
 ]
 
 UNIT_CASES = [
@@ -189,6 +196,8 @@ def main() -> int:
 
     activities = load_json(REF / "activity_index.min.json")
     crosswalk = load_json(REF / "article_activity_crosswalk.json")
+    activity_facets = load_json(REF / "activity_facets.json")
+    article_facets = load_json(REF / "article_facets.json")
     evidence = load_json(REF / "article_evidence_index.json")
     articles = load_json(REF / "articles_index.json")
     aliases = load_json(MANUAL / "article_aliases.json")
@@ -229,6 +238,59 @@ def main() -> int:
         fail("raw article_ocr markdown should not be packaged in the default skill")
 
     activity_ids = {str(item.get("activity_id")) for item in activities}
+    facet_ids = set(activity_facets)
+    if facet_ids != activity_ids:
+        fail("activity_facets.json must cover exactly the packaged activity IDs")
+    required_facet_fields = {
+        "activity_id",
+        "primary_topics",
+        "secondary_topics",
+        "experience_modes",
+        "participation_style",
+        "recommended_for",
+        "intensity",
+        "social_density",
+        "planning_role",
+        "time_pattern",
+        "venue_context",
+        "route_note",
+        "source_level",
+        "search_terms",
+    }
+    incomplete_facets = [
+        activity_id
+        for activity_id, facet in activity_facets.items()
+        if not required_facet_fields.issubset(facet)
+        or not facet.get("primary_topics")
+        or not facet.get("experience_modes")
+        or not facet.get("recommended_for")
+    ]
+    if incomplete_facets:
+        fail(f"activity facets missing recommendation fields: {incomplete_facets[:10]}")
+    if set(article_facets) != {record.get("result_file") for record in evidence.get("records", [])}:
+        fail("article_facets.json must cover exactly the article evidence records")
+    required_article_facet_fields = {
+        "source_id",
+        "article_url",
+        "source_role",
+        "linked_activity_ids",
+        "communities_or_aliases",
+        "extracted_topics",
+        "experience_modes",
+        "participation_style",
+        "route_use",
+        "confidence",
+        "search_terms",
+    }
+    incomplete_article_facets = [
+        source_id
+        for source_id, facet in article_facets.items()
+        if not required_article_facet_fields.issubset(facet)
+        or not facet.get("source_role")
+        or not facet.get("route_use")
+    ]
+    if incomplete_article_facets:
+        fail(f"article facets missing recommendation fields: {incomplete_article_facets[:10]}")
     date_counts = {}
     container_counts = {}
     for item in activities:

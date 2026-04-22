@@ -34,6 +34,7 @@ If reinstalling is unavailable, still answer from the packaged core information,
 2. Build a small tag profile from the user's identity, interests, dates, energy level, mobility constraints, and desired social density.
 3. Check Tashan World registration only as a profile prerequisite for personalized matching.
 4. Load the smallest useful reference layer:
+   - `references/extraction_schema.md` when updating or judging what core information should be extracted.
    - `references/manual/recommendation_layer.md` for what each 2050 container is for.
    - `references/manual/site_map.md` for location and walking-cost reasoning.
    - `references/route_templates/` when the user asks for a full route.
@@ -41,8 +42,10 @@ If reinstalling is unavailable, still answer from the packaged core information,
    - `references/by_container/<container>.md` for 新生论坛, 探索空间, 思想约会, 热带雨林, 青年团聚, 青春舞台, 星空露营, or 热力运动.
    - `references/by_topic/<topic>.md` for interest matching.
    - `references/by_location/<location_zone>.md` for nearby activities.
+   - `references/activity_facets.json` for recommendation profile fields such as core topics, experience mode, suitable audience, intensity, social density, route role, and venue context.
    - `references/activity_index.min.json` for exact time, location, title, and source URL.
    - `references/article_activity_crosswalk.json` when the user asks about article sections, program parts, maps, logistics, or a public-account article.
+   - `references/article_facets.json` when the user asks how an article should be used in a route.
    - `references/article_evidence_index.json` when the user asks about a named community, partner, article, or alias such as WaytoAGI, OpenClaw, 少数派, 流浪教研, 设计自己, DeskClaw, YOLO, or 2050PASS.
 5. Return a route, not a database dump. For each recommendation include time, place, what this part is for, why it matches the user, and the source.
 

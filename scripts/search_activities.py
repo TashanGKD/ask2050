@@ -13,6 +13,8 @@ INDEX = ROOT / "references" / "activity_index.min.json"
 ARTICLE_ALIASES = ROOT / "references" / "manual" / "article_aliases.json"
 CROSSWALK = ROOT / "references" / "article_activity_crosswalk.json"
 ARTICLE_EVIDENCE = ROOT / "references" / "article_evidence_index.json"
+ACTIVITY_FACETS = ROOT / "references" / "activity_facets.json"
+ARTICLE_FACETS = ROOT / "references" / "article_facets.json"
 KNOWN_CONTAINERS = [
     "新生论坛",
     "探索空间",
@@ -32,6 +34,9 @@ def query_matches(haystack: str, query: str, *, manual_match: bool = False) -> b
     if not q_lower:
         return True
     if q_lower in haystack:
+        return True
+    terms = [term for term in q_lower.split() if term]
+    if len(terms) > 1 and all(term in haystack for term in terms):
         return True
 
     query_containers = [name for name in KNOWN_CONTAINERS if name.lower() in q_lower]
@@ -60,6 +65,27 @@ def item_tags(item: dict) -> list[str]:
     derived.extend(str(tag) for tag in item.get("topic_tags", []))
     derived.extend(str(tag) for tag in item.get("format_tags", []))
     return sorted(set(derived))
+
+
+def facet_terms(facet: dict | None) -> list[str]:
+    if not facet:
+        return []
+    terms = []
+    for key in [
+        "primary_topics",
+        "secondary_topics",
+        "experience_modes",
+        "participation_style",
+        "recommended_for",
+        "search_terms",
+    ]:
+        value = facet.get(key)
+        if isinstance(value, list):
+            terms.extend(str(item) for item in value)
+    for key in ["intensity", "social_density", "planning_role", "time_pattern", "venue_context", "route_note", "source_level"]:
+        if facet.get(key):
+            terms.append(str(facet[key]))
+    return terms
 
 
 def source_activity_ids(record: dict, query: str) -> list[str]:
@@ -104,6 +130,12 @@ def main() -> int:
     args = parser.parse_args()
 
     data = json.loads(INDEX.read_text(encoding="utf-8"))
+    activity_facets = {}
+    if ACTIVITY_FACETS.exists():
+        activity_facets = json.loads(ACTIVITY_FACETS.read_text(encoding="utf-8"))
+    article_facets = {}
+    if ARTICLE_FACETS.exists():
+        article_facets = json.loads(ARTICLE_FACETS.read_text(encoding="utf-8"))
     manual_ids = []
     if args.q and ARTICLE_ALIASES.exists():
         aliases = json.loads(ARTICLE_ALIASES.read_text(encoding="utf-8"))
@@ -123,6 +155,7 @@ def main() -> int:
             item.get("container", ""),
             item.get("location", ""),
             " ".join(item_tags(item)),
+            " ".join(facet_terms(activity_facets.get(activity_id))),
         ]).lower()
         if args.date and args.date != item.get("date"):
             continue
@@ -144,6 +177,11 @@ def main() -> int:
     for item in results[: args.limit]:
         print(f"{item['date']} {item['time']} | {item['container']} | {item['title']} | {item['location']}")
         print(f"  tags: {', '.join(item_tags(item))}")
+        facet = activity_facets.get(str(item.get("activity_id")))
+        if facet:
+            print(f"  profile: {', '.join(facet.get('experience_modes', []))} | {facet.get('intensity')} | {facet.get('social_density')}")
+            if facet.get("recommended_for"):
+                print(f"  for: {', '.join(facet.get('recommended_for', [])[:4])}")
         print(f"  summary: {item['summary']}")
         print(f"  url: {item['url']}")
 
@@ -163,6 +201,11 @@ def main() -> int:
                     unit.get("time_range", ""),
                     unit.get("location_hint", ""),
                     " ".join(unit.get("topic_tags", [])),
+                    " ".join(
+                        term
+                        for activity_id in unit.get("matched_activity_ids", [])
+                        for term in facet_terms(activity_facets.get(str(activity_id)))
+                    ),
                 ]).lower()
                 if not query_matches(unit_haystack, args.q):
                     continue
@@ -195,6 +238,7 @@ def main() -> int:
                     record.get("manual_summary", ""),
                     " ".join(str(term) for term in record.get("search_terms", [])),
                     " ".join(str(activity_id) for activity_id in source_activity_ids(record, args.q)),
+                    " ".join(facet_terms(article_facets.get(str(record.get("result_file"))))),
                 ]).lower()
                 if not query_matches(source_haystack, args.q):
                     continue
@@ -209,6 +253,9 @@ def main() -> int:
         )
         print(f"source | {record.get('title')}")
         print("  note: 已整理为 2050@2026 推荐线索")
+        source_facet = article_facets.get(str(record.get("result_file")))
+        if source_facet:
+            print(f"  role: {source_facet.get('source_role')} | {source_facet.get('route_use')}")
         if record.get("manual_summary"):
             print(f"  summary: {record.get('manual_summary')}")
         if record.get("article_url"):
