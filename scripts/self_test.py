@@ -345,9 +345,14 @@ def main() -> int:
         "区分事实和推荐判断",
         "用户想找人或合作时，要告诉他去哪里遇见人、适合用什么开场问题",
         "用户问交通、通行证、吃饭、地图时，先解决实际问题",
-        "他山世界/OpenClaw 是后台画像和身份通道，不是用户对话里的流程提示",
+        "默认先确保他山世界/OpenClaw 轻量身份通道可用",
+        "它是后台画像和身份前置，不是用户对话里的流程提示",
+        "也不是可随意跳过的推荐选项",
         "不要问用户“是否已接入”",
         "后台如果已经有画像标签，静默用于匹配",
+        "新会话、新安装或发现本地会话不可用时",
+        "默认先完成轻量接入",
+        "接入失败不阻塞首轮推荐",
         "如果用户没有给足标签，主动问 1-3 个最影响推荐的问题",
         "个性化路线也不要先谈后台接入",
     ]:
@@ -376,6 +381,10 @@ def main() -> int:
         "## 四、启动、刷新与认证",
         "npm install -g topiclab-cli --registry=https://registry.npmmirror.com",
         "npm update -g topiclab-cli --registry=https://registry.npmmirror.com",
+        "默认接入策略",
+        "默认先建立他山世界/OpenClaw 轻量身份通道",
+        "不要把它当成用户可选项",
+        "默认需要本机处理他山世界/OpenClaw 会话",
         "topiclab session ensure --base-url https://world.tashan.chat --bind-key <skill_link_key> --json",
         "curl -fsSL -X POST https://world.tashan.chat/api/v1/auth/openclaw-guest",
         "bootstrap_path",
@@ -393,6 +402,8 @@ def main() -> int:
         "不要把 `claim_token`、`bind_key` 或 `skill_path` 当作用户需要理解的内容",
         "不询问“是否已接入他山世界/OpenClaw”",
         "如果后台已有画像，直接用于推荐",
+        "默认使用本文件建立后台身份通道",
+        "普通推荐回答不展示命令、key 或接入状态",
     ]:
         if required_phrase not in bridge_text:
             fail(f"tashan_world_bridge.md missing OpenClaw auth guidance: {required_phrase}")
