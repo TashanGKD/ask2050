@@ -5,6 +5,7 @@
 ### 数据完整性
 
 - `scripts/self_test.py`: 本轮新增并通过，用于新挂载后自动验证核心索引、人工策展和别名检索。
+- 外部安装测试必须从 `https://github.com/TashanGKD/ask2050` 安装整个仓库；不要用 raw 单文件入口替代。
 - 默认 skill 包已移除 raw OCR markdown 与 full activity index，避免外部向量库默认检索到历史年份/OCR 错年内容。
 - `article_activity_crosswalk.json`: JSON 校验通过。
 - `manual/article_aliases.json`: JSON 校验通过。
