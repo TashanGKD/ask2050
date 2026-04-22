@@ -102,6 +102,7 @@ SEARCH_CASES = [
     {"name": "facet_solo_ai_booth", "q": "一个人也能参加 AI 展台", "include": {"12375"}},
     {"name": "natural_non_technical_art_relax", "q": "不懂AI 艺术 放松", "include": {"12221", "12378"}},
     {"name": "natural_hardware_soft_constraint", "q": "硬件 低强度 看展体验", "include": {"12375", "12446"}},
+    {"name": "natural_networking_hardware", "q": "我想找人合作 做AI硬件", "include": {"12375", "12446"}},
 ]
 
 RANKED_CASES = [
@@ -113,6 +114,7 @@ OUTPUT_CASES = [
     {"name": "article_unit_output", "q": "AI生成公共空间", "require": ["文章小节", "来源文章"], "forbid": ["unit |", "matched_activity_ids", "unknown"]},
     {"name": "activity_output_labels", "q": "WaytoAGI", "require": ["标签:", "推荐画像:", "来源:"], "forbid": ["tags:", "profile:", "summary:", "url:"]},
     {"name": "first_time_itinerary_has_forum", "q": "第一次来 2050 安排一天", "require": ["新生论坛", "热带雨林"], "forbid": ["source |", "matched_activity_ids"]},
+    {"name": "networking_query_has_connection_places", "q": "我想找人合作 做AI硬件", "require": ["探索空间", "推荐画像:"], "forbid": ["source |", "matched_activity_ids"]},
 ]
 
 UNIT_CASES = [
