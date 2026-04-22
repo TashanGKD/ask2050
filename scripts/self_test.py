@@ -267,18 +267,18 @@ def main() -> int:
     skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
     for required_phrase in [
         "scripts/search_activities.py",
-        "Do not paste helper output verbatim",
-        "Avoid loading large `by_topic` or `by_location` files wholesale",
-        "Main cognition anchor: at least one relevant 新生论坛",
-        "Do not omit 新生论坛 from a normal itinerary",
-        "First classify the user's real need",
-        "Act like an experienced 2050 companion",
-        "Separate facts from recommendation judgement",
-        "For networking needs, suggest where to meet people and what opening question to use",
-        "For logistics needs, answer the practical issue first",
+        "不要把脚本输出原样粘给用户",
+        "不要为了第一轮匹配整篇加载很大的 `by_topic` 或 `by_location` 文件",
+        "认知主线：至少安排一个相关的新生论坛",
+        "不要因为低压力活动更容易匹配，就在正常行程里省掉新生论坛",
+        "先判断用户真正要解决什么",
+        "要像一个熟悉 2050 的同伴",
+        "区分事实和推荐判断",
+        "用户想找人或合作时，要告诉他去哪里遇见人、适合用什么开场问题",
+        "用户问交通、通行证、吃饭、地图时，先解决实际问题",
     ]:
         if required_phrase not in skill_text:
-            fail(f"SKILL.md missing progressive loading guidance: {required_phrase}")
+            fail(f"SKILL.md missing service guidance: {required_phrase}")
 
     route_guidance_files = [
         MANUAL / "recommendation_layer.md",
