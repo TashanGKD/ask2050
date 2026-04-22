@@ -214,6 +214,10 @@ def main() -> int:
     source_years = {str(record.get("article_published_at", ""))[:4] for record in evidence.get("records", []) if record.get("article_published_at")}
     if source_years != {"2026"}:
         fail(f"article evidence should only use 2026 article publish years, got {sorted(source_years)}")
+    if any("search_text" in record for record in evidence.get("records", [])):
+        fail("article_evidence_index should not carry source body excerpts in search_text")
+    if any(not isinstance(record.get("search_terms"), list) for record in evidence.get("records", [])):
+        fail("article_evidence_index records must carry compact search_terms lists")
     if not isinstance(crosswalk, dict) or not crosswalk.get("records"):
         fail("article_activity_crosswalk.json must be an object with non-empty records")
     forbidden_full_index = REF / ("activity_index." + "full.json")

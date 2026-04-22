@@ -7,7 +7,7 @@
 | 活动主表 | `activity_index.min.json` | 推荐、时间、地点、活动 ID | 286 条活动全量纳入，作为推荐主事实 |
 | 文章索引 | `articles_index.json` | 公众号文章标题、链接、发布时间 | 文章列表索引，不等于正文 |
 | OCR/正文原料 | 不在默认 skill 包内 | 原文片段、图片 OCR、公众号补充信息 | 只作为源材料保留在生成工作区，避免进入默认向量检索造成历史年份和 OCR 错字污染 |
-| 信源台账 | `source_inventory.md`, `article_evidence_index.json` | 三个输入文件、82 份 markdown、OCR 批处理状态、人工补录状态 | 全量信源索引；不等于全文 OCR |
+| 信源台账 | `source_inventory.md`, `article_evidence_index.json` | 三个输入文件、82 份 markdown、OCR 批处理状态、人工补录状态 | 全量核心信源索引；不含正文摘录，不等于全文 OCR |
 | 文章到活动映射 | `article_activity_crosswalk.json` | 公众号 part/节目/报告到活动 ID 的人工映射 | seed 层，已覆盖重点文章，不宣称全量；其中 `source_ocr_file` 仅标记来源文件名 |
 | 人工策展 | `manual/article_curation.md`, `manual/article_aliases.json` | OCR 不足、标题错位、别名和人工判断 | 推荐时可用，但必须回查活动主表 |
 
@@ -31,6 +31,7 @@
 4. 别名查询先用 `manual/article_aliases.json` 找活动 ID，再回查 `activity_index.min.json`。
 5. 文章人工策展只提供“匹配线索和推荐口径”，不当作全文引用。
 6. 涉及文章内部 part 时，用 `article_activity_crosswalk.json`；没有匹配 ID 的 part 只能说“文章中出现过/需要进一步确认”。
+7. 原文层只在需要核对原文措辞时使用：优先打开 `article_url`，或回生成工作区查看 `data/incoming/results/results/*.md`；默认 skill 不加载正文片段。
 
 ## 重点边界
 

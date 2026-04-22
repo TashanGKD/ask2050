@@ -39,3 +39,9 @@
 - `records[].review_tier`: `ocr_batch_success`、`text_extracted_ocr_not_confirmed`、`low_text_manual_required`、`ocr_failed_manual_required` 等。
 - `records[].manual_reviewed`: 是否人工看过并补了推荐线索。
 - `records[].matched_activity_ids`: 可以回查活动主表的候选活动 ID。
+- `records[].search_terms`: 核心检索词，只放标题、人工摘要、别名和活动 ID；不放正文摘录。
+
+## 原文层
+
+- 安装后的 skill 不携带原始图片、raw OCR markdown 或公众号正文片段。
+- 需要核对原文措辞时，使用 `article_url` 回到公众号文章，或回到生成工作区的 `data/incoming/results/results/*.md`。这属于最深层证据，不应默认加载。

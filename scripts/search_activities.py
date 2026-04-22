@@ -15,6 +15,19 @@ CROSSWALK = ROOT / "references" / "article_activity_crosswalk.json"
 ARTICLE_EVIDENCE = ROOT / "references" / "article_evidence_index.json"
 
 
+def item_tags(item: dict) -> list[str]:
+    tags = item.get("recommendation_tags")
+    if tags:
+        return [str(tag) for tag in tags]
+    derived = []
+    for value in [item.get("date"), item.get("container")]:
+        if value:
+            derived.append(str(value))
+    derived.extend(str(tag) for tag in item.get("topic_tags", []))
+    derived.extend(str(tag) for tag in item.get("format_tags", []))
+    return sorted(set(derived))
+
+
 def source_activity_ids(record: dict, query: str) -> list[str]:
     q_lower = query.lower()
     weak_year_queries = {"2024", "2025", "2026"}
@@ -39,7 +52,7 @@ def filter_activity_ids(
         activity = activity_lookup.get(activity_id)
         if not activity:
             continue
-        if date and date not in activity.get("date_tags", []):
+        if date and date != activity.get("date"):
             continue
         if container and container not in activity.get("container", ""):
             continue
@@ -75,13 +88,14 @@ def main() -> int:
             item.get("summary", ""),
             item.get("container", ""),
             item.get("location", ""),
-            " ".join(item.get("recommendation_tags", [])),
+            " ".join(item_tags(item)),
         ]).lower()
-        if args.date and args.date not in item.get("date_tags", []):
+        if args.date and args.date != item.get("date"):
             continue
         if args.container and args.container not in item.get("container", ""):
             continue
-        if args.topic and not all(topic in item.get("recommendation_tags", []) for topic in args.topic):
+        tags = item_tags(item)
+        if args.topic and not all(topic in tags for topic in args.topic):
             continue
         manual_match = activity_id in manual_ids
         if args.q and args.q.lower() not in haystack and not manual_match:
@@ -95,7 +109,7 @@ def main() -> int:
 
     for item in results[: args.limit]:
         print(f"{item['date']} {item['time']} | {item['container']} | {item['title']} | {item['location']}")
-        print(f"  tags: {', '.join(item['recommendation_tags'])}")
+        print(f"  tags: {', '.join(item_tags(item))}")
         print(f"  summary: {item['summary']}")
         print(f"  url: {item['url']}")
 
@@ -145,7 +159,7 @@ def main() -> int:
                     record.get("title", ""),
                     record.get("article_csv_title") or "",
                     record.get("manual_summary", ""),
-                    record.get("search_text", ""),
+                    " ".join(str(term) for term in record.get("search_terms", [])),
                     " ".join(str(activity_id) for activity_id in source_activity_ids(record, args.q)),
                 ]).lower()
                 if q_lower not in source_haystack:

@@ -40,9 +40,13 @@ Load only what is needed:
 9. For location planning, load `references/by_location/<location_zone>.md`.
 10. For public-account article subparts, programs, talks, maps, or logistics, load `references/article_activity_crosswalk.json`; treat it as partial unless the record says otherwise.
 11. For public-account article/source lookup, load `references/article_evidence_index.json` before falling back to broad search. It contains all 82 markdown result files mapped back to 77 article links plus manual review status.
-12. Raw OCR text is not packaged in the default skill because it contains source noise and historical context. Use `references/evidence_status.md`, `references/source_inventory.md`, and `references/manual/article_curation.md` for OCR coverage state and human-checked recovery.
+12. Raw OCR text, source body excerpts, and original images are not packaged in the default skill because they contain source noise and historical context. Use `references/evidence_status.md`, `references/source_inventory.md`, and `references/manual/article_curation.md` for OCR coverage state and human-checked recovery.
 13. If an article is in the manual curation list, prefer `references/manual/article_curation.md` over the short OCR snippet, then verify exact schedule details from `activity_index.min.json`.
 14. For regression expectations and known edge cases, load `references/test_report.md`.
+
+## Deep evidence boundary
+
+Installed references are core extracted evidence. Do not load or quote original article text by default. If exact wording is required, use the article URL from `article_evidence_index.json` or the generation workspace source markdown as the deepest evidence layer, then return only the relevant facts.
 
 ## Mount validation
 
