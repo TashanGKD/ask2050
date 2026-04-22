@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REF = ROOT / "references"
 MANUAL = REF / "manual"
 SCRIPT = ROOT / "scripts" / "search_activities.py"
+SOURCE_CHANNELS_SCRIPT = ROOT / "scripts" / "source_channels.py"
 
 
 REQUIRED_FILES = [
@@ -29,6 +30,7 @@ REQUIRED_FILES = [
     MANUAL / "article_curation.md",
     MANUAL / "article_aliases.json",
     SCRIPT,
+    SOURCE_CHANNELS_SCRIPT,
 ]
 
 FORBIDDEN_REFERENCE_DOCS = {
@@ -276,9 +278,22 @@ def main() -> int:
         "区分事实和推荐判断",
         "用户想找人或合作时，要告诉他去哪里遇见人、适合用什么开场问题",
         "用户问交通、通行证、吃饭、地图时，先解决实际问题",
+        "他山世界/OpenClaw 轻量接入",
     ]:
         if required_phrase not in skill_text:
             fail(f"SKILL.md missing service guidance: {required_phrase}")
+
+    bridge_text = (REF / "tashan_world_bridge.md").read_text(encoding="utf-8")
+    for required_phrase in [
+        "topiclab session ensure --base-url https://world.tashan.chat --bind-key <skill_link_key> --json",
+        "curl -fsSL -X POST https://world.tashan.chat/api/v1/auth/openclaw-guest",
+        "bootstrap_path",
+        "skill_path",
+        "bind_key",
+        "临时账号升级",
+    ]:
+        if required_phrase not in bridge_text:
+            fail(f"tashan_world_bridge.md missing OpenClaw auth guidance: {required_phrase}")
 
     route_guidance_files = [
         MANUAL / "recommendation_layer.md",
@@ -506,6 +521,20 @@ def main() -> int:
         forbidden = [text for text in case["forbid"] if text in output]
         if forbidden:
             fail(f"output case {case['name']} leaked internal display text: {forbidden}")
+
+    source_channels = subprocess.run(
+        [sys.executable, str(SOURCE_CHANNELS_SCRIPT)],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if source_channels.returncode != 0:
+        fail(f"source_channels.py failed: {source_channels.stderr.strip()}")
+    for required_text in ["2050 官网活动页", "微信公众号文章", "本地抓取/OCR 结果", "后续更新顺序"]:
+        if required_text not in source_channels.stdout:
+            fail(f"source_channels.py output missing: {required_text}")
 
     for record in crosswalk.get("records", []):
         if record.get("article_url") not in ARTICLE_UNIT_COMPLETE_URLS:
