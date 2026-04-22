@@ -34,6 +34,16 @@ REQUIRED_FILES = [
     SCRIPT,
 ]
 
+ALLOWED_TOP_LEVEL = {
+    ".git",
+    ".gitignore",
+    "SKILL.md",
+    "agents",
+    "assets",
+    "references",
+    "scripts",
+}
+
 EXPECTED_ALIAS_IDS = {
     "YOLO": {"12224", "12251", "12276"},
     "AI芯片": {"12220"},
@@ -212,6 +222,12 @@ def first_activity_id_from_search(query: str) -> str | None:
 
 
 def main() -> int:
+    unexpected_top_level = sorted(
+        path.name for path in ROOT.iterdir() if path.name not in ALLOWED_TOP_LEVEL
+    )
+    if unexpected_top_level:
+        fail(f"unexpected top-level skill artifacts: {unexpected_top_level}")
+
     missing = [path.relative_to(ROOT).as_posix() for path in REQUIRED_FILES if not path.exists()]
     if missing:
         fail(f"missing required files: {', '.join(missing)}")
