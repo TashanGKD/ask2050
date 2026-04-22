@@ -58,6 +58,12 @@ def display_source_title(title: str | None) -> str:
         value = value.replace(old, new)
     return value.strip("｜| -")
 QUERY_ALIASES = {
+    "第一次来": ["第一次来2050的人", "低门槛", "新生论坛", "听报告", "热带雨林", "探索空间"],
+    "第一次去": ["第一次来2050的人", "低门槛", "新生论坛", "听报告", "热带雨林", "探索空间"],
+    "安排一天": ["新生论坛", "听报告", "系统学习者", "热带雨林", "探索空间", "找同伴"],
+    "一天路线": ["新生论坛", "听报告", "系统学习者", "热带雨林", "探索空间", "找同伴"],
+    "一天行程": ["新生论坛", "听报告", "系统学习者", "热带雨林", "探索空间", "找同伴"],
+    "帮我安排": ["新生论坛", "听报告", "系统学习者", "热带雨林", "探索空间", "找同伴"],
     "不懂ai": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
     "非技术": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
     "不是开发": ["非技术用户", "不懂AI也能参加的人", "低门槛"],
@@ -69,6 +75,14 @@ QUERY_ALIASES = {
     "晚上": ["夜间继续聊", "晚间活动"],
 }
 STOP_TERMS = {"我", "想", "要", "可以", "适合", "参加", "2050", "活动", "推荐", "一下", "看看"}
+
+
+def is_itinerary_query(query: str) -> bool:
+    q_lower = query.lower()
+    return any(
+        phrase in q_lower
+        for phrase in ["安排一天", "一天路线", "一天行程", "帮我安排", "行程", "路线"]
+    )
 
 
 def query_terms(query: str) -> list[str]:
@@ -146,6 +160,13 @@ def field_boost(item: dict, query: str) -> int:
             score += 4
         if term in container:
             score += 6
+    if is_itinerary_query(query):
+        if "新生论坛" in container:
+            score += 50
+        elif "探索空间" in container:
+            score += 24
+        elif "热带雨林" in container or "青年团聚" in container:
+            score += 18
     return score
 
 
@@ -241,6 +262,34 @@ def filter_activity_ids(
     return filtered
 
 
+def itinerary_reordered(results: list[tuple[int, dict]]) -> list[tuple[int, dict]]:
+    ordered = []
+    seen = set()
+
+    def take_first(predicate) -> None:
+        for score, item in results:
+            activity_id = str(item.get("activity_id", ""))
+            if activity_id in seen:
+                continue
+            if predicate(str(item.get("container", ""))):
+                seen.add(activity_id)
+                ordered.append((score, item))
+                return
+
+    take_first(lambda container: "新生论坛" in container)
+    take_first(lambda container: "热带雨林" in container or "青年团聚" in container)
+    take_first(lambda container: "探索空间" in container)
+    take_first(lambda container: "思想约会" in container)
+
+    for score, item in results:
+        activity_id = str(item.get("activity_id", ""))
+        if activity_id in seen:
+            continue
+        seen.add(activity_id)
+        ordered.append((score, item))
+    return ordered
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--date")
@@ -298,6 +347,8 @@ def main() -> int:
     activity_lookup = {str(item.get("activity_id")): item for item in data}
 
     results.sort(key=lambda pair: (-pair[0], pair[1].get("date", ""), pair[1].get("time", "")))
+    if is_itinerary_query(args.q):
+        results = itinerary_reordered(results)
 
     printed = 0
     for _, item in results[: args.limit]:

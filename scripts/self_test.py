@@ -112,6 +112,7 @@ OUTPUT_CASES = [
     {"name": "logistics_source_output", "q": "2050PASS 交通 餐饮", "require": ["文章线索", "公众号"], "forbid": ["source |", "matched_activity_ids", "@2025@2026"]},
     {"name": "article_unit_output", "q": "AI生成公共空间", "require": ["文章小节", "来源文章"], "forbid": ["unit |", "matched_activity_ids", "unknown"]},
     {"name": "activity_output_labels", "q": "WaytoAGI", "require": ["标签:", "推荐画像:", "来源:"], "forbid": ["tags:", "profile:", "summary:", "url:"]},
+    {"name": "first_time_itinerary_has_forum", "q": "第一次来 2050 安排一天", "require": ["新生论坛", "热带雨林"], "forbid": ["source |", "matched_activity_ids"]},
 ]
 
 UNIT_CASES = [
@@ -266,9 +267,27 @@ def main() -> int:
         "scripts/search_activities.py",
         "Do not paste helper output verbatim",
         "Avoid loading large `by_topic` or `by_location` files wholesale",
+        "Main cognition anchor: at least one relevant 新生论坛",
+        "Do not omit 新生论坛 from a normal itinerary",
+        "First classify the user's real need",
+        "Act like an experienced 2050 companion",
+        "Separate facts from recommendation judgement",
+        "For networking needs, suggest where to meet people and what opening question to use",
+        "For logistics needs, answer the practical issue first",
     ]:
         if required_phrase not in skill_text:
             fail(f"SKILL.md missing progressive loading guidance: {required_phrase}")
+
+    route_guidance_files = [
+        MANUAL / "recommendation_layer.md",
+        REF / "route_templates" / "first_time_visitor.md",
+        REF / "route_templates" / "hardware_robotics.md",
+        REF / "route_templates" / "low_energy_social.md",
+    ]
+    for path in route_guidance_files:
+        text = path.read_text(encoding="utf-8")
+        if "新生论坛" not in text:
+            fail(f"{path.relative_to(ROOT)} must mention 新生论坛 route anchoring")
 
     size_budgets = {
         REF / "activity_facets.json": 360_000,
