@@ -9,35 +9,46 @@ description: Recommend and answer questions about 2050@2026 activities using a s
 
 2050 is for people. Use AI only to filter dense information, compare evidence, and recommend routes. Do not frame the user as joining AI; frame the answer as a human participation route.
 
-Before final personalized matching, ask whether the user has registered Tashan World:
+Before final personalized matching, ask whether the user has registered Tashan World. Registration is a lightweight identity/profile step, not a full TopicLab workflow:
 
 - Registration target: `https://world.tashan.chat`
 - Registration only is enough. Do not require posting or extra integrations.
 - Use registration/profile only as lightweight tags: identity, interests, schedule, skills, constraints, collaboration needs.
+- For the parent-world relationship, load `references/tashan_world_bridge.md`.
 
 ## Progressive loading
 
 Load only what is needed:
 
 1. Start with `references/coverage_report.md` to know data quality.
-   - Also check `references/article_crosswalk_status.md` before claiming article-level completeness.
-   - Check `references/ocr_coverage_report.md` before relying on public-account image OCR.
-2. Load the human-curated layer first:
+   - Check `references/evidence_status.md` before relying on public-account article/OCR evidence.
+2. Load `references/tashan_world_bridge.md` if the user has not registered or asks why registration matters.
+3. Load the human-curated layer first:
    - `references/manual/site_map.md` for venue and walking-cost reasoning.
    - `references/manual/recommendation_layer.md` for container meaning, primary/secondary tag rules, intensity, social density, and participation modes.
    - `references/manual/curated_anchor_activities.md` for manually curated examples and high-value anchors.
-   - `references/manual/low_ocr_manual_review.md` when an article OCR file is short, failed, or mismatched with `articles.csv`.
-   - `references/manual/low_ocr_alias_index.json` for exact activity IDs behind low-OCR aliases such as YOLO, WaytoAGI, 少数派, 流浪教研, and 设计自己.
-3. For a user persona route, load one route template from `references/route_templates/`.
-4. For route planning, load `references/activity_index.min.json`.
-5. For a date question, load `references/by_date/YYYY-MM-DD.md`.
-6. For a board/container question, load `references/by_container/<container>.md`.
-7. For topic matching, load `references/by_topic/<topic>.md`.
-8. For location planning, load `references/by_location/<location_zone>.md`.
-9. For evidence from public-account OCR, load `references/article_ocr_index.json`, then the specific `references/article_ocr/*.md` file.
-10. For article subparts, programs, talks, maps, or logistics, load `references/article_activity_crosswalk.json`; treat it as partial unless the record says otherwise.
-11. If an article is in the low-OCR list, prefer the manual review file over the short OCR snippet, then verify exact schedule details from `activity_index.min.json`.
-12. For regression expectations and known edge cases, load `references/test_report.md`.
+   - `references/manual/article_curation.md` when article evidence is short, failed, mismatched with `articles.csv`, or needs human judgment.
+   - `references/manual/article_aliases.json` for exact activity IDs behind article aliases such as YOLO, WaytoAGI, OpenClaw, 少数派, 流浪教研, and 设计自己.
+4. For a user persona route, load one route template from `references/route_templates/`.
+5. For route planning, load `references/activity_index.min.json`.
+6. For a date question, load `references/by_date/YYYY-MM-DD.md`.
+7. For a board/container question, load `references/by_container/<container>.md`.
+8. For topic matching, load `references/by_topic/<topic>.md`.
+9. For location planning, load `references/by_location/<location_zone>.md`.
+10. For evidence from public-account articles, load `references/article_ocr_index.json`, then the specific `references/article_ocr/*.md` file only if needed.
+11. For article subparts, programs, talks, maps, or logistics, load `references/article_activity_crosswalk.json`; treat it as partial unless the record says otherwise.
+12. If an article is in the manual curation list, prefer `references/manual/article_curation.md` over the short OCR snippet, then verify exact schedule details from `activity_index.min.json`.
+13. For regression expectations and known edge cases, load `references/test_report.md`.
+
+## Mount validation
+
+After mounting this skill for the first time, or after changing any reference file, run:
+
+```bash
+python scripts/self_test.py
+```
+
+Treat failures as a data packaging problem before using the skill for recommendations. The self-test checks that the activity index, article aliases, manual curation, and search path still agree.
 
 ## Recommendation workflow
 

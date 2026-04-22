@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "references" / "activity_index.min.json"
-LOW_OCR_ALIASES = ROOT / "references" / "manual" / "low_ocr_alias_index.json"
+ARTICLE_ALIASES = ROOT / "references" / "manual" / "article_aliases.json"
 
 
 def main() -> int:
@@ -24,8 +24,8 @@ def main() -> int:
 
     data = json.loads(INDEX.read_text(encoding="utf-8"))
     manual_ids = []
-    if args.q and LOW_OCR_ALIASES.exists():
-        aliases = json.loads(LOW_OCR_ALIASES.read_text(encoding="utf-8"))
+    if args.q and ARTICLE_ALIASES.exists():
+        aliases = json.loads(ARTICLE_ALIASES.read_text(encoding="utf-8"))
         q_lower = args.q.lower()
         for alias, ids in aliases.items():
             if q_lower in alias.lower() or alias.lower() in q_lower:

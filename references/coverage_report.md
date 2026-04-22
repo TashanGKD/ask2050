@@ -1,7 +1,7 @@
 # ask2050 覆盖率与标签评估
 
 > 口径说明：本报告评估的是 `activities.csv` 的活动行级覆盖，不等于公众号文章/OCR 图片中的每个小节、节目、报告都已经完成结构化映射。
-> 公众号文章粒度请同时查看 `references/article_crosswalk_status.md`。
+> 公众号文章和 OCR 证据粒度请同时查看 `references/evidence_status.md`。
 
 - 活动/报告级记录总数: **286**
 - 基础字段完整: **286/286** (100.0%)
@@ -14,7 +14,7 @@
 - 未完成项: 公众号文章内的 part / 节目 / 单个报告到 `activity_id` 或独立知识条目的人工 crosswalk。
 - OCR 批处理状态: **12/82 成功，1/82 失败，69/82 跳过，70/82 未显示本批成功**；不可声称全部图片已 OCR。
 - OCR 优先补缺项: **12** 个，包括 11 个少于 300 字的 markdown 和 1 个批处理失败项。
-- OCR 优先补缺项已人工判读并补入 `references/manual/low_ocr_manual_review.md`；仍不等于全文 OCR。
+- OCR 优先补缺项已人工判读并补入 `references/manual/article_curation.md`；仍不等于全文 OCR。
 
 ## 按板块覆盖
 - 新生论坛: 96 条；丰富内容 90/96；主题标签 96/96

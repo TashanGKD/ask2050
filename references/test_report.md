@@ -4,11 +4,12 @@
 
 ### 数据完整性
 
+- `scripts/self_test.py`: 本轮新增并通过，用于新挂载后自动验证核心索引、人工策展和别名检索。
 - `article_activity_crosswalk.json`: JSON 校验通过。
-- `low_ocr_alias_index.json`: JSON 校验通过。
-- `low_ocr_manual_review.md` 中引用的 28 个 `activity_id` 均存在于 `activity_index.min.json`。
+- `manual/article_aliases.json`: JSON 校验通过。
+- `manual/article_curation.md` 中引用的 28 个 `activity_id` 均存在于 `activity_index.min.json`。
 
-### 低 OCR 人工补录命中
+### 文章人工策展命中
 
 - `少数派` 命中:
   - `12540` 少数派的造物者们
@@ -49,6 +50,6 @@
 ## 当前测试结论
 
 - 主活动表检索可用。
-- 低 OCR 人工补录可通过别名索引进入测试路径。
+- 文章人工策展可通过别名索引进入测试路径。
 - 已避免 `041.md` 中 AI 芯片标题与 YOLO/百城味道正文混淆。
-- 推荐回答仍应遵循 skill 规则: 先询问是否注册他山世界；低 OCR 条目只作为人工判读线索，准确时间地点必须回查 `activity_index.min.json`。
+- 推荐回答仍应遵循 skill 规则: 先询问是否注册他山世界；文章人工策展只作为人工判读线索，准确时间地点必须回查 `activity_index.min.json`。
