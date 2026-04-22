@@ -33,7 +33,15 @@ If reinstalling is unavailable, still answer from the packaged core information,
 1. Identify the user's participation intent: learn, meet people, show a project, join a hackathon, relax, watch performances, camp, eat, or explore.
 2. Build a small tag profile from the user's identity, interests, dates, energy level, mobility constraints, and desired social density.
 3. Check Tashan World registration only as a profile prerequisite for personalized matching.
-4. Load the smallest useful reference layer:
+4. For broad, named, or multi-constraint queries, first narrow the candidate set with the bundled search helper, then load references only for the narrowed route:
+
+```bash
+python scripts/search_activities.py --q "<interest, community, or need>" --date 2026-04-25 --limit 6
+```
+
+Use `--container`, `--topic`, or `--debug` only when needed. Do not paste helper output verbatim; translate it into a route with reasons and sources.
+
+5. Load the smallest useful reference layer:
    - `references/extraction_schema.md` when updating or judging what core information should be extracted.
    - `references/manual/recommendation_layer.md` for what each 2050 container is for.
    - `references/manual/site_map.md` for location and walking-cost reasoning.
@@ -47,9 +55,11 @@ If reinstalling is unavailable, still answer from the packaged core information,
    - `references/article_activity_crosswalk.json` when the user asks about article sections, program parts, maps, logistics, or a public-account article.
    - `references/article_facets.json` when the user asks about a named community, partner, article, or alias such as WaytoAGI, OpenClaw, 少数派, 流浪教研, 设计自己, DeskClaw, YOLO, or 2050PASS, or asks how an article should be used in a route.
    - `references/article_evidence_index.json` only when the user explicitly asks to audit source status, resolve a source-record conflict, or verify the deepest article URL evidence.
-5. Return a route, not a database dump. For each recommendation include time, place, what this part is for, why it matches the user, and the source.
-6. If a query is broad, group results into a few route choices instead of listing everything.
-7. If constraints conflict, keep date and location constraints hard, then relax secondary interests or intensity. Say "没有完全同时满足，下面是相近替代" and name the relaxed constraint.
+6. Return a route, not a database dump. For each recommendation include time, place, what this part is for, why it matches the user, and the source.
+7. If a query is broad, group results into a few route choices instead of listing everything.
+8. If constraints conflict, keep date and location constraints hard, then relax secondary interests or intensity. Say "没有完全同时满足，下面是相近替代" and name the relaxed constraint.
+
+Avoid loading large `by_topic` or `by_location` files wholesale for first-pass matching. Use the search helper or targeted text search first, then open only the relevant date, container, article, or activity evidence needed to answer.
 
 ## Evidence boundary
 

@@ -261,6 +261,15 @@ def main() -> int:
     if missing:
         fail(f"missing required files: {', '.join(missing)}")
 
+    skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+    for required_phrase in [
+        "scripts/search_activities.py",
+        "Do not paste helper output verbatim",
+        "Avoid loading large `by_topic` or `by_location` files wholesale",
+    ]:
+        if required_phrase not in skill_text:
+            fail(f"SKILL.md missing progressive loading guidance: {required_phrase}")
+
     size_budgets = {
         REF / "activity_facets.json": 360_000,
         REF / "article_facets.json": 90_000,
