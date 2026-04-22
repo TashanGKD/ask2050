@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REF = ROOT / "references"
 MANUAL = REF / "manual"
 SCRIPT = ROOT / "scripts" / "search_activities.py"
+PLAN_SCRIPT = ROOT / "scripts" / "plan_itinerary.py"
 SOURCE_CHANNELS_SCRIPT = ROOT / "scripts" / "source_channels.py"
 
 
@@ -30,6 +31,7 @@ REQUIRED_FILES = [
     MANUAL / "article_curation.md",
     MANUAL / "article_aliases.json",
     SCRIPT,
+    PLAN_SCRIPT,
     SOURCE_CHANNELS_SCRIPT,
 ]
 
@@ -119,6 +121,11 @@ OUTPUT_CASES = [
     {"name": "evening_itinerary_keeps_forum_anchor", "q": "晚上 放松 露营 音乐 2050 安排一天", "require": ["新生论坛", "星空露营"], "forbid": ["source |", "matched_activity_ids"]},
     {"name": "networking_query_has_connection_places", "q": "我想找人合作 做AI硬件", "require": ["探索空间", "推荐画像:"], "forbid": ["source |", "matched_activity_ids"]},
 ]
+
+ITINERARY_PROFILE = (
+    "身份 AI4S科研博士生 背景 天文学 AI交叉 兴趣 科普科教 开源技术 "
+    "社区运营 哲学思考 偏好 深度讨论 小团体交流 有动手体验"
+)
 
 UNIT_CASES = [
     {"name": "painting_truth_unit", "q": "绘画的真理", "min_units": 1},
@@ -276,6 +283,11 @@ def main() -> int:
         "不要因为低压力活动更容易匹配，就在正常行程里省掉新生论坛",
         "路线里都先找一个相关新生论坛做认知锚点",
         "好的 2050 路线要有节奏",
+        "行程规划必须先过这些硬约束",
+        "同一时间只能有一个主去处",
+        "官方只给总场馆时，不要编厅号",
+        "不要无故把晨读、晨跑、露营等轻活动塞进路线",
+        "python scripts/plan_itinerary.py",
         "低能量用户，不是删除新生论坛，而是降低强度",
         "先判断用户真正要解决什么",
         "要像一个熟悉 2050 的同伴",
@@ -343,6 +355,8 @@ def main() -> int:
             for required_phrase in [
                 "低能量不是删除论坛的理由",
                 "短听、可提前离场、只听最相关一场",
+                "主时间线必须无重叠",
+                "地点精度优先",
             ]:
                 if required_phrase not in text:
                     fail(f"{path.relative_to(ROOT)} missing forum intensity guidance: {required_phrase}")
@@ -562,6 +576,46 @@ def main() -> int:
         forbidden = [text for text in case["forbid"] if text in output]
         if forbidden:
             fail(f"output case {case['name']} leaked internal display text: {forbidden}")
+
+    itinerary = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", ITINERARY_PROFILE, "--date", "2026-04-25", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if itinerary.returncode != 0:
+        fail(f"plan_itinerary.py failed: {itinerary.stderr.strip() or itinerary.stdout.strip()}")
+    try:
+        plan = json.loads(itinerary.stdout)
+    except json.JSONDecodeError as exc:
+        fail(f"plan_itinerary.py did not return valid JSON: {exc}")
+    plan_text = json.dumps(plan, ensure_ascii=False)
+    for required_text in ["AI4Science 专场", "把AI装进硬件里", "太空时代开启", "suggested_window", "official_time"]:
+        if required_text not in plan_text:
+            fail(f"plan_itinerary.py output missing expected route element: {required_text}")
+    for forbidden_text in ["晨读", "带上喜欢的文字"]:
+        if forbidden_text in plan_text:
+            fail(f"plan_itinerary.py added unrelated low-energy starter: {forbidden_text}")
+    windows: list[tuple[int, int]] = []
+    for item in plan.get("items", []):
+        window = str(item.get("suggested_window", ""))
+        match = re.match(r"(\d{2}):(\d{2})-(\d{2}):(\d{2})$", window)
+        if not match:
+            fail(f"plan_itinerary.py invalid suggested_window: {window}")
+        start = int(match.group(1)) * 60 + int(match.group(2))
+        end = int(match.group(3)) * 60 + int(match.group(4))
+        if end <= start:
+            fail(f"plan_itinerary.py non-positive window: {window}")
+        if any(start < other_end and other_start < end for other_start, other_end in windows):
+            fail(f"plan_itinerary.py has overlapping main route window: {window}")
+        windows.append((start, end))
+        location = str(item.get("location", ""))
+        if location in {"云栖小镇国际会展中心", "云栖小镇"}:
+            fail(f"plan_itinerary.py kept generic location without caveat: {item.get('title')}")
+    if not any(item.get("container") == "新生论坛" for item in plan.get("items", [])):
+        fail("plan_itinerary.py route lacks forum anchor")
 
     source_channels = subprocess.run(
         [sys.executable, str(SOURCE_CHANNELS_SCRIPT)],
