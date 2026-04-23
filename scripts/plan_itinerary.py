@@ -52,6 +52,7 @@ PROFILE_ALIASES = {
     "不想跨区": ["少走路", "同区"],
     "效率": ["高密度", "最多", "效率优先"],
     "最多": ["高密度", "效率优先"],
+    "半天": ["半天", "只排半天"],
     "睡觉": ["休息", "不想参加", "低意愿"],
     "躺平": ["休息", "不想参加", "低意愿"],
 }
@@ -69,6 +70,9 @@ INTENT_KEYWORDS = {
     "max_density": ["效率优先", "参加最多", "高密度", "尽量多", "最多"],
     "morning_person": ["晨型", "早起", "上午优先", "晨读"],
     "early_sleep": ["早睡", "晚上回酒店", "不想太晚", "不熬夜"],
+    "half_day": ["半天", "只排半天", "半日"],
+    "morning_only": ["上午优先", "只排上午", "上午可参加", "上午半天"],
+    "afternoon_only": ["下午优先", "只排下午", "下午可参加", "下午半天"],
 }
 
 ZONE_ORDER = {"D区": 0, "C区": 1, "B区": 2, "A区": 3, "户外": 4, "未知": 5}
@@ -76,6 +80,7 @@ EVENING_TERMS = ["晚上", "夜间", "露营", "音乐", "舞台", "放松收尾
 HARDWARE_TERMS = ["硬件", "机器人", "芯片", "具身", "制造", "openclaw", "物理外挂", "maker"]
 COMMUNITY_TERMS = ["社区", "社群", "共创", "合作", "waytoagi", "builder", "开源", "找同伴"]
 STRONG_COMMUNITY_TERMS = ["社区", "社群", "合作", "waytoagi", "builder", "开源", "找同伴"]
+ROMANCE_TERMS = ["说媒", "相亲", "恋爱", "婚恋"]
 
 
 def load_json(path: Path):
@@ -131,6 +136,25 @@ def profile_intents(profile: str, terms: list[str]) -> set[str]:
 def has_explicit_evening_preference(profile: str, terms: list[str]) -> bool:
     text = f"{profile.lower()} {' '.join(terms)}"
     return contains_any(text, EVENING_TERMS)
+
+
+def has_forum_anchor(plan: dict) -> bool:
+    return any(item.get("container") == "新生论坛" for item in plan.get("items", []))
+
+
+def forum_anchor_is_optional(profile: str, date: str, intents: set[str]) -> bool:
+    if date != "2026-04-24":
+        return False
+    if not ({"low_energy", "early_sleep", "morning_person", "half_day", "morning_only", "afternoon_only"} & intents):
+        return False
+    activities = load_json(REF / "activity_index.min.json")
+    forum_windows = [
+        parse_time_range(str(item.get("time", "")))
+        for item in activities
+        if item.get("date") == date and item.get("container") == "新生论坛"
+    ]
+    forum_windows = [window for window in forum_windows if window]
+    return bool(forum_windows) and all(window[0] >= 19 * 60 for window in forum_windows)
 
 
 def contains_any(text: str, keywords: list[str]) -> bool:
@@ -219,7 +243,7 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
         if term in text:
             score += 7
     if role == "forum" and container == "新生论坛":
-        score += 35
+        score += 70
     if role == "practice" and container in {"探索空间", "热带雨林"}:
         score += 25
     if role == "bridge" and container in {"探索空间", "热带雨林"}:
@@ -281,6 +305,8 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
         score += 35
     if role == "practice" and "arts" not in intents and contains_any(title, ["音乐", "舞蹈", "混音", "声音橡皮泥"]):
         score -= 85
+    if contains_any(title, ROMANCE_TERMS) and not contains_any(" ".join(terms), ROMANCE_TERMS + ["找对象", "情感"]):
+        score -= 180
     if "no_participation" in intents:
         if facet and facet.get("intensity") == "low":
             score += 25
@@ -295,6 +321,11 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
             score += 25
         if "户外" == location_zone(str(item.get("location", ""))):
             score -= 35
+        if facet and facet.get("intensity") == "high":
+            score -= 170
+        official = parse_time_range(str(item.get("time", "")))
+        if official and official[1] - official[0] > 180 and role != "forum":
+            score -= 80
     if "morning_person" in intents and role == "social":
         if contains_any(text, ["晨读", "早晨", "上午", "07:00", "08:00"]):
             score += 90
@@ -590,10 +621,16 @@ def build_plan(profile: str, date: str) -> dict:
             slots = [slot for slot in slots if slot[1] != "evening"]
         if "low_energy" in intents and not wants_evening:
             slots = [slot for slot in slots if slot[1] != "evening"]
+        if "half_day" in intents and not wants_evening:
+            slots = [slot for slot in slots if slot[1] != "evening"]
         if "max_density" in intents:
             slots.insert(1, ("午间桥接", "bridge", {"探索空间", "热带雨林"}, "效率优先时用短窗口补一个同主题项目，避免上午主线后空档过长。"))
             slots.insert(3, ("补充体验", "practice", {"探索空间", "热带雨林", "青年团聚"}, "效率优先时增加一个不重叠的短窗口。"))
         max_items = 6 if "max_density" in intents else 2 if "mobility_limited" in intents else 4
+        if "half_day" in intents:
+            max_items = min(max_items, 3)
+        if "low_energy" in intents:
+            max_items = min(max_items, 3)
     for label, role, containers, reason in slots:
         if len(rows) >= max_items:
             break
@@ -618,6 +655,20 @@ def build_plan(profile: str, date: str) -> dict:
                 continue
             if window[0] < 9 * 60 and "morning_person" not in intents:
                 continue
+            if label == "晨间入口" and window[0] >= 9 * 60:
+                continue
+            if "morning_only" in intents and window[0] >= 13 * 60:
+                continue
+            if "afternoon_only" in intents and window[1] <= 12 * 60:
+                continue
+            if "half_day" in intents and window[0] >= 18 * 60 and not wants_evening:
+                continue
+            if window[1] > 19 * 60 and not wants_evening and not (role == "forum" and date == "2026-04-24"):
+                continue
+            if "half_day" in intents and occupied:
+                first_start = min(start for start, _ in occupied)
+                if window[0] - first_start > 240 or window[1] - first_start > 300:
+                    continue
             adjusted_score = base_score
             if session:
                 adjusted_score += 8
@@ -649,6 +700,11 @@ def build_plan(profile: str, date: str) -> dict:
                     adjusted_score -= 140
                 if window[0] >= 19 * 60 and not wants_evening:
                     adjusted_score -= 320
+            if "mobility_limited" in intents:
+                if facet.get("intensity") == "high":
+                    adjusted_score -= 260
+                if role == "practice" and str(item.get("time", "")).endswith("15:30"):
+                    adjusted_score -= 120
             if "hardware" in intents and role in {"bridge", "practice"} and not contains_any(
                 direct_text,
                 HARDWARE_TERMS,
@@ -718,13 +774,23 @@ def build_plan(profile: str, date: str) -> dict:
     for row in rows:
         row["move_note"] = transition_note(previous, row)
         previous = row
+    advice = []
+    if not rows and "no_participation" not in intents:
+        advice.append("当前日期和画像约束下没有合适主线；建议放宽到下午/晚上、减少主题限制，或换到 4/25、4/26 再排。")
+    if rows and not any(row.get("container") == "新生论坛" for row in rows) and forum_anchor_is_optional(profile, date, intents):
+        advice.append("这一天可用的新生论坛主线在晚间；你给出的画像更偏低强度/半天/早睡，所以先不硬塞，若晚上仍有精力可把 AI 小酒馆作为备选。")
+    if "half_day" in intents:
+        advice.append("你说只能半天参加，主线会控制在相邻时间段内；晚间和跨度过大的活动默认不进主线。")
     plan = {"date": date, "profile": profile, "intents": sorted(intents), "items": rows}
+    if advice:
+        plan["advice"] = advice
     PLAN_CACHE[cache_key] = plan
     return clone_json(plan)
 
 
 def validate_plan(plan: dict) -> list[str]:
     errors = []
+    intents = set(plan.get("intents", []))
     windows = []
     for item in plan["items"]:
         parsed = parse_time_range(item["suggested_window"])
@@ -736,7 +802,11 @@ def validate_plan(plan: dict) -> list[str]:
         windows.append(parsed)
         if item["location"] in {"云栖小镇国际会展中心", "云栖小镇"}:
             errors.append(f"地点不够具体且没有说明需复核: {item['title']}")
-    if "no_participation" not in set(plan.get("intents", [])) and not any(item["container"] == "新生论坛" for item in plan["items"]):
+    if "no_participation" not in intents and not has_forum_anchor(plan) and not forum_anchor_is_optional(
+        str(plan.get("profile", "")),
+        str(plan.get("date", "")),
+        intents,
+    ):
         errors.append("缺少新生论坛认知主线")
     return errors
 

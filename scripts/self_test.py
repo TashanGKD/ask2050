@@ -893,6 +893,7 @@ def main() -> int:
             "profile": ITINERARY_PROFILE,
             "topic_keywords": ["ai4science", "agi4science", "科学", "科研", "物理", "数学"],
             "min_topic_items": 1,
+            "forbid": ["2050说媒", "OPC Night"],
         },
         "education": {
             "profile": "第一次来2050 喜欢教育 科普 社区运营 小团体交流",
@@ -1027,6 +1028,57 @@ def main() -> int:
             fail(f"plan_itinerary.py low-energy route should not schedule evening item without explicit evening preference: {item.get('suggested_window')}")
     if any(item_contains_any(item, ["离谱村音乐会", "壁画动次大次", "三周年庆生"]) for item in low_energy_plan.get("items", [])):
         fail("plan_itinerary.py low-energy route should not use unrelated entertainment as filler")
+    low_energy_0424 = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", "第一次来2050 设计师 AI创作 影像艺术 想轻松认识人 不想太累", "--date", "2026-04-24", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if low_energy_0424.returncode != 0:
+        fail(f"plan_itinerary.py 4/24 low-energy profile should not fail just because the only forum is late: {low_energy_0424.stderr.strip() or low_energy_0424.stdout.strip()}")
+    low_energy_0424_plan = json.loads(low_energy_0424.stdout)
+    if not low_energy_0424_plan.get("advice") or "晚间" not in json.dumps(low_energy_0424_plan.get("advice"), ensure_ascii=False):
+        fail("plan_itinerary.py 4/24 low-energy route should explain that the available forum anchor is late")
+    if any(item.get("container") == "新生论坛" for item in low_energy_0424_plan.get("items", [])):
+        fail("plan_itinerary.py should not force the 4/24 late forum into a low-energy route")
+    half_day = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", "高校老师 科普教育 课程设计 青少年 创客 社区运营 半天可参加", "--date", "2026-04-25", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if half_day.returncode != 0:
+        fail(f"plan_itinerary.py half-day profile failed: {half_day.stderr.strip() or half_day.stdout.strip()}")
+    half_day_plan = json.loads(half_day.stdout)
+    half_day_windows = []
+    for item in half_day_plan.get("items", []):
+        match = re.match(r"(\d{2}):(\d{2})-(\d{2}):(\d{2})$", str(item.get("suggested_window", "")))
+        if not match:
+            fail(f"plan_itinerary.py half-day route has invalid window: {item.get('suggested_window')}")
+        half_day_windows.append((int(match.group(1)) * 60 + int(match.group(2)), int(match.group(3)) * 60 + int(match.group(4))))
+    if half_day_windows and max(end for _, end in half_day_windows) - min(start for start, _ in half_day_windows) > 300:
+        fail("plan_itinerary.py half-day route spans too much of the day")
+    if any(start >= 19 * 60 for start, _ in half_day_windows):
+        fail("plan_itinerary.py half-day route should not include evening without explicit evening preference")
+    morning_soft_afternoon = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", "晨型 早起 科普教育 想上午优先 下午轻松", "--date", "2026-04-25", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if morning_soft_afternoon.returncode != 0:
+        fail(f"plan_itinerary.py morning profile with soft afternoon text failed: {morning_soft_afternoon.stderr.strip() or morning_soft_afternoon.stdout.strip()}")
+    morning_soft_plan = json.loads(morning_soft_afternoon.stdout)
+    if "afternoon_only" in set(morning_soft_plan.get("intents", [])):
+        fail("plan_itinerary.py should not treat casual '下午轻松' as an afternoon-only constraint")
+    if "晨读" not in json.dumps(morning_soft_plan, ensure_ascii=False):
+        fail("plan_itinerary.py morning profile should still use morning slot when the user also says afternoon can be light")
     mobility_philosophy_profile = "行动不便 不想跨区 少走路 哲学 人文 深聊"
     completed = subprocess.run(
         [sys.executable, str(PLAN_SCRIPT), "--profile", mobility_philosophy_profile, "--date", "2026-04-25", "--json"],
