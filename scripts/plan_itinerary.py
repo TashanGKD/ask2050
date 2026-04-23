@@ -157,6 +157,8 @@ def transition_note(previous: dict | None, current: dict) -> str:
         prev_end = curr_start = 0
     if curr_start - prev_end >= 45:
         return f"中间有 {curr_start - prev_end} 分钟缓冲，可休息、吃饭或提前找入口。"
+    if 0 <= curr_start - prev_end < 10:
+        return "两站衔接很紧，建议上一站提前 5-10 分钟离场；做不到就把后一站作为备选。"
     depart = prev_window.split("-")[-1] if "-" in prev_window else "上一站结束后"
     return f"从上一站约 {minutes_needed} 分钟；建议 {depart} 左右出发。"
 
@@ -201,6 +203,8 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
         score += 35
     if role == "practice" and container in {"探索空间", "热带雨林"}:
         score += 25
+    if role == "bridge" and container in {"探索空间", "热带雨林"}:
+        score += 22
     if role == "deep_talk" and container in {"思想约会", "星空露营"}:
         score += 25
     if role == "social" and container in {"青年团聚", "热带雨林", "探索空间"}:
@@ -209,6 +213,11 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
         score += 30
     if role == "practice" and facet and "动手工作坊" in facet.get("experience_modes", []):
         score += 14
+    if role == "bridge" and facet:
+        if "动手工作坊" in facet.get("experience_modes", []):
+            score += 18
+        if facet.get("intensity") == "low":
+            score += 10
     if role == "forum" and "ai4science" in text:
         score += 130 if "research_science" in intents or "ai4science" in terms else -25
     if role == "forum" and "hardware" in intents and contains_any(text, ["硬件", "机器人", "芯片", "具身", "制造", "robotics-hardware"]):
@@ -237,6 +246,8 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
         score += 25
     if role == "practice" and ("硬件" in text or "动手" in text):
         score += 35
+    if role == "bridge" and ("硬件" in text or "动手" in text or "demo" in text or "展示" in text):
+        score += 28
     if role == "practice" and facet and "动手工作坊" in facet.get("experience_modes", []):
         score += 35
     if role == "practice" and "education" in intents and contains_any(text, ["课程", "学习", "教育", "科普", "提问"]):
@@ -265,7 +276,7 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
             score += 25
         if "户外" == location_zone(str(item.get("location", ""))):
             score -= 35
-    if "morning_person" in intents and role in {"forum", "practice", "deep_talk"}:
+    if "morning_person" in intents and role == "social":
         if contains_any(text, ["晨读", "早晨", "上午", "07:00", "08:00"]):
             score += 90
     if role == "deep_talk" and "philosophy" in intents and contains_any(text, ["哲学", "思想", "人文", "社会", "观点"]):
@@ -281,7 +292,7 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
     if role == "evening" and "education" in intents and contains_any(text, ["少年", "梦想", "教育", "学习"]):
         score += 35
     official = parse_time_range(str(item.get("time", "")))
-    if official and "morning_person" in intents and official[0] < 9 * 60:
+    if official and "morning_person" in intents and role == "social" and official[0] < 9 * 60:
         score += 100
     if official and "early_sleep" in intents and official[0] >= 19 * 60:
         score -= 220
@@ -300,6 +311,12 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
         score += 25
     if role == "practice" and ("教育" in terms or "科普" in terms or "科教" in terms) and ("课程" in text or "学习" in text):
         score += 20
+    if role == "bridge" and official:
+        duration = official[1] - official[0]
+        if duration <= 90:
+            score += 35
+        elif duration > 180:
+            score += 12
     space_profile = "research_science" in intents and any(term in terms for term in ["太空", "宇宙", "地外文明", "天文学"])
     if role in {"deep_talk", "evening"} and space_profile and ("太空" in text or "地外文明" in text or "宇宙" in text):
         score += 55
@@ -390,7 +407,7 @@ def location_note(location: str) -> str:
     return f"{value}（官方地点仅到总场馆，入场前复核厅/展位）"
 
 
-def ranked_choices(
+def scored_choices(
     activities: list[dict],
     facets: dict,
     *,
@@ -400,7 +417,7 @@ def ranked_choices(
     containers: set[str],
     exclude_ids: set[str],
     intents: set[str] | None = None,
-) -> list[dict]:
+) -> list[tuple[int, dict]]:
     intents = intents or set()
     candidates = []
     for item in activities:
@@ -417,6 +434,30 @@ def ranked_choices(
             continue
         candidates.append((score, item))
     candidates.sort(key=lambda pair: (-pair[0], pair[1].get("time", ""), pair[1].get("title", "")))
+    return candidates
+
+
+def ranked_choices(
+    activities: list[dict],
+    facets: dict,
+    *,
+    date: str,
+    terms: list[str],
+    role: str,
+    containers: set[str],
+    exclude_ids: set[str],
+    intents: set[str] | None = None,
+) -> list[dict]:
+    candidates = scored_choices(
+        activities,
+        facets,
+        date=date,
+        terms=terms,
+        role=role,
+        containers=containers,
+        exclude_ids=exclude_ids,
+        intents=intents,
+    )
     return [item for _, item in candidates]
 
 
@@ -453,6 +494,7 @@ def planned_window(item: dict, role: str, occupied: list[tuple[int, int]]) -> tu
     if item.get("container") in LONG_WINDOW_CONTAINERS and duration > 90:
         role_windows = {
             "forum": [(start, min(start + 120, end)), (start + 60, min(start + 180, end))],
+            "bridge": [(max(start, 11 * 60), min(max(start, 11 * 60) + 45, end)), (max(start, 12 * 60), min(max(start, 12 * 60) + 45, end))],
             "practice": [(max(start, 13 * 60), min(max(start, 13 * 60) + 45, end)), (max(start, 14 * 60), min(max(start, 14 * 60) + 45, end))],
             "deep_talk": [(max(start, 14 * 60), min(max(start, 14 * 60) + 60, end))],
             "social": [(max(start, 15 * 60), min(max(start, 15 * 60) + 60, end))],
@@ -522,13 +564,15 @@ def build_plan(profile: str, date: str) -> dict:
         if "early_sleep" in intents:
             slots = [slot for slot in slots if slot[1] != "evening"]
         if "max_density" in intents:
+            slots.insert(1, ("午间桥接", "bridge", {"探索空间", "热带雨林"}, "效率优先时用短窗口补一个同主题项目，避免上午主线后空档过长。"))
             slots.insert(3, ("补充体验", "practice", {"探索空间", "热带雨林", "青年团聚"}, "效率优先时增加一个不重叠的短窗口。"))
         max_items = 6 if "max_density" in intents else 2 if "mobility_limited" in intents else 4
     for label, role, containers, reason in slots:
         if len(rows) >= max_items:
             break
         selected = None
-        for item in ranked_choices(
+        viable = []
+        for base_score, item in scored_choices(
             activities,
             facets,
             date=date,
@@ -545,8 +589,53 @@ def build_plan(profile: str, date: str) -> dict:
             window = planned_window(route_item, role, occupied)
             if overlaps(window, occupied):
                 continue
+            if window[0] < 9 * 60 and "morning_person" not in intents:
+                continue
+            adjusted_score = base_score
+            if session:
+                adjusted_score += 8
+            if occupied:
+                last_end = max(end for _, end in occupied)
+                gap = max(0, window[0] - last_end)
+                if "max_density" in intents:
+                    adjusted_score -= gap * 2
+                    if gap <= 30:
+                        adjusted_score += 80
+                    elif gap <= 90:
+                        adjusted_score += 40
+                if "mobility_limited" in intents:
+                    adjusted_score -= max(0, gap - 90)
+            if "morning_person" in intents and label != "晨间入口" and window[0] < 9 * 60:
+                adjusted_score -= 220
+            if "early_sleep" in intents and window[0] >= 19 * 60:
+                adjusted_score -= 500
+            candidate_text = haystack(route_item, facets.get(str(item.get("activity_id")), {}))
+            direct_text = " ".join(
+                str(route_item.get(key, ""))
+                for key in ["title", "summary", "container", "location"]
+            ).lower()
+            if "hardware" in intents and role in {"bridge", "practice"} and not contains_any(
+                direct_text,
+                ["硬件", "机器人", "芯片", "具身", "制造", "openclaw", "物理外挂", "maker"],
+            ):
+                adjusted_score -= 320
+            if "community" in intents and role == "deep_talk" and not contains_any(
+                direct_text,
+                ["ai", "agent", "社区", "社群", "共创", "合作", "waytoagi", "builder", "开源"],
+            ):
+                adjusted_score -= 220
+            if "max_density" in intents and role == "evening" and not contains_any(
+                direct_text,
+                ["ai", "agent", "硬件", "机器人", "社区", "社群", "音乐", "露营"],
+            ):
+                adjusted_score -= 180
+            if adjusted_score <= 0:
+                continue
+            viable.append((adjusted_score, base_score, item, route_item, session, window))
+        if viable:
+            viable.sort(key=lambda pair: (-pair[0], -pair[1], pair[5][0], pair[2].get("title", "")))
+            _, _, item, route_item, session, window = viable[0]
             selected = (item, route_item, session, window)
-            break
         if not selected:
             continue
         item, route_item, session, window = selected

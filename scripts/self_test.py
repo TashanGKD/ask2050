@@ -862,8 +862,33 @@ def main() -> int:
         fail(f"plan_itinerary.py mobility-limited route crosses zones: {mobility_zones}")
     if len(constraint_plans["max_density"].get("items", [])) <= len(constraint_plans["mobility_limited"].get("items", [])):
         fail("plan_itinerary.py max-density route should contain more items than mobility-limited route")
+    route_signatures = {
+        name: tuple(item.get("activity_id") for item in plan.get("items", []))
+        for name, plan in constraint_plans.items()
+    }
+    if route_signatures["mobility_limited"] == route_signatures["max_density"]:
+        fail("plan_itinerary.py collapsed mobility-limited and max-density profiles into the same route")
+    max_density_text = json.dumps(constraint_plans["max_density"], ensure_ascii=False)
+    for forbidden_text in ["晨读", "舞动竹龙", "当AI通过了所有考试，别让教室成为孤岛", "照顾内在小孩"]:
+        if forbidden_text in max_density_text:
+            fail(f"plan_itinerary.py max-density hardware route included mismatched filler: {forbidden_text}")
+    for required_text in ["AI全链路", "AI Maker Hub", "一起来养具身小龙虾", "把AI装进硬件里"]:
+        if required_text not in max_density_text:
+            fail(f"plan_itinerary.py max-density hardware route missing dense relevant item: {required_text}")
+    max_windows = []
+    for item in constraint_plans["max_density"].get("items", []):
+        match = re.match(r"(\d{2}):(\d{2})-(\d{2}):(\d{2})$", str(item.get("suggested_window", "")))
+        if not match:
+            fail(f"plan_itinerary.py max-density route has invalid window: {item.get('suggested_window')}")
+        max_windows.append((int(match.group(1)) * 60 + int(match.group(2)), int(match.group(3)) * 60 + int(match.group(4))))
+    max_windows.sort()
+    max_gap = max((start - prev_end for (_, prev_end), (start, _) in zip(max_windows, max_windows[1:])), default=0)
+    if max_gap > 90:
+        fail(f"plan_itinerary.py max-density route has too much idle time between items: {max_gap} minutes")
     if "晨读" not in json.dumps(constraint_plans["morning_person"], ensure_ascii=False):
         fail("plan_itinerary.py morning-person route should use the morning slot")
+    if "舞动竹龙" in json.dumps(constraint_plans["morning_person"], ensure_ascii=False):
+        fail("plan_itinerary.py morning-person route should not fill a deep-talk slot with unrelated early performance")
     for item in constraint_plans["early_sleep"].get("items", []):
         match = re.match(r"(\d{2}):(\d{2})-", str(item.get("suggested_window", "")))
         if match and int(match.group(1)) >= 19:
