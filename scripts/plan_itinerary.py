@@ -978,7 +978,18 @@ def build_plan(profile: str, date: str, requested_window: tuple[int, int] | None
     if "探索空间" in profile and not any(row.get("container") == "探索空间" for row in rows):
         advice.append("你点名想看探索空间，但这个时段里和主论坛不冲突的合适停留窗口不多；如果愿意把论坛缩短到 60-75 分钟，或把到场时间提前到 14:30 前，可以再补一个展台停留。")
     if rows and not any(row.get("container") == "新生论坛" for row in rows) and forum_anchor_is_optional(profile, date, intents):
-        advice.append("这一天可用的新生论坛主线在晚间；你给出的画像更偏低强度/半天/早睡，所以先不硬塞，若晚上仍有精力可把 AI 小酒馆作为备选。")
+        constraints = []
+        if "low_energy" in intents:
+            constraints.append("低强度")
+        if "half_day" in intents or requested_window:
+            constraints.append("短时段")
+        if "early_sleep" in intents:
+            constraints.append("早睡")
+        if constraints:
+            reason_text = "、".join(constraints)
+            advice.append(f"这一天可用的新生论坛主线在晚间；你这次更偏{reason_text}，所以先不硬塞，若晚上仍有精力可把 AI 小酒馆作为备选。")
+        else:
+            advice.append("这一天可用的新生论坛主线在晚间；当前先保留白天更顺路的活动，若晚上仍有精力可把 AI 小酒馆作为备选。")
     if "half_day" in intents:
         advice.append("你说只能半天参加，主线会控制在相邻时间段内；晚间和跨度过大的活动默认不进主线。")
     plan = {"date": date, "profile": profile, "intents": sorted(intents), "items": rows}

@@ -1089,6 +1089,21 @@ def main() -> int:
         fail("plan_itinerary.py 4/24 low-energy route should explain that the available forum anchor is late")
     if any(item.get("container") == "新生论坛" for item in low_energy_0424_plan.get("items", [])):
         fail("plan_itinerary.py should not force the 4/24 late forum into a low-energy route")
+    neutral_0424 = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", "天文学 AI交叉 哲学深聊 社区连接", "--date", "2026-04-24", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if neutral_0424.returncode != 0:
+        fail(f"plan_itinerary.py neutral 4/24 profile failed: {neutral_0424.stderr.strip() or neutral_0424.stdout.strip()}")
+    neutral_0424_plan = json.loads(neutral_0424.stdout)
+    neutral_advice = json.dumps(neutral_0424_plan.get("advice", []), ensure_ascii=False)
+    for forbidden_text in ["半天", "早睡"]:
+        if forbidden_text in neutral_advice:
+            fail(f"plan_itinerary.py 4/24 forum-anchor advice should not invent constraint wording: {forbidden_text}")
     half_day = subprocess.run(
         [sys.executable, str(PLAN_SCRIPT), "--profile", "高校老师 科普教育 课程设计 青少年 创客 社区运营 半天可参加", "--date", "2026-04-25", "--json"],
         cwd=ROOT,
