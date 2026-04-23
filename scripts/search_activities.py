@@ -17,6 +17,7 @@ ACTIVITY_FACETS = ROOT / "references" / "activity_facets.json"
 ARTICLE_FACETS = ROOT / "references" / "article_facets.json"
 FOCUS_SESSIONS = ROOT / "references" / "focus_sessions.min.json"
 SUPPLEMENTAL_EVENTS = ROOT / "references" / "manual" / "supplemental_events.json"
+SCHEDULE_ENRICHMENT = ROOT / "references" / "manual" / "schedule_json_enrichment.json"
 KNOWN_CONTAINERS = [
     "新生论坛",
     "探索空间",
@@ -108,6 +109,7 @@ QUERY_ALIASES = {
     "ai for science": ["AI4Science", "AI4S", "AI驱动科研", "科研协作"],
 }
 STOP_TERMS = {"我", "想", "要", "可以", "适合", "参加", "2050", "活动", "推荐", "一下", "看看"}
+BROAD_SINGLE_MATCH_TERMS = {"coding", "vibe", "agent", "agents", "workshop", "ai"}
 
 
 def load_json(path: Path, default):
@@ -169,7 +171,12 @@ def query_matches(haystack: str, query: str, *, manual_match: bool = False) -> b
     if q_lower in haystack:
         return True
     terms = query_terms(query)
-    if any(term in haystack and (any(char.isdigit() for char in term) or len(term) >= 6) for term in terms):
+    if any(
+        term in haystack
+        and term not in BROAD_SINGLE_MATCH_TERMS
+        and (any(char.isdigit() for char in term) or len(term) >= 6)
+        for term in terms
+    ):
         return True
     if len(terms) > 1 and all(term in haystack for term in terms):
         return True
@@ -365,6 +372,137 @@ def matching_agenda_highlights(event: dict, query: str) -> list[str]:
         if query_matches(haystack, query) or any(term and term in haystack for term in terms):
             matched.append(item)
     return (matched or highlights[:5])[:6]
+
+
+def schedule_record_terms(record: dict) -> list[str]:
+    terms = [
+        record.get("original_title", ""),
+        record.get("note", ""),
+        record.get("schedule_status", ""),
+        record.get("period_label", ""),
+        record.get("date_label", ""),
+        record.get("time_text", ""),
+        record.get("hive_intent_id", ""),
+        record.get("board_title", ""),
+        record.get("location_raw", ""),
+        record.get("container", ""),
+        record.get("venue_type", ""),
+        record.get("title", ""),
+        record.get("title_en", ""),
+        record.get("location_from_json", ""),
+        record.get("description", ""),
+    ]
+    for key in ["activity_detail_ids", "date_tags", "legacy_detail_ids"]:
+        value = record.get(key)
+        if isinstance(value, list):
+            terms.extend(str(item) for item in value)
+    for host in record.get("hosts", []):
+        if isinstance(host, dict):
+            terms.extend([host.get("name", ""), host.get("bio", "")])
+    for segment in record.get("segments", []):
+        if not isinstance(segment, dict):
+            continue
+        terms.append(segment.get("title", ""))
+        for speaker in segment.get("speakers", []):
+            if isinstance(speaker, dict):
+                terms.extend([speaker.get("name", ""), speaker.get("bio", "")])
+    return [str(term) for term in terms if term]
+
+
+def schedule_field_boost(record: dict, query: str) -> int:
+    terms = query_terms(query)
+    title = " ".join([str(record.get("title", "")), str(record.get("original_title", ""))]).lower()
+    hosts = " ".join(
+        " ".join([str(host.get("name", "")), str(host.get("bio", ""))])
+        for host in record.get("hosts", [])
+        if isinstance(host, dict)
+    ).lower()
+    segments = " ".join(
+        " ".join(
+            [
+                str(segment.get("title", "")),
+                " ".join(
+                    " ".join([str(speaker.get("name", "")), str(speaker.get("bio", ""))])
+                    for speaker in segment.get("speakers", [])
+                    if isinstance(speaker, dict)
+                ),
+            ]
+        )
+        for segment in record.get("segments", [])
+        if isinstance(segment, dict)
+    ).lower()
+    description = str(record.get("description", "")).lower()
+    score = 0
+    for term in terms:
+        if term in title:
+            score += 18
+        if term in hosts:
+            score += 14
+        if term in segments:
+            score += 14
+        if term in description:
+            score += 5
+    return score
+
+
+def matching_schedule_segments(record: dict, query: str) -> list[dict]:
+    segments = [segment for segment in record.get("segments", []) if isinstance(segment, dict)]
+    if not segments:
+        return []
+    if not query:
+        return segments[:5]
+    terms = query_terms(query)
+    matched = []
+    for segment in segments:
+        haystack = " ".join(
+            [
+                str(segment.get("title", "")),
+                " ".join(
+                    " ".join([str(speaker.get("name", "")), str(speaker.get("bio", ""))])
+                    for speaker in segment.get("speakers", [])
+                    if isinstance(speaker, dict)
+                ),
+            ]
+        ).lower()
+        if query_matches(haystack, query) or any(term and term in haystack for term in terms):
+            matched.append(segment)
+    return (matched or segments[:5])[:6]
+
+
+def schedule_display_date(record: dict) -> str:
+    tags = record.get("date_tags") or []
+    if len(tags) == 1 and record.get("date_precision") == "explicit":
+        return str(tags[0])
+    return str(record.get("date_label") or "多日")
+
+
+def schedule_display_time(record: dict) -> str:
+    time_text = str(record.get("time_text") or "").strip()
+    if time_text:
+        return time_text
+    period_label = str(record.get("period_label") or "").strip()
+    if period_label and period_label != str(record.get("date_label") or "").strip():
+        return period_label
+    if record.get("date_precision") == "multi-day":
+        return "多时段"
+    return "时间待现场确认"
+
+
+def normalize_schedule_location(location: str) -> str:
+    value = str(location or "").strip()
+    floor_replacements = {
+        "一楼": "A区 1F ",
+        "二楼": "A区 2F ",
+        "三楼": "A区 3F ",
+    }
+    for prefix, replacement in floor_replacements.items():
+        if value.startswith(prefix):
+            return replacement + value[len(prefix):].strip()
+    if value == "五云厅":
+        return "A区 2F 2050学习节(五云厅)"
+    if value == "云栖厅":
+        return "A区 2F 360环屏(千人云栖厅)"
+    return value
 
 
 def item_tags(item: dict) -> list[str]:
@@ -586,6 +724,7 @@ def main() -> int:
     article_facets = load_json(ARTICLE_FACETS, {})
     focus_sessions = load_json(FOCUS_SESSIONS, [])
     supplemental_events = load_json(SUPPLEMENTAL_EVENTS, [])
+    schedule_enrichment = load_json(SCHEDULE_ENRICHMENT, {"records": []})
     focus_terms_by_activity: dict[str, list[str]] = {}
     focus_dates_by_activity: dict[str, set[str]] = {}
     focus_sessions_by_activity: dict[str, list[dict]] = {}
@@ -716,6 +855,70 @@ def main() -> int:
         for item in matching_agenda_highlights(event, args.q):
             print(f"  日程: {item}")
         print("  来源: 人工补充线索，未并入官网活动表；到场前请复核现场日程。")
+        printed += 1
+
+    schedule_results = []
+    if score_query:
+        for record in schedule_enrichment.get("records", []):
+            if str(record.get("hidden", "")) == "1" or str(record.get("done", "")) == "0":
+                continue
+            if args.date and args.date not in [str(item) for item in record.get("date_tags", [])]:
+                continue
+            if args.container and args.container not in str(record.get("container", "")):
+                continue
+            record_haystack = " ".join(schedule_record_terms(record)).lower()
+            if args.topic:
+                topic_text = topic_query_text(args.topic)
+                if not query_matches(record_haystack, topic_text):
+                    continue
+            if args.q and not query_matches(record_haystack, args.q):
+                continue
+            score = query_score(record_haystack, score_query) + schedule_field_boost(record, score_query)
+            schedule_results.append((score, record))
+
+    remaining = max(0, args.limit - printed)
+    schedule_results.sort(
+        key=lambda pair: (
+            -pair[0],
+            schedule_display_date(pair[1]),
+            schedule_display_time(pair[1]),
+            str(pair[1].get("title", "")),
+        )
+    )
+    for _, record in schedule_results[:remaining]:
+        location = normalize_schedule_location(record.get("location_raw") or record.get("location_from_json") or "地点待确认")
+        print(
+            "{date} {time} | 结构化日程 | {container} | {title} | {location}".format(
+                date=schedule_display_date(record),
+                time=schedule_display_time(record),
+                container=record.get("container", "") or "未分板块",
+                title=record.get("title") or record.get("original_title", ""),
+                location=location,
+            )
+        )
+        if record.get("venue_type"):
+            print(f"  形式: {record.get('venue_type')}")
+        host_text = "；".join(
+            " ".join([str(host.get("name", "")), str(host.get("bio", ""))]).strip()
+            for host in record.get("hosts", [])
+            if isinstance(host, dict) and (host.get("name") or host.get("bio"))
+        )
+        if host_text:
+            print(f"  召集人: {host_text}")
+        for segment in matching_schedule_segments(record, args.q):
+            speakers = "；".join(
+                " ".join([str(speaker.get("name", "")), str(speaker.get("bio", ""))]).strip()
+                for speaker in segment.get("speakers", [])
+                if isinstance(speaker, dict) and (speaker.get("name") or speaker.get("bio"))
+            )
+            if speakers:
+                print(f"  part: {segment.get('title')} | {speakers}")
+            else:
+                print(f"  part: {segment.get('title')}")
+        if record.get("description"):
+            description = str(record.get("description")).replace("\n", " ")
+            print(f"  简介: {description[:180]}")
+        print("  来源: 结构化日程补充表；用于补充讲者、part 和现场形式，推荐前仍以官网活动事实交叉核对。")
         printed += 1
 
     unit_results = []

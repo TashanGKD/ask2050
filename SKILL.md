@@ -111,6 +111,7 @@ python scripts/plan_multiday.py --profile "<身份、兴趣、偏好、限制>" 
    - `references/activity_facets.json`：需要推荐画像字段时使用，比如核心主题、体验方式、适合人群、强度、社交密度、路线角色、地点语境。
    - `references/official_detail_terms.json`：需要核对官网正文压缩关键词来源时使用；正常推荐通过 `activity_facets.json` 间接使用。
    - `references/focus_sessions.min.json`：当父活动是长时段论坛/展区，但文章或 OCR 已抽出具体 part、厅和时间时使用；做行程时优先用这里的子日程粒度。
+   - `references/manual/schedule_json_enrichment.json`：当用户问具体讲者、主持人、报告题目、工作坊 part、场地类型或表格补充信息时使用；这是结构化日程补充层，能补主持人、segments 和描述，但不能单独覆盖官网活动事实。
    - `references/activity_index.min.json`：需要准确时间、地点、标题、活动 URL 时使用。
    - `references/article_activity_crosswalk.json`：用户问文章小节、节目 part、地图、攻略或公众号文章时使用。
    - `references/article_facets.json`：用户问 WaytoAGI、OpenClaw、少数派、流浪教研、设计自己、DeskClaw、YOLO、2050PASS 等社区/伙伴/文章/别名，或问某篇文章如何用于路线时使用。

@@ -21,6 +21,7 @@ REBUILD_SLICES_SCRIPT = ROOT / "scripts" / "rebuild_reference_slices.py"
 OPENCLAW_SMOKE_SCRIPT = ROOT / "scripts" / "openclaw_smoke_test.py"
 EXTRACT_OFFICIAL_DETAIL_SCRIPT = ROOT / "scripts" / "extract_official_detail_terms.py"
 IMPORT_NEWBORN_FORUM_SCRIPT = ROOT / "scripts" / "import_newborn_forum_article.py"
+IMPORT_SCHEDULE_JSON_SCRIPT = ROOT / "scripts" / "import_schedule_json_xlsx.py"
 AUDIT_CROSS_REFERENCES_SCRIPT = ROOT / "scripts" / "audit_cross_references.py"
 
 
@@ -40,6 +41,7 @@ REQUIRED_FILES = [
     MANUAL / "article_curation.md",
     MANUAL / "article_aliases.json",
     MANUAL / "supplemental_events.json",
+    MANUAL / "schedule_json_enrichment.json",
     SCRIPT,
     PLAN_SCRIPT,
     MULTIDAY_PLAN_SCRIPT,
@@ -47,6 +49,7 @@ REQUIRED_FILES = [
     REBUILD_SLICES_SCRIPT,
     EXTRACT_OFFICIAL_DETAIL_SCRIPT,
     IMPORT_NEWBORN_FORUM_SCRIPT,
+    IMPORT_SCHEDULE_JSON_SCRIPT,
     AUDIT_CROSS_REFERENCES_SCRIPT,
 ]
 
@@ -161,6 +164,8 @@ OUTPUT_CASES = [
     {"name": "fang_zerui_date_guard", "q": "房泽锐", "require": ["日期: 2026-04-25", "AI 时代下的跨学科交叉新范式", "科研龙虾领养与应用"], "forbid": ["2026-04-26", "source |", "matched_activity_ids", "瑞 国科大"]},
     {"name": "scientific_lobster_date_guard", "q": "科研龙虾", "require": ["日期: 2026-04-25", "科研龙虾领养与应用", "房泽锐"], "forbid": ["2026-04-26", "source |", "matched_activity_ids"]},
     {"name": "mind_where_date_guard", "q": "\"心\"在哪\"理\"？", "require": ["2026-04-26 09:00-10:30", "A区 1F 慧云厅", "王梓豪 2025级本科生", "日期: 2026-04-26"], "forbid": ["2026-04-25", "23:15-23:30", "A区 2F 360环屏(千人云栖厅)"]},
+    {"name": "schedule_json_segment_search", "q": "全民wish coding", "require": ["结构化日程", "全民wish coding：爆款产品如何诞生？", "A区 3F 青云厅", "吕功琛"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "schedule_json_host_search", "q": "罗振宇 透明14小时", "require": ["结构化日程", "罗振宇的透明14小时", "室外/不固定场所", "玻璃房内的书写"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
 ]
 
 EXPECTED_FORUM_LOCATIONS = {
@@ -548,6 +553,7 @@ def main() -> int:
     size_budgets = {
         REF / "activity_facets.json": 360_000,
         REF / "article_facets.json": 90_000,
+        MANUAL / "schedule_json_enrichment.json": 520_000,
     }
     for path, max_bytes in size_budgets.items():
         if path.stat().st_size > max_bytes:
@@ -563,6 +569,7 @@ def main() -> int:
     official_detail_terms = load_json(REF / "official_detail_terms.json")
     aliases = load_json(MANUAL / "article_aliases.json")
     supplemental_events = load_json(MANUAL / "supplemental_events.json")
+    schedule_enrichment = load_json(MANUAL / "schedule_json_enrichment.json")
 
     if len(activities) != 288:
         fail(f"activity index has {len(activities)} rows, expected 288 from current 2050 official list")
@@ -602,6 +609,42 @@ def main() -> int:
         fail("full activity index should not be packaged in the default skill")
     if any((REF / "article_ocr").glob("*.md")):
         fail("raw article_ocr markdown should not be packaged in the default skill")
+    if schedule_enrichment.get("schema_version") != 1:
+        fail("schedule_json_enrichment schema version regressed")
+    if len(schedule_enrichment.get("columns", [])) != 20:
+        fail("schedule_json_enrichment should preserve all 20 source columns")
+    schedule_records = schedule_enrichment.get("records", [])
+    if len(schedule_records) != 186:
+        fail(f"schedule_json_enrichment expected 186 parsed JSON rows, got {len(schedule_records)}")
+    required_schedule_fields = {
+        "source_row",
+        "original_title",
+        "hidden",
+        "schedule_status",
+        "activity_detail_ids",
+        "period_label",
+        "date_label",
+        "date_tags",
+        "time_text",
+        "hive_intent_id",
+        "board_title",
+        "location_raw",
+        "container",
+        "venue_type",
+        "done",
+        "legacy_detail_ids",
+        "title",
+        "hosts",
+        "segments",
+        "description",
+    }
+    for record in schedule_records:
+        if not required_schedule_fields.issubset(record):
+            fail(f"schedule_json_enrichment record missing required fields: row {record.get('source_row')}")
+    if not any(record.get("title") == "全民wish coding：爆款产品如何诞生？" for record in schedule_records):
+        fail("schedule_json_enrichment missing wish coding structured row")
+    if not any(record.get("title") == "罗振宇的透明14小时：用AI协同写作一期《文明之旅》" for record in schedule_records):
+        fail("schedule_json_enrichment missing transparent 14 hours structured row")
 
     required_supplemental_fields = {
         "supplemental_id",

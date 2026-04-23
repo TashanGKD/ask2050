@@ -35,6 +35,16 @@
 - `route_use`: 文章在推荐中的用途，如补充项目语境、解释某个板块、补充后勤信息、提示路线风险。
 - `confidence`: high、medium、low。低置信度只做线索，不做确定安排。
 
+## 结构化日程补充层字段
+
+从 `日程JSON(1).xlsx` 这类结构化工作簿抽取的记录，不进入官网主活动表，但要保留推荐和解释有用的列：
+
+- `schedule_status`、`hidden`、`done`: 判断该条是否可作为推荐线索；隐藏或未搞定的项不能直接进入主推荐。
+- `activity_detail_ids`、`legacy_detail_ids`、`hive_intent_id`: 用于后续和官网、蜂巢意向或历史明细交叉核对。
+- `period_label`、`date_label`、`date_tags`、`time_text`: 保留原始时间表达；明确日期可用于过滤，多日项只能作为宽窗口线索。
+- `board_title`、`container`、`venue_type`、`location_raw`: 用于判断板块、形式、换场成本和地点粒度。
+- `hosts`、`segments`、`description`: 用于回答具体 part 是干嘛的、谁召集、适合什么人。
+
 ## 使用原则
 
 先用活动事实层确认时间、地点和活动名，再用 facet 层判断适不适合用户。文章层只能增强语境和别名检索，不能覆盖官方活动事实。遇到晚近变化，优先建议重新安装 skill 获取最新整理版本。
