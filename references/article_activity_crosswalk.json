@@ -114,7 +114,6 @@
           "unit_type": "performance_group",
           "matched_activity_ids": [
             "12366",
-            "12687",
             "12673"
           ],
           "date_tags": [
@@ -126,7 +125,7 @@
             "inclusive-performance",
             "youth-stage"
           ],
-          "confidence": "medium"
+          "confidence": "high"
         },
         {
           "section_title": "节目10：合唱《一群无知少年的梦想》",
@@ -1138,7 +1137,7 @@
             "2026-04-25"
           ],
           "time_range": "21:30-22:15",
-          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "location_hint": "A云栖小镇会展中心一期三层云栖息厅",
           "topic_tags": [
             "ai",
             "arts-media-design",
@@ -2946,7 +2945,7 @@
             "2026-04-25"
           ],
           "time_range": "16:00-18:00",
-          "location_hint": "A区 3F 蔚云厅",
+          "location_hint": "A区 3F 风云厅",
           "topic_tags": [
             "philosophy-mind"
           ],
@@ -3058,7 +3057,7 @@
             "2026-04-26"
           ],
           "time_range": "13:00-15:30",
-          "location_hint": "A区 3F 蔚云厅",
+          "location_hint": "A区 3F 风云厅",
           "topic_tags": [
             "startup-product"
           ],
@@ -4135,7 +4134,7 @@
             "2026-04-25"
           ],
           "time_range": "10:30-12:00",
-          "location_hint": "A区 1F 智云厅",
+          "location_hint": "云栖小镇国际会展中心 A区一楼 智云厅",
           "topic_tags": [
             "arts-media-design"
           ],
@@ -5664,7 +5663,7 @@
           "section_title": "少数派的共创时代",
           "unit_type": "forum_block",
           "matched_activity_ids": [
-            "12358"
+            "12540"
           ],
           "date_tags": [
             "2026-04-25"
@@ -5727,7 +5726,7 @@
               ]
             }
           ],
-          "confidence": "high"
+          "confidence": "medium"
         },
         {
           "section_title": "AI 越强大，我们为什么越需要手工艺？",
@@ -5821,9 +5820,7 @@
         {
           "section_title": "AI 时代的人类",
           "unit_type": "forum_block",
-          "matched_activity_ids": [
-            "12275"
-          ],
+          "matched_activity_ids": [],
           "date_tags": [
             "2026-04-25"
           ],
@@ -5984,7 +5981,7 @@
               ]
             }
           ],
-          "confidence": "medium"
+          "confidence": "article_only"
         },
         {
           "section_title": "钱学森读书会",
@@ -6306,9 +6303,7 @@
         {
           "section_title": "冷湖宇宙 · 科幻圆桌",
           "unit_type": "forum_block",
-          "matched_activity_ids": [
-            "12509"
-          ],
+          "matched_activity_ids": [],
           "date_tags": [
             "2026-04-26"
           ],
@@ -6385,7 +6380,7 @@
               ]
             }
           ],
-          "confidence": "high"
+          "confidence": "article_only"
         }
       ]
     }

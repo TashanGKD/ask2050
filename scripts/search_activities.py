@@ -224,6 +224,42 @@ def field_boost(item: dict, query: str) -> int:
     return score
 
 
+def focus_field_boost(sessions: list[dict], query: str) -> int:
+    if not query or not sessions:
+        return 0
+    terms = query_terms(query)
+    hall_names = ["贤云厅", "慧云厅", "智云厅", "彩云厅", "青云厅", "风云厅", "蔚云厅", "皓云厅", "五云厅", "云栖厅"]
+    has_precise_cue = any(char.isdigit() for char in query) or any(hall in query for hall in hall_names)
+    score = 0
+    for session in sessions:
+        title = str(session.get("title", "")).lower()
+        time = str(session.get("time", "")).lower()
+        location = str(session.get("location", "")).lower()
+        summary = str(session.get("summary", "")).lower()
+        if not has_precise_cue:
+            q_lower = query.lower().strip()
+            if q_lower and q_lower in title:
+                score += 18
+            score += sum(8 for term in terms if len(term) >= 5 and term in title)
+            continue
+        for term in terms:
+            if not term:
+                continue
+            if term in title:
+                score += 10
+            if term in time:
+                score += 18
+            if term in location:
+                score += 18
+            if term in summary:
+                score += 4
+        if any(char.isdigit() for char in query) and time and any(term in time for term in terms):
+            score += 22
+        if any(hall in query for hall in hall_names) and any(hall in location for hall in hall_names):
+            score += 18
+    return score
+
+
 def source_field_boost(record: dict, query: str) -> int:
     terms = query_terms(query)
     title = str(record.get("title", "")).lower()
@@ -484,8 +520,10 @@ def main() -> int:
     supplemental_events = load_json(SUPPLEMENTAL_EVENTS, [])
     focus_terms_by_activity: dict[str, list[str]] = {}
     focus_dates_by_activity: dict[str, set[str]] = {}
+    focus_sessions_by_activity: dict[str, list[dict]] = {}
     for session in focus_sessions:
         parent_activity_id = str(session.get("parent_activity_id"))
+        focus_sessions_by_activity.setdefault(parent_activity_id, []).append(session)
         focus_terms_by_activity.setdefault(parent_activity_id, []).extend(session_terms(session))
         if session.get("date"):
             focus_dates_by_activity.setdefault(parent_activity_id, set()).add(str(session.get("date")))
@@ -521,7 +559,11 @@ def main() -> int:
             continue
         manual_match = activity_id in manual_ids
         score_query = args.q or topic_query_text(args.topic)
-        score = query_score(haystack, score_query, manual_match=manual_match) + field_boost(item, score_query)
+        score = (
+            query_score(haystack, score_query, manual_match=manual_match)
+            + field_boost(item, score_query)
+            + focus_field_boost(focus_sessions_by_activity.get(activity_id, []), score_query)
+        )
         if args.q and not query_matches(haystack, args.q, manual_match=manual_match):
             continue
         if activity_id in seen:

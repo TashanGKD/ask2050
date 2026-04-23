@@ -103,6 +103,37 @@ def parse_time(lines: list[str]) -> str:
     return ""
 
 
+def parse_time_range(value: str) -> tuple[int, int] | None:
+    match = re.search(r"(\d{1,2}):(\d{2})\s*[-—–~～至]\s*(\d{1,2}):(\d{2})", str(value))
+    if not match:
+        return None
+    return int(match.group(1)) * 60 + int(match.group(2)), int(match.group(3)) * 60 + int(match.group(4))
+
+
+def is_broad_time(value: str) -> bool:
+    parsed = parse_time_range(value)
+    if not parsed:
+        return True
+    start, end = parsed
+    return end - start >= 300 or str(value) in {"09:00-15:30", "14:00-23:55", "12:30-23:55"}
+
+
+def time_relation(activity_time: str, session_time: str) -> str:
+    activity = parse_time_range(activity_time)
+    session = parse_time_range(session_time)
+    if not activity or not session:
+        return "unknown"
+    if activity[0] <= session[0] and session[1] <= activity[1]:
+        return "contained"
+    if activity[0] == session[0]:
+        return "same_start"
+    if not (session[1] <= activity[0] or activity[1] <= session[0]):
+        return "overlap"
+    if is_broad_time(activity_time):
+        return "broad_outside"
+    return "outside"
+
+
 def strip_markup(line: str) -> str:
     value = line.strip()
     value = re.sub(r"^[-*]\s+", "", value)
@@ -268,15 +299,21 @@ def score_activity(session: dict, activity: dict) -> float:
         " ".join(str(activity.get(key, "")) for key in ["title", "summary", "convener", "location"])
     )
     score = difflib.SequenceMatcher(None, session_title, activity_title).ratio() * 55
+    title_related = bool(session_title and (session_title in activity_text or activity_title in session_title))
     if session_title and (session_title in activity_text or activity_title in session_title):
         score += 45
     score += keyword_bonus(session_title, activity_text)
     if session.get("location") and similar_location(session["location"], activity.get("location", "")):
         score += 25
+    relation = time_relation(activity.get("time", ""), session.get("time", ""))
     if session.get("time") and session.get("time") == activity.get("time"):
         score += 20
     elif session.get("time") and activity.get("time") and session["time"].split("-")[0] == activity["time"].split("-")[0]:
         score += 8
+    elif relation == "outside":
+        score -= 70
+    elif relation == "overlap" and not title_related:
+        score -= 20
     if "ai全链路" in session_title and "ai全链路" in activity_text and similar_location(
         session.get("location", ""), activity.get("location", "")
     ):
@@ -298,6 +335,26 @@ def score_activity(session: dict, activity: dict) -> float:
     return score
 
 
+def official_location_for_unit(session: dict, matched_ids: list[str], activity_lookup: dict[str, dict]) -> str:
+    if not matched_ids:
+        return session.get("location") or "地点待确认"
+    activity = activity_lookup.get(str(matched_ids[0]))
+    if not activity:
+        return session.get("location") or "地点待确认"
+    official = activity.get("location", "")
+    article_location = session.get("location", "")
+    if official and "厅" in official and article_location and not similar_location(article_location, official):
+        return official
+    return article_location or official or "地点待确认"
+
+
+def official_time_for_focus(session: dict, activity: dict) -> str:
+    relation = time_relation(activity.get("time", ""), session.get("time", ""))
+    if relation in {"same_start", "outside", "overlap"} and not is_broad_time(activity.get("time", "")):
+        return activity.get("time", "") or session.get("time", "")
+    return session.get("time") or activity.get("time", "")
+
+
 def match_activities(session: dict, activities: list[dict]) -> tuple[list[str], str]:
     scored = sorted(
         ((score_activity(session, activity), activity) for activity in activities),
@@ -313,14 +370,14 @@ def match_activities(session: dict, activities: list[dict]) -> tuple[list[str], 
     return [], "article_only"
 
 
-def unit_from_session(session: dict, matched_ids: list[str], confidence: str) -> dict:
+def unit_from_session(session: dict, matched_ids: list[str], confidence: str, activity_lookup: dict[str, dict]) -> dict:
     return {
         "section_title": session["title"],
         "unit_type": "forum_block",
         "matched_activity_ids": matched_ids,
         "date_tags": [session["date"]] if session.get("date") else [],
         "time_range": session.get("time") or "待更新",
-        "location_hint": session.get("location") or "地点待确认",
+        "location_hint": official_location_for_unit(session, matched_ids, activity_lookup),
         "topic_tags": session["topic_tags"],
         "talks": session["talks"],
         "confidence": confidence,
@@ -336,8 +393,8 @@ def focus_from_session(session: dict, activity: dict, sequence: int) -> dict:
         "title": session["title"],
         "container": activity["container"],
         "date": session.get("date") or activity["date"],
-        "time": session.get("time") or activity["time"],
-        "location": session.get("location") or activity["location"],
+        "time": official_time_for_focus(session, activity),
+        "location": official_location_for_unit(session, [str(activity["activity_id"])], {str(activity["activity_id"]): activity}),
         "summary": f"{activity['container']}分厅节目，围绕{session['title']}展开；适合作为该长时段活动里的具体进入点。",
         "recommended_for": recommended_for(topics, session["title"]),
         "topic_tags": topics,
@@ -441,6 +498,7 @@ def update_focus_sessions(sessions: list[dict], units: list[dict], activity_look
     }
     added_or_updated = 0
     sequence_by_activity: dict[str, int] = {}
+    generated_session_ids: set[str] = set()
     for session, unit in zip(sessions, units, strict=True):
         ids = unit.get("matched_activity_ids", [])
         if not ids or unit.get("confidence") not in {"high", "medium"}:
@@ -451,6 +509,7 @@ def update_focus_sessions(sessions: list[dict], units: list[dict], activity_look
         activity_id = str(activity["activity_id"])
         sequence_by_activity[activity_id] = sequence_by_activity.get(activity_id, 0) + 1
         focus = focus_from_session(session, activity, sequence_by_activity[activity_id])
+        generated_session_ids.add(focus["session_id"])
         key = (
             str(focus.get("parent_activity_id")),
             normalize(focus.get("title", "")),
@@ -463,6 +522,35 @@ def update_focus_sessions(sessions: list[dict], units: list[dict], activity_look
             focus_sessions.append(focus)
             by_key[key] = focus
         added_or_updated += 1
+    focus_sessions = [
+        item
+        for item in focus_sessions
+        if not (
+            str(item.get("session_id", "")).startswith("008-")
+            and item.get("source") == ARTICLE_URL
+            and item.get("session_id") not in generated_session_ids
+        )
+    ]
+
+    def focus_rank(item: dict) -> tuple[int, int, str]:
+        activity = activity_lookup.get(str(item.get("parent_activity_id")))
+        if not activity:
+            return (9, 9, str(item.get("time", "")))
+        relation = time_relation(activity.get("time", ""), item.get("time", ""))
+        if item.get("time") == activity.get("time"):
+            return (0, 0, str(item.get("time", "")))
+        if relation in {"contained", "overlap", "same_start"}:
+            return (1, 0, str(item.get("time", "")))
+        return (2, 0, str(item.get("time", "")))
+
+    deduped_by_session_id: dict[str, dict] = {}
+    for item in focus_sessions:
+        session_id = str(item.get("session_id", ""))
+        if not session_id:
+            continue
+        if session_id not in deduped_by_session_id or focus_rank(item) < focus_rank(deduped_by_session_id[session_id]):
+            deduped_by_session_id[session_id] = item
+    focus_sessions = list(deduped_by_session_id.values())
     focus_sessions.sort(key=lambda item: (item.get("date", ""), item.get("time", ""), item.get("location", ""), item.get("title", "")))
     save_json(FOCUS_SESSIONS, focus_sessions)
     return added_or_updated
@@ -480,7 +568,7 @@ def main() -> int:
     units = []
     for session in sessions:
         matched_ids, confidence = match_activities(session, activities)
-        units.append(unit_from_session(session, matched_ids, confidence))
+        units.append(unit_from_session(session, matched_ids, confidence, activity_lookup))
 
     update_crosswalk(units)
     update_article_facets(units)

@@ -19,6 +19,7 @@ SOURCE_CHANNELS_SCRIPT = ROOT / "scripts" / "source_channels.py"
 REBUILD_SLICES_SCRIPT = ROOT / "scripts" / "rebuild_reference_slices.py"
 EXTRACT_OFFICIAL_DETAIL_SCRIPT = ROOT / "scripts" / "extract_official_detail_terms.py"
 IMPORT_NEWBORN_FORUM_SCRIPT = ROOT / "scripts" / "import_newborn_forum_article.py"
+AUDIT_CROSS_REFERENCES_SCRIPT = ROOT / "scripts" / "audit_cross_references.py"
 
 
 REQUIRED_FILES = [
@@ -42,6 +43,7 @@ REQUIRED_FILES = [
     REBUILD_SLICES_SCRIPT,
     EXTRACT_OFFICIAL_DETAIL_SCRIPT,
     IMPORT_NEWBORN_FORUM_SCRIPT,
+    AUDIT_CROSS_REFERENCES_SCRIPT,
 ]
 
 FORBIDDEN_REFERENCE_DOCS = {
@@ -129,6 +131,7 @@ SEARCH_CASES = [
 
 RANKED_CASES = [
     {"name": "hardware_hands_on_top", "q": "AI 硬件 动手工作坊", "first": "12375"},
+    {"name": "focus_time_location_top", "q": "少数派 共创 13:00 贤云厅", "first": "12540"},
 ]
 
 OUTPUT_CASES = [
@@ -142,7 +145,7 @@ OUTPUT_CASES = [
     {"name": "ai4science_report_tags", "q": "AI4Science 数学物理", "require": ["报告:", "AI如何解决上个世纪的数学与物理", "杜伟韬"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "eldercare_focus_report", "q": "助老智能体", "require": ["青智助老", "智慧未来：助老智能体共建", "A区 1F 慧云厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "agentic_building_focus_location", "q": "AI协商生成公共空间", "require": ["Agentic Building", "篮球场边", "设定AI性格"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
-    {"name": "latest_waytoagi_youth_focus", "q": "WaytoAGI 社区 青年团聚", "require": ["重点 part:", "WaytoAGI 社区青年团聚", "云栖小镇国际会展中心-3F蔚云厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "latest_waytoagi_youth_focus", "q": "WaytoAGI 社区 青年团聚", "require": ["重点 part:", "WaytoAGI 社区青年团聚", "A区 3F 蔚云厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "latest_space_life_focus", "q": "探索空间 太空 生活 航天", "require": ["重点 part:", "未来在地球以外：星际生活场景体验", "探索空间1号展位"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "latest_parent_ai_focus", "q": "AI反哺 父母 养老", "require": ["重点 part:", "AI反哺计划：年轻人能用AI为父母做些什么", "探索空间74号展位"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "supplemental_tashan_forum", "q": "他山 国科大 中科院", "require": ["补充活动线索", "他山青年论坛", "A区 3F 青云厅", "中国科学院大学他山学科交叉创新协会"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
@@ -374,6 +377,17 @@ def main() -> int:
     missing = [path.relative_to(ROOT).as_posix() for path in REQUIRED_FILES if not path.exists()]
     if missing:
         fail(f"missing required files: {', '.join(missing)}")
+
+    cross_audit = subprocess.run(
+        [sys.executable, str(AUDIT_CROSS_REFERENCES_SCRIPT)],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if cross_audit.returncode != 0:
+        fail(cross_audit.stderr.strip() or cross_audit.stdout.strip())
 
     skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
     for required_phrase in [
