@@ -860,6 +860,9 @@ def validate_plan(plan: dict) -> list[str]:
 
 
 def print_markdown(plan: dict) -> None:
+    def cell(value: object) -> str:
+        return str(value).replace("|", "\\|").replace("\n", " ").strip()
+
     print(f"推荐路线（{plan['date']}）")
     print()
     if not plan.get("items"):
@@ -872,9 +875,12 @@ def print_markdown(plan: dict) -> None:
     print("|---|---|---|---|---|---|---|")
     for item in plan["items"]:
         print(
-            "| {suggested_window} | {official_time} | {container} | {title} | {location} | {move_note} | {why_fit} |".format(
-                **item
+            "| "
+            + " | ".join(
+                cell(item.get(key, ""))
+                for key in ["suggested_window", "official_time", "container", "title", "location", "move_note", "why_fit"]
             )
+            + " |"
         )
     print()
     print("备选规则：如果现场确认某个 09:00-15:30 长时段活动必须全程参加，就不要再把同一时段的思想约会或探索空间排进主线，只能改成备选。")

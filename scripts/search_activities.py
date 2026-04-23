@@ -322,6 +322,16 @@ def item_tags(item: dict) -> list[str]:
     return sorted(set(derived))
 
 
+def display_tags(item: dict, facet: dict | None) -> list[str]:
+    """Keep user-visible tags focused while leaving broad tags available for search."""
+    if facet:
+        visible = [item.get("date", ""), item.get("container", "")]
+        visible.extend(facet.get("primary_topics", [])[:4])
+        visible.extend(facet.get("experience_modes", [])[:3])
+        return [str(tag) for tag in dict.fromkeys(tag for tag in visible if tag)]
+    return item_tags(item)
+
+
 def facet_terms(facet: dict | None) -> list[str]:
     if not facet:
         return []
@@ -587,9 +597,9 @@ def main() -> int:
             display_date = item_focus_sessions[0].get("date") or display_date
             display_time = item_focus_sessions[0].get("time") or display_time
             display_location = item_focus_sessions[0].get("location") or display_location
-        print(f"{display_date} {display_time} | {item['container']} | {item['title']} | {display_location}")
-        print(f"  标签: {', '.join(item_tags(item))}")
         facet = activity_facets.get(str(item.get("activity_id")))
+        print(f"{display_date} {display_time} | {item['container']} | {item['title']} | {display_location}")
+        print(f"  标签: {', '.join(display_tags(item, facet))}")
         if facet:
             intensity = INTENSITY_LABELS.get(facet.get("intensity"), facet.get("intensity"))
             social = SOCIAL_LABELS.get(facet.get("social_density"), facet.get("social_density"))

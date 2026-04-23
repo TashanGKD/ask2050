@@ -17,6 +17,7 @@ SCRIPT = ROOT / "scripts" / "search_activities.py"
 PLAN_SCRIPT = ROOT / "scripts" / "plan_itinerary.py"
 SOURCE_CHANNELS_SCRIPT = ROOT / "scripts" / "source_channels.py"
 REBUILD_SLICES_SCRIPT = ROOT / "scripts" / "rebuild_reference_slices.py"
+OPENCLAW_SMOKE_SCRIPT = ROOT / "scripts" / "openclaw_smoke_test.py"
 EXTRACT_OFFICIAL_DETAIL_SCRIPT = ROOT / "scripts" / "extract_official_detail_terms.py"
 IMPORT_NEWBORN_FORUM_SCRIPT = ROOT / "scripts" / "import_newborn_forum_article.py"
 AUDIT_CROSS_REFERENCES_SCRIPT = ROOT / "scripts" / "audit_cross_references.py"
@@ -25,6 +26,7 @@ AUDIT_CROSS_REFERENCES_SCRIPT = ROOT / "scripts" / "audit_cross_references.py"
 REQUIRED_FILES = [
     ROOT / "SKILL.md",
     REF / "tashan_world_bridge.md",
+    OPENCLAW_SMOKE_SCRIPT,
     REF / "activity_index.min.json",
     REF / "activity_facets.json",
     REF / "focus_sessions.min.json",
@@ -500,6 +502,9 @@ def main() -> int:
         "接入完成后不要把当前 2050 问题转交给 `topiclab help ask`",
         "当前活动推荐、日程解释和路线规划必须继续由 ask2050 的内置资料、检索脚本和分层证据直接完成",
         "正常 2050 推荐不要依赖它生成答案",
+        "python scripts/openclaw_smoke_test.py --agent-call",
+        "只证明他山世界/OpenClaw 通道可用",
+        "不代表当前 ask2050 的完整本地日程和推荐证据已经交给网站 agent",
     ]:
         if required_phrase not in bridge_text:
             fail(f"tashan_world_bridge.md missing OpenClaw auth guidance: {required_phrase}")
@@ -635,6 +640,20 @@ def main() -> int:
     )
     if missing_focus_parent_ids:
         fail(f"focus_sessions.min.json references unknown activity IDs: {missing_focus_parent_ids}")
+    focus_keys = {}
+    duplicate_focus_keys = []
+    for item in focus_sessions:
+        key = (
+            str(item.get("parent_activity_id")),
+            str(item.get("title")),
+            str(item.get("date")),
+            str(item.get("location")),
+        )
+        if key in focus_keys:
+            duplicate_focus_keys.append((key, focus_keys[key], item.get("session_id")))
+        focus_keys[key] = item.get("session_id")
+    if duplicate_focus_keys:
+        fail(f"focus_sessions.min.json has duplicate focus sessions: {duplicate_focus_keys[:5]}")
     activity_lookup = {str(item.get("activity_id")): item for item in activities}
     location_mismatches = []
     for activity_id, expected_location in EXPECTED_FORUM_LOCATIONS.items():
@@ -1168,6 +1187,22 @@ def main() -> int:
             fail(f"plan_itinerary.py should not add evening filler when hardware networking user did not ask for night events: {item.get('suggested_window')}")
     if not any(item_contains_any(item, ["硬件", "机器人", "芯片", "具身", "openclaw", "maker"]) for item in hardware_networking_plan.get("items", [])):
         fail("plan_itinerary.py hardware networking route lacks a hardware/robotics stop")
+    hardware_markdown = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", hardware_networking_profile, "--date", "2026-04-25"],
+        text=True,
+        capture_output=True,
+        encoding="utf-8",
+    )
+    if hardware_markdown.returncode != 0:
+        fail(f"plan_itinerary.py hardware markdown failed: {hardware_markdown.stderr.strip() or hardware_markdown.stdout.strip()}")
+    if "AI 全链路 | 原力" in hardware_markdown.stdout:
+        fail("plan_itinerary.py markdown table did not escape pipe characters inside activity titles")
+    if "AI 全链路 \\| 原力" not in hardware_markdown.stdout:
+        fail("plan_itinerary.py markdown route should preserve pipe-like title text with escaping")
+    for line in hardware_markdown.stdout.splitlines():
+        if line.startswith("| ") and not line.startswith("|---") and not line.startswith("| 建议窗口"):
+            if len(re.findall(r"(?<!\\)\|", line)) != 8:
+                fail(f"plan_itinerary.py markdown route row has a broken table shape: {line}")
     for item in constraint_plans["early_sleep"].get("items", []):
         match = re.match(r"(\d{2}):(\d{2})-", str(item.get("suggested_window", "")))
         if match and int(match.group(1)) >= 19:

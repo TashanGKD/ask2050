@@ -26,6 +26,14 @@
 
 接入完成后不要把当前 2050 问题转交给 `topiclab help ask` 让用户再问一遍。`topiclab session ensure` 只是后台身份/画像通道；当前活动推荐、日程解释和路线规划必须继续由 ask2050 的内置资料、检索脚本和分层证据直接完成。只有在调试接入链路、刷新网站 skill 或用户明确要求验证 ask agent 时，才调用 `topiclab help ask`。
 
+真实压测接入链路时可运行：
+
+```bash
+python scripts/openclaw_smoke_test.py --agent-call
+```
+
+这个脚本会真实执行访客 bootstrap 和 `topiclab session ensure`，但只输出字段是否存在、CLI 是否成功和 ask-agent 通道是否响应，不打印 `bind_key`、token 或认领密钥。注意：`topiclab help ask` 的成功只证明他山世界/OpenClaw 通道可用，不代表当前 ask2050 的完整本地日程和推荐证据已经交给网站 agent；正常 2050 推荐仍必须由 ask2050 本地内置资料和检索脚本完成。
+
 ## 四、启动、刷新与认证
 
 ### 4.1 安装与升级
