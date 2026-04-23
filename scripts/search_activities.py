@@ -92,6 +92,8 @@ QUERY_ALIASES = {
     "别太累": ["低强度", "放松"],
     "不想太累": ["低强度", "放松"],
     "晚上": ["夜间继续聊", "晚间活动"],
+    "无障碍游乐场": ["无障碍游戏厅", "2050无障碍游戏厅", "无障碍", "inclusive"],
+    "2050无障碍游乐场": ["无障碍游戏厅", "2050无障碍游戏厅", "无障碍", "inclusive"],
     "罕见病 ai 医疗": ["从大模型到罕见病", "认真聊一聊AI+医疗", "五云厅", "OpenRD"],
     "罕见病医疗": ["从大模型到罕见病", "认真聊一聊AI+医疗", "五云厅", "OpenRD"],
     "ai医疗": ["AI+医疗", "从大模型到罕见病", "五云厅"],
@@ -382,6 +384,27 @@ def matching_talks(session: dict, query: str) -> list[dict]:
     return talks[:3]
 
 
+def matching_unit_talks(unit: dict, query: str) -> list[dict]:
+    talks = [talk for talk in unit.get("talks", []) if isinstance(talk, dict)]
+    if not talks:
+        return []
+    if not query:
+        return talks[:3]
+    terms = query_terms(query)
+    matched = []
+    for talk in talks:
+        haystack = " ".join(
+            [
+                str(talk.get("title", "")),
+                str(talk.get("speaker", "")),
+                " ".join(str(tag) for tag in talk.get("tags", [])),
+            ]
+        ).lower()
+        if query_matches(haystack, query) or any(term and term in haystack for term in terms):
+            matched.append(talk)
+    return (matched or talks)[:5]
+
+
 def source_activity_ids(record: dict, query: str) -> list[str]:
     q_lower = query.lower()
     weak_year_queries = {"2024", "2025", "2026"}
@@ -595,6 +618,17 @@ def main() -> int:
                     unit.get("location_hint", ""),
                     " ".join(unit.get("topic_tags", [])),
                     " ".join(
+                        " ".join(
+                            [
+                                str(talk.get("title", "")),
+                                str(talk.get("speaker", "")),
+                                " ".join(str(tag) for tag in talk.get("tags", [])),
+                            ]
+                        )
+                        for talk in unit.get("talks", [])
+                        if isinstance(talk, dict)
+                    ),
+                    " ".join(
                         term
                         for activity_id in unit.get("matched_activity_ids", [])
                         for term in facet_terms(activity_facets.get(str(activity_id)))
@@ -612,9 +646,14 @@ def main() -> int:
         print(f"文章小节 | {record.get('container')} | {unit.get('section_title')} | {time_range} | {location_hint}")
         print(f"  来源文章: {display_source_title(record.get('article_title'))}")
         print(f"  主题: {', '.join(unit.get('topic_tags', []))}")
+        for talk in matching_unit_talks(unit, args.q):
+            print(f"  报告: {talk.get('title')} | {talk.get('speaker')} | {', '.join(str(tag) for tag in talk.get('tags', []))}")
         if ids:
-            print(f"  关联活动: {', '.join(ids)}")
-            for activity_id in ids:
+            if len(ids) > 12:
+                print(f"  关联活动: {', '.join(ids[:12])} 等 {len(ids)} 个")
+            else:
+                print(f"  关联活动: {', '.join(ids)}")
+            for activity_id in ids[:12]:
                 activity = activity_lookup.get(activity_id)
                 if activity:
                     print(f"  来源: {activity['url']}")
@@ -659,8 +698,11 @@ def main() -> int:
         if record.get("article_url"):
             print(f"  公众号: {record.get('article_url')}")
         if ids:
-            print(f"  关联活动: {', '.join(ids)}")
-            for activity_id in ids:
+            if len(ids) > 12:
+                print(f"  关联活动: {', '.join(ids[:12])} 等 {len(ids)} 个")
+            else:
+                print(f"  关联活动: {', '.join(ids)}")
+            for activity_id in ids[:12]:
                 activity = activity_lookup.get(activity_id)
                 if activity:
                     print(f"  来源: {activity['url']}")

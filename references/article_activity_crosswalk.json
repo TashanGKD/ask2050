@@ -198,342 +198,6 @@
       ]
     },
     {
-      "article_url": "https://mp.weixin.qq.com/s/0pk6F8FvoqjysXBApdrrdA",
-      "article_title": "新生论坛@2050@2026：500+脑暴席卷云栖，年青就要最大声分享！",
-      "source_ocr_file": "008.md",
-      "container": "新生论坛",
-      "crosswalk_status": "article_outline_complete_forum_venues_curated_id_partial",
-      "units": [
-        {
-          "section_title": "未来公园——百集绿色生活与智慧妙想的活力赛场",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [
-            "12731"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "09:00-10:30",
-          "location_hint": "A区 1F 智云厅",
-          "topic_tags": [
-            "future-city",
-            "green-living",
-            "public-space"
-          ],
-          "confidence": "high"
-        },
-        {
-          "section_title": "绘画的真理",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [
-            "12787"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "10:30-12:00",
-          "location_hint": "A区 1F 智云厅",
-          "topic_tags": [
-            "art",
-            "aesthetics"
-          ],
-          "confidence": "manual_match"
-        },
-        {
-          "section_title": "1000天后的美术馆",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [
-            "12757"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "12:00-13:00",
-          "location_hint": "A区 1F 智云厅",
-          "topic_tags": [
-            "art",
-            "museum",
-            "future-culture"
-          ],
-          "confidence": "medium"
-        },
-        {
-          "section_title": "用AI逆袭记忆，解锁爷爷奶奶的《寻梦环游记》",
-          "unit_type": "talk",
-          "matched_activity_ids": [],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "13:00-13:30",
-          "location_hint": "A区 1F 智云厅",
-          "topic_tags": [
-            "ai-memory",
-            "elderly",
-            "image-creation"
-          ],
-          "confidence": "needs_manual_match"
-        },
-        {
-          "section_title": "《南都画报》青年影像分享会",
-          "unit_type": "sharing",
-          "matched_activity_ids": [
-            "12451"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "13:30-14:30",
-          "location_hint": "A区 1F 智云厅",
-          "topic_tags": [
-            "youth-film",
-            "visual-culture"
-          ],
-          "confidence": "medium"
-        },
-        {
-          "section_title": "当孩子成为导演，用AI画出会动的故事",
-          "unit_type": "screening_workshop",
-          "matched_activity_ids": [
-            "12598"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "14:30-16:00",
-          "location_hint": "A区 1F 智云厅",
-          "topic_tags": [
-            "ai-film",
-            "children",
-            "education"
-          ],
-          "confidence": "medium"
-        },
-        {
-          "section_title": "10后导演 AI·电影节",
-          "unit_type": "festival_block",
-          "matched_activity_ids": [
-            "12700"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "16:00-18:00",
-          "location_hint": "A区 1F 智云厅",
-          "topic_tags": [
-            "ai-film",
-            "children",
-            "education"
-          ],
-          "confidence": "medium"
-        },
-        {
-          "section_title": "青年导演 X AI 共创未来影像",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [],
-          "date_tags": [
-            "2026-04-26"
-          ],
-          "time_range": "09:00-11:30",
-          "location_hint": "A区 1F 智云厅",
-          "topic_tags": [
-            "ai-film",
-            "young-director",
-            "media"
-          ],
-          "confidence": "needs_manual_match"
-        },
-        {
-          "section_title": "让AI圈的黑话与话语权力",
-          "unit_type": "talk",
-          "matched_activity_ids": [],
-          "date_tags": [
-            "2026-04-26"
-          ],
-          "time_range": "11:30-12:45",
-          "location_hint": "A区 1F 智云厅",
-          "topic_tags": [
-            "ai-culture",
-            "language",
-            "power"
-          ],
-          "confidence": "needs_manual_match"
-        },
-        {
-          "section_title": "AI时代，如何让社会听到更多青年人的声音",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [
-            "12688"
-          ],
-          "date_tags": [
-            "2026-04-26"
-          ],
-          "time_range": "13:00-15:30",
-          "location_hint": "A区 1F 智云厅",
-          "topic_tags": [
-            "youth-voice",
-            "ai-society",
-            "public-discussion"
-          ],
-          "confidence": "medium"
-        },
-        {
-          "section_title": "青智助老进小班 志愿智暖银幕情",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [
-            "12555"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "09:00-10:00",
-          "location_hint": "A区 1F 慧云厅",
-          "topic_tags": [
-            "elderly",
-            "community-service",
-            "ai-public-good"
-          ],
-          "confidence": "medium"
-        },
-        {
-          "section_title": "未来编程：重新定义律师和远方",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "10:00-11:00",
-          "location_hint": "A区 1F 慧云厅",
-          "topic_tags": [
-            "programming",
-            "law",
-            "future-work"
-          ],
-          "confidence": "needs_manual_match"
-        },
-        {
-          "section_title": "童星未来：当创新基因注入可持续发展",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "11:00-12:00",
-          "location_hint": "A区 1F 慧云厅",
-          "topic_tags": [
-            "sustainability",
-            "youth",
-            "innovation"
-          ],
-          "confidence": "needs_manual_match"
-        },
-        {
-          "section_title": "物品重生：记忆永生",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [
-            "12411"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "12:30-13:30",
-          "location_hint": "A区 1F 慧云厅",
-          "topic_tags": [
-            "ai-memory",
-            "object-story",
-            "emotional-tech"
-          ],
-          "confidence": "high"
-        },
-        {
-          "section_title": "为什么你越会和AI聊天，越不会谈恋爱？",
-          "unit_type": "talk",
-          "matched_activity_ids": [
-            "12487"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "13:30-14:30",
-          "location_hint": "A区 1F 慧云厅",
-          "topic_tags": [
-            "ai-relationship",
-            "psychology",
-            "social"
-          ],
-          "confidence": "medium"
-        },
-        {
-          "section_title": "10后创业，求支持！！",
-          "unit_type": "pitch",
-          "matched_activity_ids": [
-            "12416"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "13:30",
-          "location_hint": "A区 1F 慧云厅",
-          "topic_tags": [
-            "youth-entrepreneurship",
-            "maker"
-          ],
-          "confidence": "high"
-        },
-        {
-          "section_title": "在家学习夏令营（自学的年青人们）",
-          "unit_type": "learning_block",
-          "matched_activity_ids": [
-            "12225"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "unknown",
-          "location_hint": "A区 1F 慧云厅",
-          "topic_tags": [
-            "self-directed-learning",
-            "education"
-          ],
-          "confidence": "low"
-        },
-        {
-          "section_title": "AI时代的教育与社会科学",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [
-            "12298"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "unknown",
-          "location_hint": "A区 1F 慧云厅",
-          "topic_tags": [
-            "education",
-            "social-science",
-            "ai"
-          ],
-          "confidence": "medium"
-        },
-        {
-          "section_title": "2050无障碍游乐场",
-          "unit_type": "forum_block",
-          "matched_activity_ids": [
-            "12507"
-          ],
-          "date_tags": [
-            "2026-04-25"
-          ],
-          "time_range": "unknown",
-          "location_hint": "A区 1F 慧云厅",
-          "topic_tags": [
-            "accessibility",
-            "inclusive-design"
-          ],
-          "confidence": "medium"
-        }
-      ]
-    },
-    {
       "article_url": "https://mp.weixin.qq.com/s/MaV0AlyUOu8ZmmaVeU5Y8A",
       "article_title": "星空露营生活指南@2025@2026",
       "source_ocr_file": "004.md",
@@ -686,6 +350,6042 @@
             "afterparty"
           ],
           "confidence": "needs_manual_structuring"
+        }
+      ]
+    },
+    {
+      "article_url": "https://mp.weixin.qq.com/s/0pk6F8FvoqjysXBApdrrdA",
+      "article_title": "新生论坛@2050@2026：500+脑暴席卷云栖，年青就要最大声分享！",
+      "source_ocr_file": "008.md",
+      "container": "新生论坛",
+      "crosswalk_status": "article_outline_complete_forum_venues_curated",
+      "units": [
+        {
+          "section_title": "沿着《生命树》，去看三江源",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12257"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "09:00-10:00",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "health-medical",
+            "arts-media-design",
+            "philosophy-mind",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "三江源影像展播：山泉水源",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "主题分享：高原马铃薯育种技术与新品种介绍",
+              "speaker": "郭恒 农学博士，青海大学副研究员、硕导，青海省高端创新人才拔尖人才",
+              "tags": [
+                "health-medical",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "主题分享：天眼守望中华水塔——卫星遥感赋能三江源生态环境保护",
+              "speaker": "刘尊方 青海大学卫星遥感中心管理员，在读博士，生态水文遥感研究方向",
+              "tags": [
+                "health-medical",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "主题分享：三江源国家公园多元主体差异化生态保护策略研究",
+              "speaker": "黄雯静 青海大学土木水利学院本科生，获校级大创赛三江源相关项目铜奖",
+              "tags": [
+                "health-medical",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "页岩油气富集机理与复杂油藏及非常规储层高效开发关键技术研究",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "10:00-10:45",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "research-science"
+          ],
+          "talks": [
+            {
+              "title": "页岩层系中持续百万年的\"龟兔赛跑\"",
+              "speaker": "刘畅 高级工程师",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "给分子装上环境响应的\"开关\"",
+              "speaker": "刘逸锋 高级工程师",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "遇事不决量子力学",
+              "speaker": "杨义轩 高级工程师",
+              "tags": [
+                "research-science"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AI与地球可持续发展新生论坛",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "10:45-11:45",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "philosophy-mind",
+            "social-impact"
+          ],
+          "talks": [
+            {
+              "title": "跨界破局——从工业实战到前沿探索",
+              "speaker": "肖倚天 之江实验室特聘专家，DDE国际研究中心（杭州）首席地球科学家",
+              "tags": [
+                "ai",
+                "research-science",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "地心之旅——地热、岩浆与火山的未来共识",
+              "speaker": "John Ludden 前欧洲地球科学联盟（EGU）及国际地质科学联合会（IUGS）主席",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "机遇与平衡——AI如何加速减排、绿色转型与包容性发展",
+              "speaker": "Nancy House 前国际勘探地球物理学家学会（SEG）主席，IGI, LLC 创始人，专注 CCUS 与全球减排",
+              "tags": [
+                "ai",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "横跨能源、采矿与可持续发展——地球建模的重大挑战与未来路径",
+              "speaker": "Ulisses Mello 前 IBM 巴西研究院院长，Thomas J. Watson 研究中心 Global Technology Outlook 前总监",
+              "tags": [
+                "research-science",
+                "social-impact"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "面向地球的开放科学",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "11:45-12:30",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "AI—Atmospheric Intelligence",
+              "speaker": "朱明阳 中国科学院大气物理研究所博士后",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "In fact we are all stardust!",
+              "speaker": "Thomas Bisbas 之江实验室地球与空间科学计算研究中心研究专家",
+              "tags": [
+                "ai",
+                "research-science",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "走进深海——探访地球边疆的黑暗住民",
+              "speaker": "袁梓铭 中国科学院海洋研究所海洋生物分类与系统演化实验室博士后",
+              "tags": [
+                "research-science"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "博魔法",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12354"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "12:30-12:45",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "education"
+          ],
+          "talks": [
+            {
+              "title": "分享者",
+              "speaker": "王一狄(lucas) 魔术师，创客，编导，道具师、第七届魔术主理人、魔术比赛评委",
+              "tags": [
+                "education"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "虚拟制片：纪录片影像语法革命",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12292"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "12:45-13:30",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "arts-media-design"
+          ],
+          "talks": [
+            {
+              "title": "虚拟制片 × 纪录片《吴越国》分享会",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "李炼 浙江博采传媒有限公司 创始人、总裁",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "许继锋 纪录片《吴越国》、《西泠印社》、《孤山路 31 号》导演",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "沈辰奇 浙江博采传媒有限公司 制作总监，纪录片《吴越国》虚拟视效制作团队制作总监",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "外挂 VS 内置：医疗机器人的微观战场",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12389"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:30-14:00",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "health-medical",
+            "robotics-hardware",
+            "community-youth"
+          ],
+          "talks": [
+            {
+              "title": "发丝间的巅峰手术——亚洲首台眼科手术机器人视网膜手术",
+              "speaker": "",
+              "tags": [
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "陈亦棋 中国首台眼科手术机器人发明人之一；医工融合追光者，光明守护人",
+              "speaker": "",
+              "tags": [
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "如果药物会\"思考\"——电子-药物协同，塑造下一代健康系统",
+              "speaker": "",
+              "tags": [
+                "health-medical"
+              ]
+            },
+            {
+              "title": "南科望 浙江大学研究员，国家级青年人才；药械融合创新人，实验室造梦师",
+              "speaker": "",
+              "tags": [
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "量子 AI 前沿探索",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12263"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "14:00-14:15",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "health-medical"
+          ],
+          "talks": [
+            {
+              "title": "量子 AI + 创新药：用量子比特重写生命密码",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "李伟然 医图生科 Co-founder & CEO，多项药物专利拥有者",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "health-medical"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "从大脑到代码，你真能被上传吗？",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12630"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "14:15-15:30",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "Brainpu：基于多模态世界模型的脑科学通用基础大模型",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "雷博 智源研究院研究员、AI + 神经科学方向负责人",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "炉边对话",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "黄铁军 智源研究院理事长、北京大学教授",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "陈国璋 北京大学计算机学院研究员",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "胡小林 清华大学副教授、清华–IDG/麦戈文脑科学研究院研究员",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "雷博（主持人） 智源研究院研究员、AI + 神经科学方向负责人",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "马雷 北京大学未来技术学院国家生物医学成像科学中心研究员、智源学者",
+              "speaker": "",
+              "tags": [
+                "research-science",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "张若冰 复旦大学脑智研究院研究员",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI 重塑生活",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12741"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "15:30-16:15",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education",
+            "health-medical",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "AI 时代的量化自我和主动健康",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "张大磊 鹰瞳科技创始人 CEO / 一个致力于医疗普惠的 AI 科学家",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "当 3D 遇到 AI，从模型生成到世界生成",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "吴迪 影眸科技创始人 CEO / 一个反共识的技术赌徒",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "以魂为器，以意破空——AI 时代的学习心法",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "education",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "刘克亮 风变科技创始人 CEO / 打造 AI 时代的无边界大学",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "碳硅共生局：当 AI 拥有\"数字肉体\"，人类如何进化？",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12240"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "16:15-16:30",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "碳硅共生局：当 AI 拥有\"数字肉体\"，人类如何进化？",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "重塑乡土：奔赴火星，不如修复地球",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12418"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "16:30-17:15",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "research-science",
+            "social-impact",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "《小岛共建计划：重构离岛，理想生长》",
+              "speaker": "",
+              "tags": [
+                "research-science",
+                "social-impact",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "钱仕逸 理想在野创始人，小岛共建计划发起人",
+              "speaker": "",
+              "tags": [
+                "research-science",
+                "social-impact",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "《钓源古村，让世界看到中国村落生生不息的美》",
+              "speaker": "",
+              "tags": [
+                "research-science",
+                "social-impact",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "大圣 十里芳菲钓源古村村长",
+              "speaker": "",
+              "tags": [
+                "research-science",
+                "social-impact",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "《从三产-二产-一产：碧山村品牌的生长故事》",
+              "speaker": "",
+              "tags": [
+                "startup-product"
+              ]
+            },
+            {
+              "title": "丁牧儿 碧山村品牌创始人，猪栏酒吧二代掌门人",
+              "speaker": "",
+              "tags": [
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI 时代的创作者：我们在生成世界，还是被世界生成？",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12705"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "17:15-18:15",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "arts-media-design",
+            "social-impact",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "Opening Performance，壁画动次大次 | 时间被唤醒",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "在敦煌壁画中 探索千年智慧",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "史敦宇 敦煌壁画复原传承人",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "在科学探索中成长",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "付海林 西湖大学工学院材料科学与工程系兼聘理学院化学系助理教授、特聘研究员、博士生导师",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "Open Mic Session | 创作的断点与重连",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "文字游戏：AI 时代的叙事诗学",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "一帆(YIFAN) RAC 艺术硕士 // 地球 ONLINE 服务器体验者 // 算法系谱学写作者",
+              "speaker": "",
+              "tags": [
+                "research-science",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "让 AI 接住你的音乐直觉",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "阿博 Noema Lab 创作体验负责人",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "我看不见，但我想让你看见：思创理想的无障碍设计之路",
+              "speaker": "",
+              "tags": [
+                "arts-media-design",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "张振晔 思创理想 Strong Resonance 品牌发起人兼主理人",
+              "speaker": "",
+              "tags": [
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "当创作进入 Agent 时代，未来内容如何从\"生成\"走向\"发生\"",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "18:15-18:30",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "arts-media-design"
+          ],
+          "talks": [
+            {
+              "title": "当创作进入 Agent 时代，未来内容如何从\"生成\"走向\"发生\"",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AI 角色颜值革命",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "18:30-18:45",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai"
+          ],
+          "talks": [
+            {
+              "title": "AI 角色颜值革命",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "下一个 7500 万年：科技叩星辰",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12409"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "21:30-22:15",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "arts-media-design",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "不知归——生物圈二号点燃的心火",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "以商赛逻辑设计\"跨万年科技公司\"",
+              "speaker": "Terrence Yang 初三 参与过 3 部 AI 电影制作",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "AI 到底怎么用，我能用他创造世界",
+              "speaker": "汪宇杰 半路出家的游戏设计师，冷湖科幻游戏设计师，创业三次依然再次尝试的不死小强",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "不被定义的青年创新",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12325"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "22:15-23:15",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "education",
+            "robotics-hardware",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "把大模型焊进硬件，更要把 AI 旷野还给每个普通人",
+              "speaker": "Cogito(闫霄) AloT 全栈架构师，技术平权践行者",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "传统教育必将瓦解，孩子们需要一座伊甸园",
+              "speaker": "Vincy 剑桥大学数字人文硕士，撕掉精英标签的教育重构者",
+              "tags": [
+                "education"
+              ]
+            },
+            {
+              "title": "没有光环的起点——十七岁创业者如何在不确定中构建路径",
+              "speaker": "姜胤 企业 CEO、独立带领六十余名员工创造价值",
+              "tags": [
+                "community-youth",
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "\"心\"在哪\"理\"？",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12349"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "23:15-23:30",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "\"心\"在哪\"理\"？",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "一次人生重启实验：第 85 天",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "23:30-23:45",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "一次人生重启实验：第 85 天",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "WaytoAGI 三周年庆 & 离谱音乐会",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12444"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "待更新",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "arts-media-design",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "WaytoAGI 三周年庆 & 离谱音乐会",
+              "speaker": "",
+              "tags": [
+                "arts-media-design",
+                "opensource-tech"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "【逐日课堂】机智和物理·机智和物理——如何培养物理的直觉",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12503"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "08:00-09:30",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "research-science"
+          ],
+          "talks": [
+            {
+              "title": "【逐日课堂】机智和物理·机智和物理——如何培养物理的直觉",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            }
+          ],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "大模型的前沿：探索智能的上限",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "09:30-10:15",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "community-youth",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "主动智能的思考与探索",
+              "speaker": "Winston 附跃星辰基础模型 Technical PM，古法全栈工程师",
+              "tags": [
+                "ai",
+                "community-youth",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "大模型注意力机制与 agentic thinking",
+              "speaker": "小岛 月之暗面 Kimi 开发者关系负责人，Trae Expert",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "世界模型的思考",
+              "speaker": "徐霖宁 上海人工智能实验室青年研究员",
+              "tags": [
+                "ai",
+                "community-youth",
+                "opensource-tech"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "Token 时代的 AI 医生助理",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "10:15-10:30",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "health-medical"
+          ],
+          "talks": [
+            {
+              "title": "Token 时代的 AI 医生助理",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "health-medical"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "艺术与海洋",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "10:30-11:10",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "research-science",
+            "arts-media-design",
+            "community-youth"
+          ],
+          "talks": [
+            {
+              "title": "《海洋垃圾如何变身艺术装置》",
+              "speaker": "安之堃 中国美术学院 / 艺术赋能社会发展实践者",
+              "tags": [
+                "research-science",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "《美育深蓝——艺术智性与深海科考的跨界合作》",
+              "speaker": "马倩 中国美术学院 / 科艺融合与社会美育的践行者",
+              "tags": [
+                "arts-media-design",
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AI 起飞：从低空到太空",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12241"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "11:15-12:30",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "逐梦环球·飞行与初心",
+              "speaker": "张博 \"中国环球飞行第一人\"",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "智领空天——AI 驱动航空产业革新",
+              "speaker": "张峰 中国航空器拥有者及驾驶员协会（中国 AOPA）理事长、党支部书记",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "低空竞速革命——会飞的\"F1\"与低空载人飞行技术跃迁",
+              "speaker": "林海英 北京航空航天大学教授 / 博导、天目山实验室副主任",
+              "tags": [
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "芯启天地·全域互联——瞰中国芯的空天征途",
+              "speaker": "吴瑞砾 杭州地芯科技有限公司创始人",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "圆桌对话：立足低空之上，仰望星辰大海",
+              "speaker": "张博 \"中国环球飞行第一人\"",
+              "tags": [
+                "robotics-hardware"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "\"2050 太空 AI 号\"启航仪式",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "13:00-15:30",
+          "location_hint": "A区 2F 360环屏(千人云栖厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "robotics-hardware",
+            "arts-media-design",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "跃迁火种：用 AI 与商业航天点亮星际未来",
+              "speaker": "窦明明 中商基金董事长 / \"2050 太空 AI 号\"召集人",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "把人工智能送上天",
+              "speaker": "李超 三体计算星座总部技术总监",
+              "tags": [
+                "ai",
+                "research-science",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "未来，在地球以外",
+              "speaker": "李亚亚 开运联合轨道计算负责人",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "火箭为翼，AI 为魂，书写航天征程新范式",
+              "speaker": "高玉峰 火圣宇航联合创始人 / 总经理",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "AI 赋能卫星工厂",
+              "speaker": "江浩 鸿擎科技卫星产线负责人",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "AI 多孔新材料重构卫星制造",
+              "speaker": "杨鑫 浙大城市学院全省空天金属材料重点实验室教授",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "全域感知，用遥感重构世界的量化表达",
+              "speaker": "贾玉同 四象科技创新业务负责人",
+              "tags": [
+                "ai",
+                "research-science",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "解锁赛博调色盘里的智算密码",
+              "speaker": "雷腾 中科西光航天副总经理",
+              "tags": [
+                "ai",
+                "research-science",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "魔瞳算苍穹——AI 时代的遥感卫星进化论",
+              "speaker": "丁强强 魔方卫星创始人 / 董事长",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "月面探险家养成指南：未来月球与我们在做的 AI 机器人",
+              "speaker": "邢梓阳 地卫二月球机器人方案设计师 / 种菜挖矿搞基建的月球新农人",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "\"2050 太空 AI 号\"全系统上线仪式暨合影",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AGI4Science：正在生长的科学地图",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12402"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "09:00-12:00",
+          "location_hint": "A区 2F 2050学习节(五云厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education",
+            "health-medical",
+            "robotics-hardware",
+            "arts-media-design",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "生长中的 AGI4Science：全景、边界和未来",
+              "speaker": "于晓轶 上海人工智能实验室项目经理人负责人，寻觅全球「小天才」",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "我们离聚变商用还有多远？AI 的机遇在哪里",
+              "speaker": "吴泰霖 西湖大学人工智能系助理教授，喜欢科幻、聚变和飞出太阳系",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "AI 看懂物理：让流体在 AI 里重新流起来",
+              "speaker": "姜若曦 复旦 AI 院 × 上智院科学家，用模型学物理，用表征打开 AI 黑盒",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "为什么高端芯片里，有些问题不能只靠实验",
+              "speaker": "杨晓晖 厦大化学副教授，做 AI 加速电镀液研发。相信好数据得自己造",
+              "tags": [
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "让 AI 走进芯片设计核心，能走多远？",
+              "speaker": "邵雷来 上海交大长聘副教授，打造 AI 与芯片设计的\"双向\"\"飞轮\"",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "不想当\"算法孤勇者\"？我们开源了一座 AI + 化学实验室",
+              "speaker": "徐丽成 上智院物质科学研究员，打造让新物质\"从发现到落地\"的 AI 矩阵",
+              "tags": [
+                "ai",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "我把细胞\"放大\"给 AI 看",
+              "speaker": "董振 西湖大学助研，做膨胀空间蛋白质组学，把生命结构一点点展开",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "一家生物企业的 AI，从 PPT 到产线之间发生了什么？",
+              "speaker": "张骥 锦波生物首席 AI 架构师，让生物制造\"深水区\"撞上最锋利的 AI",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "一人成军，还是终产者？——Agent 时代",
+              "speaker": "方栩榕 浙大百人计划研究员，热爱星野 / 风光 / 科幻 / AI 时代的生产关系",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "当 AI 走进社会科学——人类行为的新显微镜",
+              "speaker": "马煜曦 北大在读博士，好奇 AI 能否成为观察人类行为的新仪器",
+              "tags": [
+                "ai",
+                "research-science",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "大模型能否解决人类的真实决策困境？",
+              "speaker": "胡舒悦 上海人工智能实验室青年科学家，研究多智能体、大模型与博弈论",
+              "tags": [
+                "ai",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "多智能体究竟好在哪？是不是另一个\"泡沫\"？",
+              "speaker": "刘实好 清华博士在读，即将加入腾讯，AI infra 与多智能体研究者",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "学了全互联网的 AI，为什么造不出一架飞机？",
+              "speaker": "温力成 上海人工智能实验室研究员，探索算法与物理世界的交互",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "如果 AI 回到 1900 年，它能发现相对论吗？",
+              "speaker": "杜伟韬 阿里达摩院算法专家，数学出身。一半心在抽象，一半想着落地",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "AI 时代的基础数学",
+              "speaker": "陶兆巍 上智院 AI 科学家，毕业于北大数院，借助 RL\"突破尘封的\"接吻数\"记录",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "AGI 与大脑——到底谁更接近智能的本质？",
+              "speaker": "刘凯 宁德时代首席 AI 科学家，AGI 探索者，用 AI 重新理解智能",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "下一步的 LLM for Science，走向哪里？",
+              "speaker": "刘圣超 港中文助理教授，波动智能实验室负责人，让 AI 真正理解物质世界",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            }
+          ],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "AI + 游戏论坛",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12597"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "12:00-13:00",
+          "location_hint": "A区 2F 2050学习节(五云厅)",
+          "topic_tags": [
+            "ai",
+            "education",
+            "arts-media-design"
+          ],
+          "talks": [
+            {
+              "title": "AI 游戏：让我创造、让我爱",
+              "speaker": "臧天培 Agentland 制作人，关注 AI 如何为电子游戏带来新范式",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "不止于对话：从玩家体验出发设计 AI + 游戏",
+              "speaker": "张耀宇 想做有惊喜的游戏，做大家都喜欢的游戏。",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "AgentMarket: AI 小镇中的经济模拟",
+              "speaker": "张修齐 想做出好玩的 AI / 小镇游戏",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "我的 AI 世界：所有人都是创作者",
+              "speaker": "袁一博 想让所有人都能 Let-me-create!",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            }
+          ],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "AI 时代：人与组织的进化路径",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12310"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:00-13:45",
+          "location_hint": "A区 2F 2050学习节(五云厅)",
+          "topic_tags": [
+            "ai",
+            "education",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "AI 时代的组织核心资产是什么？",
+              "speaker": "戎筠 浩资本合伙人 & 生态负责人",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "AI 时代的组织和领导力进化",
+              "speaker": "祁琳 组织 AI 前沿创始人，CHO",
+              "tags": [
+                "ai",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "放大个人穿透力：创业者借力 AI + 社区破局",
+              "speaker": "凯特何 AI 洞见创始人，AI 创业者 PMF 加速社区发起人",
+              "tags": [
+                "ai",
+                "community-youth",
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI + X 高校教育联盟论坛",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12574"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:45-16:15",
+          "location_hint": "A区 2F 2050学习节(五云厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "人工智能和城市",
+              "speaker": "高盛 联合创始人兼中国办公室主任",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "从 AI 切入，人工智能的自我进化",
+              "speaker": "薛鼎荣 之江实验室科学攀登总体组技术总师，天曜智能 CEO",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "把 AI × 高校校行带到 1000 所学校",
+              "speaker": "龚鑫浩 Datawhale 高校团队负责人",
+              "tags": [
+                "ai",
+                "education"
+              ]
+            },
+            {
+              "title": "未来终身学习生态——AI 时代的思考",
+              "speaker": "沙晓文 西交利物浦大学 数字化转型研究中心研究员",
+              "tags": [
+                "ai",
+                "education"
+              ]
+            },
+            {
+              "title": "当一群学生在思考重塑大学：未来大学学习模式的实践与探索",
+              "speaker": "王鹏程 浙江大学启真文化科技创新创业实验室创始人",
+              "tags": [
+                "education"
+              ]
+            },
+            {
+              "title": "AI 时代人才培养的新模式新挑战：如何吸引和培育顶尖科研人才",
+              "speaker": "张新国 上海人工智能实验室工程院高校合作负责人",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "人和数据的创造力",
+              "speaker": "王博飞 天元智联科学研究院院长，中华株洲市青年科学家",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "华语商业运营如何从\"大\"中脱颖而出",
+              "speaker": "潘红江博士 嘉兴数字城建科技项目投资经理",
+              "tags": [
+                "startup-product"
+              ]
+            },
+            {
+              "title": "年轻人与创业",
+              "speaker": "王嘉良 起点计划上海科技有限公司创始成员",
+              "tags": [
+                "community-youth",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "在不确定中寻找下一步：从学生开发者到创业者，我的历程和跃迁",
+              "speaker": "商朝峰 明月湖潮酷创造者，Datawhale 团队成员",
+              "tags": [
+                "education",
+                "community-youth",
+                "startup-product",
+                "opensource-tech"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI + OPC：一个人的 AI 时代生存指南",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12482"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "16:15-17:45",
+          "location_hint": "A区 2F 2050学习节(五云厅)",
+          "topic_tags": [
+            "ai",
+            "education",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "从交易到生活——一人一虾，勇闯天涯",
+              "speaker": "大松 PathWise 创始人，基金经理，关注个人知识和组织效能管理",
+              "tags": [
+                "ai",
+                "education",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "当算力追寻想象力：一个非技术的 AI 产品开发实践感悟与行动哲学",
+              "speaker": "陈磊 维特创想、nab、沪科社长，\"社交催化剂\"与\"逻辑教练\"",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "AI 时代的\"双全会十\"：高科视角的资产产品重塑与独立开发实战",
+              "speaker": "Jay 前米有微创新，前 AI 独角兽战投，现「墨罗 App」开发者",
+              "tags": [
+                "ai",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "AI 时代的个体如何\"破局\"？信任如何重建？协作如何发生？",
+              "speaker": "大雾 NCC 社区创始人，一个六边形超级个体，也是超能个体的超级节点",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "AI 时代的文科生：如何跟 Agent 协作并赚到钱",
+              "speaker": "周晨 贺宇研究小组联合发起人，文科生用 Agent 实现变现第一桶金",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "工作流 ai × 商业化指南：让 AI 建模你的 0% 的重要章节",
+              "speaker": "Shen Agent Dojo 创始人，人工智能硕士，前微软蓝领工程师",
+              "tags": [
+                "ai",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "在 AI 浪潮下，走入田野与现场，看到具体的人",
+              "speaker": "月亮玉露 「流浪月光计划」发起者，为 AI 时代的创造打造信仰传记与叙事",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI + OPC：人机共生时代，Z 世代的价值重塑与未来路径",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12426"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "17:45-18:30",
+          "location_hint": "A区 2F 2050学习节(五云厅)",
+          "topic_tags": [
+            "ai",
+            "education",
+            "community-youth",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "00 年创业踩到了多少坑",
+              "speaker": "傅雨璇 清醒无疆 CEO，AI + 商业访谈博主",
+              "tags": [
+                "community-youth",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "卷人 AI 魔法：企业与 OPC 在 Sikhi 生态中的共生与博弈",
+              "speaker": "李健睿 创业公司 AI 产品经理，AI 自媒体万粉博主",
+              "tags": [
+                "ai",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "人机共治时代，21 世纪正在成为新一代\"Agent 共事的人\"",
+              "speaker": "陈秀瑶 前 PPT 协同方案组，光合创投合伙人，魔核科技联合创始人",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "西湖大学创业指南",
+              "speaker": "汪晴 西湖区委组织部副部长、区委人才办常务副主任",
+              "tags": [
+                "community-youth",
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "从大模型到罕见病：认真聊一聊 AI + 医疗",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12200"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "09:00-11:00",
+          "location_hint": "A区 2F 2050学习节(五云厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education",
+            "health-medical",
+            "philosophy-mind",
+            "community-youth",
+            "social-impact",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "AI 人源化数据重塑：从科学研究到工业落地",
+              "speaker": "张馨 绿色生物 AI 首席架构师",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "AI 大模型与生命科学",
+              "speaker": "李一凡 国家生物、AI-生物技术融合，Y2K 研发管理经验",
+              "tags": [
+                "ai",
+                "research-science",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "临床需求驱动的 AI：好模型源于一次有效的对话",
+              "speaker": "汪德鹏 Datawhale 成员，浙江巅峰医院 AI Lab 成员",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "从训练医生到训练 AI：为什么医疗大模型必须学会\"追问\"？",
+              "speaker": "王康文 百川智能首席产品专家，Datawhale 成员",
+              "tags": [
+                "ai",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "\"聊手机，N 个 Agent\"：如何把医疗资源延伸进患者的康复日常",
+              "speaker": "王静 AI 医疗产品经理，datawhale 成员，A1 基础课讲师",
+              "tags": [
+                "ai",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "Khub 平在离开医院社区生态闭环应有多少小的需求创建一次机会",
+              "speaker": "力 Khub 平见离开腾讯社区，FenOff 区商务常客老社区发起人",
+              "tags": [
+                "community-youth"
+              ]
+            },
+            {
+              "title": "从建模到智能问答：面向罕见病患者的全流程数字健康平台实践",
+              "speaker": "方佳伟 Khub 平见离开社区共建者，昆士兰大学数据科学专业",
+              "tags": [
+                "health-medical"
+              ]
+            },
+            {
+              "title": "从搜索到理解：OpenRD 如何帮助罕见病跨过信息门槛",
+              "speaker": "魏翔辉 Khub 平见离开社区共建者，医疗 AI 数据中心研发工程师",
+              "tags": [
+                "health-medical",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "大模型为什么看不\"懂\"我？——PSO 任务准备阶段的量化路径",
+              "speaker": "郭磊 Khub 平见离开腾讯社区共建者，AI 应用实践者",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "意识之梯——从人类意识到 AI 意识",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12334"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "11:00-11:45",
+          "location_hint": "A区 2F 2050学习节(五云厅)",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education",
+            "health-medical",
+            "philosophy-mind",
+            "community-youth"
+          ],
+          "talks": [
+            {
+              "title": "意识能被造成为一个数学结构吗？",
+              "speaker": "十三靖 易知致智健康研究院院长，意识科学和 AI 研究者",
+              "tags": [
+                "research-science",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "他真的不在了呀？——当\"无反应\"不等于\"无意识\"",
+              "speaker": "狄晓波 杭州大脑陆维特状态与意识科学研究所所长，意识障碍和临床专家",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "AI 有意识吗？——为什么这个问题会突然变得现实而重要",
+              "speaker": "徐野 AI 意识领域的青年学者，复旦大学和上海 AI Lab 博士生",
+              "tags": [
+                "ai",
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "浙大人在 AI 时代的前沿探索与思考",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "11:45-12:15",
+          "location_hint": "A区 2F 2050学习节(五云厅)",
+          "topic_tags": [
+            "ai",
+            "education",
+            "philosophy-mind",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "Voice Agent OS 的核心技术与商业化实践",
+              "speaker": "魏杰 李岩 丹泽（VUI Lab）创始人兼 CEO",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "云朵级 AI 应用——疯狂的研究与思考",
+              "speaker": "Jike 我们制作 AI 产品负责人",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "2050 链接 | 共热爱，赴未来，让合作发生",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "12:15-15:30",
+          "location_hint": "A区 2F 2050学习节(五云厅)",
+          "topic_tags": [
+            "education",
+            "community-youth"
+          ],
+          "talks": [
+            {
+              "title": "2050 链接 | 共热爱，赴未来，让合作发生",
+              "speaker": "",
+              "tags": [
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "天上的事：太空时代正在到来",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12654"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "09:00-10:30",
+          "location_hint": "A区 3F 风云厅",
+          "topic_tags": [
+            "research-science",
+            "education",
+            "robotics-hardware",
+            "arts-media-design",
+            "philosophy-mind",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "商业太空时代已经开始：人类如何以更好的方式进入其中？",
+              "speaker": "姚瑶 开运联合航天消费应用场景品牌人",
+              "tags": [
+                "philosophy-mind",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "商业太空导航 AOE：下一代人类生活基础设施的建设",
+              "speaker": "李亚亚 北京开运联合有限公司 CTO",
+              "tags": [
+                "philosophy-mind",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "在太空开星星：让每个人拥有一双\"太空之眼\"",
+              "speaker": "杜转转 开运联合集团数据官",
+              "tags": [
+                "research-science",
+                "education",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "在城市中建立\"通往太空的入口\"：摘星台主理人计划",
+              "speaker": "李立欣 开运摘星台项目负责人",
+              "tags": [
+                "research-science",
+                "education",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "把愿望送上太空：一次关于时间与存在的实验",
+              "speaker": "宋启文 开运许愿星项目负责人",
+              "tags": [
+                "research-science",
+                "education",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "地外文明与航天文化",
+              "speaker": "蒋腾飞 人民一号卫星与星云星座总设计师、航天科普专家、中国科普作家",
+              "tags": [
+                "research-science",
+                "robotics-hardware"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "宇航·青聚沙龙",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12217"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "10:30-12:00",
+          "location_hint": "A区 3F 风云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "微纳卫星发展研究",
+              "speaker": "傅宇蕾 上海霄元创新中心研究员",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "柔性传感航天应用探索",
+              "speaker": "徐良 上海霄元创新中心研究员",
+              "tags": [
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "AI Agent 时代与卫星网络技术的交融",
+              "speaker": "罗鹏程 博士",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "基于空间边缘计算的航天器数据高效处理方法",
+              "speaker": "徐光远 博士",
+              "tags": [
+                "robotics-hardware"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI for Manufacturing",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12360"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:00-14:30",
+          "location_hint": "A区 3F 风云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "人本智造：当 HCPS 理论遇见真实车间",
+              "speaker": "王柏村 浙大百人计划研究员，浙江省智能制造工业软件重点实验室副主任",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "数据炼金：铸造工业的数字化底座",
+              "speaker": "殷飞龙 国机数科党委委员、总架构师、智能工业事业部总经理",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "MTT E300 AI MODULE",
+              "speaker": "王野 摩尔线程 AIBOOK 及数字人的产品经理",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "万米高空之下，复杂场景的智能解法",
+              "speaker": "李伟 614 所 数智部书记",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "具身智能：工程机械的神经觉醒时刻",
+              "speaker": "顾毅 雪浪云资深副总裁、总工程师",
+              "tags": [
+                "robotics-hardware"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "天上的事：AI + 3D 打印",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "14:30-15:30",
+          "location_hint": "A区 3F 风云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware"
+          ],
+          "talks": [
+            {
+              "title": "航天智造里的 3D 打印新突破",
+              "speaker": "张晗宇 杭州云栖交叉技术研究院",
+              "tags": [
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "AI 为航天 3D 打印按下快进键",
+              "speaker": "林鹤 浙大城市学院",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "解锁航天智造：3D 打印与 AI 的双向赋能",
+              "speaker": "杨景坤 杭州云栖九天智造科技有限公司",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "天上的事——航空",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12536"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "15:30-16:30",
+          "location_hint": "A区 3F 风云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "arts-media-design"
+          ],
+          "talks": [
+            {
+              "title": "飞机结构智能优化设计，利用 AI 算法实现飞机结构减重",
+              "speaker": "史劲松 飞机设计师，参与了多种飞机型号研制，首次在飞机结构设计中引入独特的 AI 优化方法。",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "让城市低空拥有可靠的飞行大脑——低空经济 eVTOL 飞控系统技术",
+              "speaker": "吴慈航 中航工业自控所高级工程师，b 站飞控区 up 主，致力于让飞行更安全、更智慧",
+              "tags": [
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "慧眼脑护长空：智能技术让飞机更自主",
+              "speaker": "曾文轩 航电任务系统飞机设计师，智能航空应用的践行者",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "arts-media-design"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "开启外挂人生 从端侧智能到感官延伸，如何\"新智人\"",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12767"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "16:30-17:30",
+          "location_hint": "A区 3F 风云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "AI 眼镜时代的硬件复兴与 Agent 生态",
+              "speaker": "郝冬宁 玄景 AI 眼镜软件总经理",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "端侧即未来",
+              "speaker": "罗璇 元始智能（RWKV）联创 COO",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "从视觉重建到感官融合——未来人机融合的第一步",
+              "speaker": "陈文凯 明视脑机 cmo",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "突破地心引力与摩擦力，看轮腿和旋翼的 AI 如何在物理世界狂飙",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "11:00-12:00",
+          "location_hint": "A区 3F 风云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "robotics-hardware",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "多构型地面机器人的多任务统一控制框架",
+              "speaker": "黄炜峰 在校研究生",
+              "tags": [
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "跨越频率墙：复杂环境具身智能分层架构 CoE 推理具身空间认知",
+              "speaker": "梁瀚升 在校研究生",
+              "tags": [
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "LAV2：具身智能驱动的陆空机器人统一框架",
+              "speaker": "李梓建 在校研究生",
+              "tags": [
+                "robotics-hardware"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AI 解锁农业\"新玩法\"",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "13:00-14:30",
+          "location_hint": "A区 3F 风云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "AI 驱动型未来农业工厂",
+              "speaker": "孔德栋 博士/研究员/博导，浙江省农业科学院农业人工智能创新中心主任",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "AI 赋能无人自主温室种植如何获得世界挑战赛冠军",
+              "speaker": "林涛 博士/研究员/博导，浙江大学智能装备研究所副所长",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "智慧农业上市公司如何拥抱 AI，玩转农业新赛道",
+              "speaker": "朱旭华 浙江托普云农科技股份有限公司智慧农业研究院院长",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AI 全链路 | 原力·范式重构 (Agent 架构与组织进化)",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12430"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "09:00-10:45",
+          "location_hint": "A区 3F 蔚云厅",
+          "topic_tags": [
+            "ai",
+            "philosophy-mind",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "让更多人因为 AI 而强大",
+              "speaker": "AJ WaytoAGI 发起人",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "Agent 时代的 iPhone 时刻",
+              "speaker": "汪源 杭州久痕科技 (remio.ai) 创始人，原网易集团副总裁，杭州研究院执行院长",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "Floatboat.ai—— Agent 大航海需要一艘什么样的船",
+              "speaker": "谭少卿 Floatboat.ai 创始人 AKA Captain，为 Agent 造环境，为人造产品",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "我在 AI 初创公司安装龙虾",
+              "speaker": "云中江树 whobot AI 负责人，微软 MVP，LangGPT 作者，打扫干净屋子，等 AGI 入住",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "发现式智能与组织的\"新钢梁\"：在 Agent 时代重构人的尺度",
+              "speaker": "大雨 资深 AI 企业架构师 咨询顾问，在代码与哲学间寻找\"文明新材料\"的极客",
+              "tags": [
+                "ai",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "快速场下链接和互动",
+              "speaker": "全员 现场参会人员互动交流",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI 全链路 | 跨界·融合碰撞 (业务落地与软硬跨界)",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12430"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "10:45-12:30",
+          "location_hint": "A区 3F 蔚云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "给你的\"小龙虾\"递上一张银行卡",
+              "speaker": "Wendy Brand Lead at Clink，给 AI 小龙虾发钱包的人",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "AI 对组织架构的冲击与企业级 Claw 落地实践",
+              "speaker": "高雁 WaytoAGI 企业服务负责人，我的键盘\"fn\"卡住了",
+              "tags": [
+                "ai",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "从软件到硬件，在 WaytoAGI 的 Vibe Everyting 之旅",
+              "speaker": "CY–CHENYUE WaytoAGI AI 硬件负责人，AI 街溜子",
+              "tags": [
+                "robotics-hardware",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "AI 到底怎么真落地",
+              "speaker": "罗文 电商企业 AI 顾问，有一个做茶的 AI 创业者",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "我和我硅基三省六部共度的 30 天",
+              "speaker": "元 WayToAGI 核心共建者 / Agent 版主，哭着请硅基慢下来 DDDD 的碳基生物",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "快速场下链接和互动",
+              "speaker": "全员 现场参会人员互动交流",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI 全链路 | 薪火·教育未来 (少儿教育与火种播撒)",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12430"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "12:30-13:10",
+          "location_hint": "A区 3F 蔚云厅",
+          "topic_tags": [
+            "ai",
+            "education",
+            "philosophy-mind",
+            "community-youth",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "AI 火种车—18 人，3000+km，我们将 AI 火种带进大山的褶皱",
+              "speaker": "丫丫老师 WaytoAGI 教育版版主，AI + 教育探索者",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "聚 AI 之光，燃好奇之火：150 名少年跨共创全球首届少儿 AI 春晚",
+              "speaker": "谢北水 WaytoAGI 教育版核心共建者",
+              "tags": [
+                "ai",
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI 全链路 | 繁衍·社区生态 (社区演化与社会实验)",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12430"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:10-15:40",
+          "location_hint": "A区 3F 蔚云厅",
+          "topic_tags": [
+            "ai",
+            "health-medical",
+            "arts-media-design",
+            "community-youth",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "从玩家到实战：我的社区小白进化论",
+              "speaker": "张梦飞 词元映射 CEO，硅基生命 CTO，致力于成为社区 gai 溜子的赛博手艺人",
+              "tags": [
+                "community-youth"
+              ]
+            },
+            {
+              "title": "在切磋大会中发现市场需求，从而找到自身的定位",
+              "speaker": "JK 金科 成渝 AI 活动策划组织人，超级个体孵化器联创",
+              "tags": [
+                "ai",
+                "health-medical",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "AI 时代，品牌设计的不可替代性与破局",
+              "speaker": "lucky Waytoagi 社区设计师，一家设计工作室的老板，喜欢到处溜达的设计师",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "站在普通人那一边：AI 创业者与普通用户之间的翻译器",
+              "speaker": "大宇 WaytoAGI 重庆站组织者、AI 商业应用讲师，把 AI 从神坛拉回人间的人",
+              "tags": [
+                "ai",
+                "community-youth",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "同屏共振时间",
+              "speaker": "全员 现场参会人员同屏交流共振",
+              "tags": [
+                "ai",
+                "health-medical",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "5 城到 50 城：分布式共建，激活自驱生命力",
+              "speaker": "王贝 WaytoAGI AI 切磋大会负责人，用共见筑起社区成长桥梁",
+              "tags": [
+                "health-medical"
+              ]
+            },
+            {
+              "title": "半年 5 期，20000 份热爱：让普通人拥有 AI 时代的生产力",
+              "speaker": "小鱿鱼 WaytoAGI AI 训练营负责人，超万人的社会性实践",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "这届中登不讲武德之我让社群活跃度翻十倍",
+              "speaker": "刘洋 WaytoAGI 湖南负责人，不会 AI 编程的中登不是好咖啡师",
+              "tags": [
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "技术与人文的交叉地带",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12603"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "16:00-18:00",
+          "location_hint": "A区 3F 蔚云厅",
+          "topic_tags": [
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "技术与人文的交叉地带",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI 全链路 | 搞钱与生存——OPC 超级个体专场",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "09:30-12:40",
+          "location_hint": "A区 3F 蔚云厅",
+          "topic_tags": [
+            "ai",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "WaytoAGI 苏州 OPC 社区的运营实践",
+              "speaker": "OPC 圈马同学 苏州 OPC 主理人；16 年 + 互联网 AI 商业化中登",
+              "tags": [
+                "community-youth",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "Agent 时代 OPC 生存指南",
+              "speaker": "添锦 广电总局实验室专家；对自动化极度偏执的狂热分子",
+              "tags": [
+                "ai",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "一人公司生存之道：靠 AI 吃四碗饭",
+              "speaker": "杨建委 十一创动画负责人；一人也可以是一个队伍",
+              "tags": [
+                "ai",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "一个真实的 OPC 是如何炼成的：从祛魅到破局的实践指南",
+              "speaker": "白志雄 AI 训练营–武汉活动负责人；AI 时代的一个散修",
+              "tags": [
+                "community-youth"
+              ]
+            },
+            {
+              "title": "投资人眼中的 AI：钱往哪儿投？",
+              "speaker": "Jack 北交所淘金投资人；一边盯盘一边调 Prompt",
+              "tags": [
+                "ai",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "如何用 AI 视频在 TK 月出 3000 单",
+              "speaker": "一赫 亭雪跨境创始人；用 AI 视频赋能的跨境小老板",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "转行 AI 的自我修养与职场生存",
+              "speaker": "小辞 企业 AI 负责人；职场工地里的万金油与工程狮",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "AIGC 视觉在银发市场的应用案例",
+              "speaker": "大鹏 蒙古包里无线网，草原上搞 AI14",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "AI 时代最强技能：能骑能讲能开店把工作活成一场环球冒险",
+              "speaker": "解博 Mike 大厂打通关后，左手讲课、右手开店、油门拧到底，人生不设限",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "一个人驱动的项目",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12606"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "13:00-15:30",
+          "location_hint": "A区 3F 蔚云厅",
+          "topic_tags": [
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "一个人驱动的项目",
+              "speaker": "",
+              "tags": [
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "2050@太空计算专题论坛——算力筑梦苍穹·智算引领未来",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12260",
+            "12624"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "09:00-12:00",
+          "location_hint": "A区 3F 皓云厅",
+          "topic_tags": [
+            "ai",
+            "philosophy-mind",
+            "social-impact"
+          ],
+          "talks": [
+            {
+              "title": "主题演讲（第一阶段）",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "王俊 中科星图测控 Agent 架构师",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "李亚亚 开运联合 CTO",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "李辉 紫微宇通首席战略顾问",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "黄锦殷 无限宇航副总经理",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "王双喜 中国空间技术研究院杭州中心高级工程师",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "祁振飞 之江实验室天基计算研究中心高级专员",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "\"数字科技向善\" 公益倡导行动发布",
+              "speaker": "",
+              "tags": [
+                "social-impact"
+              ]
+            },
+            {
+              "title": "主题演讲（第二阶段）",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "胡毓彤 国泰航空杭州区域经理 / 首席代表",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "何子谦 香港贸发局杭州办事处市场推广主任",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "黄国瑞 东亚银行杭州分行副行长",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind",
+                "social-impact"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "2050@可持续发展论坛 AI 时代：能力重构与共生未来",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "12:00-16:00",
+          "location_hint": "A区 3F 皓云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "community-youth",
+            "social-impact"
+          ],
+          "talks": [
+            {
+              "title": "主旨演讲",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "John Ludden 教授 前欧洲地球科学联盟主席、前国际地质科学联合会主席",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "Nancy House 女士 前国际勘探地球物理学家学会主席，IGII, LLC 创始人",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "Ulisses Mello 博士 前 IBM 巴西研究院院长",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "肖倚天 博士 中国国家特聘专家，之江实验室特聘专家",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "Houston Hou 世界青年论坛全球执行召集人",
+              "speaker": "",
+              "tags": [
+                "community-youth"
+              ]
+            },
+            {
+              "title": "互动交流",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "吴建荣 浙商总会副会长、浙商总会新质生产力委员会主席",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "王挺革 浙江省政府咨询委委员，物产中大原董事长",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "胡智锋 浙江省环保集团科创部部长",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "轻聊一刻",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "吴建荣 浙商总会副会长、浙商总会新质生产力委员会主席",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "圆桌讨论 主题：AI 时代，我们到底应该培养什么能力？",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "低空经济",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "16:00-17:30",
+          "location_hint": "A区 3F 皓云厅",
+          "topic_tags": [
+            "robotics-hardware"
+          ],
+          "talks": [
+            {
+              "title": "低空经济",
+              "speaker": "",
+              "tags": [
+                "robotics-hardware"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "油气藏勘探开发关键理论与技术创新及应用",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "09:30-11:30",
+          "location_hint": "A区 3F 皓云厅",
+          "topic_tags": [
+            "research-science"
+          ],
+          "talks": [
+            {
+              "title": "纳米世界里的油气\"相变密码\"被破解",
+              "speaker": "张儒鑫 高级工程师",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "地下裂缝的\"3D 导航图\"",
+              "speaker": "程少逸 高级工程师",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "天穹之手：是谁在巴西深水里'造就'了一座大油藏？",
+              "speaker": "李辰卿 高级工程师",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "液固一念间，油气越千山",
+              "speaker": "朱品泓 高级工程师",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "给地球做 CT——当井中\"内窥镜\"遇上地面\"广角镜\"",
+              "speaker": "冯刚 高级工程师",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "是谁在冬季天然气保供背后，为国家科学\"争气\"",
+              "speaker": "王伟杰 高级工程师",
+              "tags": [
+                "research-science"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "\"海天之间\"气象海洋预报新生论坛",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12314"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "13:30-15:30",
+          "location_hint": "A区 3F 皓云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education"
+          ],
+          "talks": [
+            {
+              "title": "美国关于人工影响飓风研究进展",
+              "speaker": "赵定池 国防科技大学工程师",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "Argo 海洋的侦察卫士",
+              "speaker": "龙钰 第二海洋研究所副研究员",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "AI 时代，大模型为什么没拦住一个追雪的人？",
+              "speaker": "华睿 复旦大学博士",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "海中漩涡转，天上风云变：能量如何跨界面旅行",
+              "speaker": "罗京鹏 国防科技大学学生",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "台风、巨浪、强对流——海洋在灾害性天气中究竟扮演什么角色？",
+              "speaker": "唐浩然 国防科技大学学生",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "为什么预报海上天气那么困难",
+              "speaker": "陈屹川 国防科技大学学生",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "杭州场景妙妙屋",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12242"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "09:00-10:00",
+          "location_hint": "A区 3F 青云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "我想给 AI 的\"万马奔腾\"画\"车道路\"",
+              "speaker": "冯红婷 君同未来联合创始人 一位 AI 安全治理场景实践者",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "线下商业空间流量为何需要可计算？",
+              "speaker": "陈特夫 可计算开店科技合伙人 & 技术 VP 公司的名字就是实力的证明",
+              "tags": [
+                "startup-product"
+              ]
+            },
+            {
+              "title": "机器人走进家庭还有多远？",
+              "speaker": "王佳梨 凌迪科技具身智能技术负责人",
+              "tags": [
+                "robotics-hardware"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "外滩大会 X 蚂蚁灵光联合出品",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "10:00-12:00",
+          "location_hint": "A区 3F 青云厅",
+          "topic_tags": [
+            "ai",
+            "arts-media-design",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "全民 wish coding：爆款产品如何诞生？",
+              "speaker": "吕功琛 月境未来创始人，\"死了么\"App 创始人",
+              "tags": [
+                "startup-product"
+              ]
+            },
+            {
+              "title": "@Q 肉儿串儿 B 站 up 主，SBTI 项目发起人，AI 驱动创作者",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "默念 灵光 App 产品经理",
+              "speaker": "",
+              "tags": [
+                "startup-product"
+              ]
+            },
+            {
+              "title": "喜芸 灵光 App 用户运营团队",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "手搓局 mini 黑客松",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "12:00-13:30",
+          "location_hint": "A区 3F 青云厅",
+          "topic_tags": [
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "手搓局 mini 黑客松",
+              "speaker": "",
+              "tags": [
+                "opensource-tech"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "开放麦：我如何打造\"一人公司\"",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:30-15:00",
+          "location_hint": "A区 3F 青云厅",
+          "topic_tags": [
+            "ai",
+            "community-youth",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "98 年的维和部队退役兵，做 AI 营销两年挣了 2000 万",
+              "speaker": "昆 Leo AID Lab 创始人，橙果视界 CEO",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "我 5 个月做了 120 个 App 后反思：极致的自由，还是极致的孤独",
+              "speaker": "张三 一人公司实践者 | AI 驱动创意变现操盘手",
+              "tags": [
+                "ai",
+                "community-youth",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "大三创业公司估值 3000 万，把 500 年前的需求再做一遍",
+              "speaker": "欧阳王子 绒音科技 CEO",
+              "tags": [
+                "community-youth",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "00 后的造\"星\"梦工厂：字节出走后我做了全球首款 AI MCN",
+              "speaker": "Flora（陈羽菡）PLUSCO AI 创始人兼 CEO",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "从投资人说我疯了，但爱和勇气是我唯一的 BP",
+              "speaker": "王梓珩 Will Ola COO 兼联合创始人",
+              "tags": [
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "他山青年论坛——人工智能驱动的科研协作与科教升级",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "15:00-18:00",
+          "location_hint": "A区 3F 青云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education",
+            "arts-media-design",
+            "philosophy-mind",
+            "community-youth",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "I. AI 时代科研协作范式革新",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "AI 时代科研协作模式如何重构",
+              "speaker": "瑞 国科大前沿交叉科学学院博士生、国科大他山协会会长",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "生成式 AI 如何赋能科学和工程研究",
+              "speaker": "魏龙 复旦大学人工智能创新与产业研究院、助理教授",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "AI 时代下的跨学科交叉新范式",
+              "speaker": "房泽锐 国科大前沿交叉科学学院博士生、国科大他山协会副会长",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "人在回路与数字分身的关键维度",
+              "speaker": "郑博元 中国科学院物理研究所博士生、国科大他山协会创始人",
+              "tags": [
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "II. 人工智能驱动系统化科教科研",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "人工智能驱动系统化科教科研",
+              "speaker": "李瑀旸 中国科学院国家天文台博士生、Agent for Science 实践者",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "用科幻思维打开通往未来的大门",
+              "speaker": "顾备 上海浦东新区科幻协会会长/科幻翻译/作家",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "AI + 天文科普教学设计",
+              "speaker": "姚嵩 上海科技馆天文研究中心助理研究员 天文学博士/科幻/翻译/AI",
+              "tags": [
+                "ai",
+                "research-science",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "一场跨越两百年的回归",
+              "speaker": "莉塔 独立学者/DIY 仪器工程师/轻小说作者/第三世界旅行者",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "从钦天监到明论派：天文学在二次元中的再诠释",
+              "speaker": "李紫琪 上海师范大学天文学研究生 耀星科普工作室策划",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "III. AI 时代如何高效科研",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "科研龙虾领养与应用",
+              "speaker": "房泽锐 国科大前沿交叉科学学院博士生、国科大他山协会副会长",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "科研领域各种好用 AI 工具分享",
+              "speaker": "李瑀旸 中国科学院国家天文台博士生、Agent for Science 实践者",
+              "tags": [
+                "ai",
+                "research-science",
+                "opensource-tech"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "To be reality——\"科创领航\"项目如何落地",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "09:00-10:30",
+          "location_hint": "A区 3F 青云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "community-youth",
+            "social-impact",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "《在科技星球上插上文化之翼，深耕文化 IP 打造》",
+              "speaker": "飞鹭 之江文创主理人，之鹭文创公司创始人，杭州市十佳 HR 经理人。",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "《跨界创业 AI 硬件，为 1700 万视障人士做一副助盲眼镜》",
+              "speaker": "汪建军 杭州瞳行科技有限公司 CEO，深耕残联公益体系 30 年。",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "community-youth",
+                "social-impact",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "《透视 AI：从智能体崛起，到未来两年变局》",
+              "speaker": "张晨 百算机器人创始人，多地科技领军人才，首届浙商青云奖",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "《〈认知 + 资源〉X 场景：共建青云浙商产研平台》",
+              "speaker": "卢恩伟 青云浙商产研院执行院长；中国网数字经济频道总监。",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "《空气净化精密智控–中科院科技成果转化项目落地案例》",
+              "speaker": "赵海清 中科盟科技集团董事长，深耕数智技术与生态环保领域",
+              "tags": [
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "别把 AI 当工具：创造你的数字分身与专属角色",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "10:30-11:00",
+          "location_hint": "A区 3F 青云厅",
+          "topic_tags": [
+            "ai",
+            "education",
+            "arts-media-design",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "向外创造：如何捏一个懂你的 AI 专属角色？",
+              "speaker": "TeacherYO 教师 agent 产品运营负责人，懂 AI 懂教育高精力教师社群主理人",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "向内探索：如何设计 AI 分身的心智结构？",
+              "speaker": "傻青 灵机之上创始人 / 致力于用 Ai 让人认识自己的哲学青年",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AI + 教育创新实践分享",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12288"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "11:00-12:00",
+          "location_hint": "A区 3F 青云厅",
+          "topic_tags": [
+            "ai",
+            "education"
+          ],
+          "talks": [
+            {
+              "title": "教育智能体的主动意图澄清研究",
+              "speaker": "何平 浙大直博生，深耕可信智能体教育应用",
+              "tags": [
+                "ai",
+                "education"
+              ]
+            },
+            {
+              "title": "大模型驱动三会一课智能审查系统",
+              "speaker": "杨勇 浙大普博生，聚焦 AI 安全与教育场景应用",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "LLM 时代教育场景隐私画像风险探析",
+              "speaker": "陈佳豪 浙大直博生，主攻可信生成式 AI 隐私安全",
+              "tags": [
+                "education"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "与书为伴，与自然为友",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "12:00-13:00",
+          "location_hint": "A区 3F 青云厅",
+          "topic_tags": [
+            "education",
+            "arts-media-design",
+            "social-impact",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "与书为伴，与自然为友",
+              "speaker": "紫针 壹木自然读书会轮值群主、一方自然观察大组长。植物爱好者。",
+              "tags": [
+                "education",
+                "arts-media-design",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "自然里撒野去—森林新五感四季自然实践",
+              "speaker": "竹子 农业工作者，森林疗养师，践行 24 节气植物研学 ling。",
+              "tags": [
+                "education",
+                "arts-media-design",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "自然观察，如何从\"看热闹\"到\"会思考\"",
+              "speaker": "向日葵 森林疗养师、自然幸福力导师、全球共享自然导师。",
+              "tags": [
+                "education",
+                "arts-media-design",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "鹊鸣的三、四十种叫声",
+              "speaker": "赵磊 壹木自然读书会成员，自然声音和影像爱好者",
+              "tags": [
+                "education",
+                "arts-media-design",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "公民自然科普与幸福岛",
+              "speaker": "舜华 幸福岛公益项目发起人之一。爱自然，爱自然手作。",
+              "tags": [
+                "education"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "Skill Me Up, Teacher!",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12372"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "13:00-15:30",
+          "location_hint": "A区 3F 青云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "从用户到创造者：如何办一场点燃创造力的\"教师黑客松\"",
+              "speaker": "Teacheryo 教师 agent 产品负责人，懂 AI 懂教育高精力教师社群主理人",
+              "tags": [
+                "education",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "AI 如何把高考备考变成明牌",
+              "speaker": "焱鑫 县中一线教师/AI 教育探索者，用技术为普通学生造梯",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "从 RMIT 毕业展看澳洲教育导向",
+              "speaker": "董婕妤 某小学科学教师/持续探索 STEM 教育，赴 RMIT 学习 88 天",
+              "tags": [
+                "education"
+              ]
+            },
+            {
+              "title": "从\"我要教你\"到\"我看见你\"：AI 如何帮助教师真正理解学生",
+              "speaker": "张暄 国家二级心理咨询师，领心编外人员，目前探索创造哲学 ing",
+              "tags": [
+                "ai",
+                "education"
+              ]
+            },
+            {
+              "title": "Alnquiry 赋能探究课堂",
+              "speaker": "李铭馨 初中信息科技教师，清华 AIGE 通识教育高级教师",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "学校 AI 转型，先拆哪堵墙？",
+              "speaker": "黄碧峰 杭州大关小学教育集团党委书记、总校长、爱把问号抻直的人",
+              "tags": [
+                "ai",
+                "education"
+              ]
+            },
+            {
+              "title": "跨校 AI 共研生态的真实路径",
+              "speaker": "袁清 教育探索者",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "郭郭 ENTJ 女性主义者，服务千所公办校，AI 赋能教师写进了博论。",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "education"
+              ]
+            },
+            {
+              "title": "【闪电圆桌】我的智慧值多少钱？——教师经验资产化",
+              "speaker": "以上所有分享老师 + 现场 1 位教师观众",
+              "tags": [
+                "education"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "未来的公园——荟集绿色生活与智慧妙想的活力聚场",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12731"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "09:00-10:30",
+          "location_hint": "A区 1F 智云厅",
+          "topic_tags": [
+            "health-medical",
+            "arts-media-design",
+            "social-impact"
+          ],
+          "talks": [
+            {
+              "title": "《创造力公园 2050 三原色——极致科技 × 纯粹绿意 × 健康生活》",
+              "speaker": "金翼涵 浙江省规划院园林设计师 / 95 后公园漫想者",
+              "tags": [
+                "health-medical"
+              ]
+            },
+            {
+              "title": "《未来公园十大猜想》",
+              "speaker": "周哲俊 sharepark 主理人 / 城市公园运营者 / 热爱城市自然探索 / 骑行闲逛",
+              "tags": [
+                "health-medical",
+                "arts-media-design",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "《舟行画境 2050：从未来公园到水上智网》",
+              "speaker": "许立南 格境设计联合创始人 / 水上运动博主 / 桨板通勤践行者",
+              "tags": [
+                "health-medical",
+                "arts-media-design",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "《从取景框到生活场——摄影人眼中的公园美学》",
+              "speaker": "李四强 文旅国风摄影自媒体博主 / 为猫写书的撰稿人 / 戏剧制作人",
+              "tags": [
+                "health-medical",
+                "arts-media-design",
+                "social-impact"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "绘画的真理",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12787"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "10:30-12:00",
+          "location_hint": "A区 1F 智云厅",
+          "topic_tags": [
+            "arts-media-design"
+          ],
+          "talks": [
+            {
+              "title": "绘画的真理",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "1000 天后的新文旅",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12757"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "12:00-13:00",
+          "location_hint": "A区 1F 智云厅",
+          "topic_tags": [
+            "arts-media-design"
+          ],
+          "talks": [
+            {
+              "title": "1000 天后的新文旅",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "用 AI 还原记忆，献给爷爷奶奶的《寻梦游记》",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:00-13:30",
+          "location_hint": "A区 1F 智云厅",
+          "topic_tags": [
+            "ai"
+          ],
+          "talks": [
+            {
+              "title": "用 AI 还原记忆，献给爷爷奶奶的《寻梦游记》",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "《南极画卷》肯道尔精选 BoKC 影像分享会",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12451"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:30-14:30",
+          "location_hint": "A区 1F 智云厅",
+          "topic_tags": [
+            "arts-media-design"
+          ],
+          "talks": [
+            {
+              "title": "《南极画卷》肯道尔精选 BoKC 影像分享会",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "当孩子成为导演，用 AI 画出会动的故事——这是电影与科技最燃的碰撞",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12598"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "14:30-16:00",
+          "location_hint": "A区 1F 智云厅",
+          "topic_tags": [
+            "ai",
+            "arts-media-design"
+          ],
+          "talks": [
+            {
+              "title": "5 部原创 AI 短片展映",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "《狮魂》《无声的审判》《黑洞诞生》《沙痕与星辰》",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "听 5 位小导演畅谈\"AI 让我了不起\"",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "Terrence 本杰明 Peter 刘楷晋 吕华亭",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "10 后导演 AI 电影展",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12700"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "16:00-18:00",
+          "location_hint": "A区 1F 智云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education",
+            "arts-media-design",
+            "philosophy-mind",
+            "social-impact",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "核心理念",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "光影序章——孩子们 AI 作品的影院首秀",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "夜游神 WaytoAGI 首届少儿 AI 春晚总导演",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "光影回响：让孩子和专家同时以创作者的身份同频对话",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "1、大胆开麦——10 后导演 AI 作品展映与创作者面对面分享会",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "月亮老师 向 AI 走去的人类学冒险家，AI 田野志主播（主持人老师）",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "钟梓玥 13 岁 王鹏勳 10 岁 朱俣溪 9 岁 庹邻 11 岁 杨佳欣 11 岁",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "黄祐蓝 7 岁 邱锦松 10 岁 张安霖 9 岁 陈思鸣 11 岁 唐婉晴 10 岁",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "2、生态对话场域圆桌",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "郁刚 时光矩阵创始人、《同桌的你》执行导演、《流浪地球》B 组导演",
+              "speaker": "",
+              "tags": [
+                "research-science",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "胡璇 中国美院电影学博士；中国电影家协会民族工委副秘书长。",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "刘志鹏 北京市希望公益基金会常务理事、副秘书长",
+              "speaker": "",
+              "tags": [
+                "social-impact"
+              ]
+            },
+            {
+              "title": "杨义莲（丫丫老师）WaytoAGI 教育版版主，CCF 科普工委执行委员",
+              "speaker": "",
+              "tags": [
+                "education",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "麦子 夏山教育 / 夏山 AI 电影节主理人、10 年教育产品人",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "education",
+                "arts-media-design",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "乐乐老师 有画面主理人、夏山资源营地导师",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "3、未来共鸣——孩子们面向未来的主题工作坊坊",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "夜游神 WaytoAGI—首届少儿春晚总导演、训练营讲师、武汉负责人",
+              "speaker": "",
+              "tags": [
+                "arts-media-design",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "冰鱼仔 WaytoAGI—首届少儿 AI 春晚导演、厦门负责人",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "谢北水老师 WaytoAGI 教育版核心共建者、首届少儿 AI 春晚总统筹",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "education",
+                "philosophy-mind",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "瑞瑞 WaytoAGI 教育版核心共建者",
+              "speaker": "",
+              "tags": [
+                "education",
+                "philosophy-mind",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "圈圈 夏山资深营地导师",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "土豆 夏山资深营地导师",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "77 老师 夏山 AI 资助教",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "青年导演 X AI 共创未来影像",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "09:00-11:30",
+          "location_hint": "A区 1F 智云厅",
+          "topic_tags": [
+            "ai",
+            "education",
+            "arts-media-design",
+            "philosophy-mind",
+            "community-youth"
+          ],
+          "talks": [
+            {
+              "title": "AI 生成式影像——重构电影未来生态",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "陈凯 上海电影学院",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "AI 时代影视创作的探索与实践",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "李青青 南京艺术学院",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "创建 AI，遇鉴未来——青年导演在 AI 时代的觉醒",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "宋思嘉 南京传媒学院",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "声之炼金术：人工智能时代电影声音设计的边界、挑战与教育转向",
+              "speaker": "",
+              "tags": [
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "马晟 中国美术学院",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "AI 创作技术分享和 AI 电影倡议",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "陈洪坚 云图 AIGC 平台创始人",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "圆桌会议：AI 时代如何赋能青年导演的成长",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "陈洪坚 云图 AIGC 平台创始人",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "赖文安 中国夏衍电影学会 大湾区剧本创投交流中心",
+              "speaker": "",
+              "tags": [
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "陈凯 上海电影学院",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "李青青 南京艺术学院",
+              "speaker": "",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "宋思嘉 南京传媒学院",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "马晟 中国美术学院",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "education",
+                "arts-media-design"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "论 AI 圈的\"人造门槛\"：\"黑话\"与话语权",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "11:30-12:45",
+          "location_hint": "A区 1F 智云厅",
+          "topic_tags": [
+            "ai"
+          ],
+          "talks": [
+            {
+              "title": "论 AI 圈的\"人造门槛\"：\"黑话\"与话语权",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AI 时代，如何让社会听到更多青年人的声音",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12688"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "13:00-15:30",
+          "location_hint": "A区 1F 智云厅",
+          "topic_tags": [
+            "ai",
+            "community-youth"
+          ],
+          "talks": [
+            {
+              "title": "AI 时代，如何让社会听到更多青年人的声音",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "青智助老进小营 志愿携智暖桑榆",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12555"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "09:00-10:00",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "ai",
+            "education",
+            "health-medical",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "鲁宇泽 浙大城市学院学生，项目负责人",
+              "speaker": "",
+              "tags": [
+                "education",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "真人讲述，见证志愿活动的暖心",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "彭逸 浙大城市学院学生，项目负责人",
+              "speaker": "",
+              "tags": [
+                "education",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "智启未来，助老智能体邀才共建",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "姚瑶 城市大脑研究院青年讲师，社区治理服务智能体先行者",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "未来城邦：重新定义诗和远方",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12363"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "10:00-11:00",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "philosophy-mind",
+            "social-impact"
+          ],
+          "talks": [
+            {
+              "title": "2050 年，你多大了？你和机器人、AI 助手会怎样相处共存？",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "2050 年，人类需要工作吗？如果衣食无忧，你会为了什么工作？",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "友好辩论：你挑战谁的观点。多方 PK，选出未来理想生活城邦",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "重塑未来：当创新基因注入可持续发展",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "11:00-12:30",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "philosophy-mind",
+            "community-youth",
+            "social-impact",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "企业与公益的创新思考",
+              "speaker": "",
+              "tags": [
+                "social-impact"
+              ]
+            },
+            {
+              "title": "方翠梅 副总，浙江智鼎数字科技有限公司",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind",
+                "community-youth",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "创新大赛效应",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind",
+                "community-youth",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "阎贝贝 项目总监，上海领鼎社会公益创新发展中心",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind",
+                "social-impact",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "如何成为当代国际可持续青年",
+              "speaker": "",
+              "tags": [
+                "community-youth",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "孙清来 总经理，上海昕涛电子商务有限公司",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind",
+                "community-youth",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "自媒体与新闻媒体的创新与融合",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind",
+                "community-youth",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "项悠悠 黄浦融媒体公益分中心",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind",
+                "social-impact"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "物品重生 · 记忆永生——AI 如何让情感旧物拥有第二次生命",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12411"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "12:30-13:00",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "ai",
+            "health-medical",
+            "robotics-hardware",
+            "arts-media-design",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "为什么我们舍不得丢东西——从\"不舍得\"到\"再相遇\"",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "health-medical",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "刘海宁 浙江大学博士生，旧物情感研究者",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "health-medical",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "AI + 硬件，如何让旧物\"活\"过来",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "刘胜男 浙江大学博士生，AI 产品设计师",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "快问快答 + 以物会友",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "health-medical",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "聊一聊你的收藏故事，让你的物品重获新生",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "health-medical",
+                "robotics-hardware"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "为什么你越会和 AI 聊天，越不会谈恋爱？",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12487"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:00-13:30",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "ai"
+          ],
+          "talks": [
+            {
+              "title": "为什么你越会和 AI 聊天，越不会谈恋爱？",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "10 后创业，求支持！！",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12416"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:30-14:45",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "community-youth",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "10 后一人公司：钢琴调音机器人",
+              "speaker": "",
+              "tags": [
+                "robotics-hardware",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "覃刘浩然 AI 硬件开发者 / 硬件极客 / 融智智能创始人",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "讨厌跑步？做了个丧尸软件督促你",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "不是吧，你们是 AI 学到了多少？",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "从创意到落地——青少年 AI 创客马拉松",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "14:45-16:30",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "ai",
+            "education"
+          ],
+          "talks": [
+            {
+              "title": "从创意到落地——青少年 AI 创客马拉松",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "education"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "当 AI 走进生活，我们准备好了吗？",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "16:30-18:00",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "ai"
+          ],
+          "talks": [
+            {
+              "title": "当 AI 走进生活，我们准备好了吗？",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "2050 青年说",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "18:00-19:00",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "community-youth"
+          ],
+          "talks": [
+            {
+              "title": "2050 青年说",
+              "speaker": "",
+              "tags": [
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AI 如何改变我们的生活",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "09:00-11:00",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "ai"
+          ],
+          "talks": [
+            {
+              "title": "AI 如何改变我们的生活",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "青年创新论坛",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "11:00-12:30",
+          "location_hint": "A区 1F 慧云厅",
+          "topic_tags": [
+            "community-youth"
+          ],
+          "talks": [
+            {
+              "title": "青年创新论坛",
+              "speaker": "",
+              "tags": [
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "芯片，AI 与前沿研究",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12476"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "09:00-12:00",
+          "location_hint": "A区 1F 彩云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "robotics-hardware",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "硅基的仲夏夜之梦",
+              "speaker": "Kan Zhou 半导体 Fab 专家",
+              "tags": [
+                "ai",
+                "research-science",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "AI for IC：人工智能在芯片领域的应用",
+              "speaker": "Yaoping Ruan 半导体失效分析实验室 AI 带头人",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "一次好奇心引起的跨界",
+              "speaker": "陈鹏 云梧科技创新中心",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "FAB + AI = ?",
+              "speaker": "Zhi Huang 之江实验室专家",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "Chip Chat",
+              "speaker": "Xiaoming Zhu 云梧科技创新中心",
+              "tags": [
+                "ai",
+                "research-science",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "小芯片，大科学",
+              "speaker": "Hui Li 半导体材料制程专家",
+              "tags": [
+                "research-science",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "AI 时代下，量检测设备的发展方向",
+              "speaker": "Weiwei Zhao 半导体设备专家",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "科技奇点",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12478"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:00-14:30",
+          "location_hint": "A区 1F 彩云厅",
+          "topic_tags": [
+            "ai",
+            "robotics-hardware",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "赛道投资新机遇",
+              "speaker": "Oli 硬科技投资人",
+              "tags": [
+                "startup-product"
+              ]
+            },
+            {
+              "title": "AI 从大规模训练走向推理，AI 应用走向何方？",
+              "speaker": "陈仲铭 大疆创新 AI 总工，B 站 AI 区 up 主（ZOMI 雷）",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "先进封装在大规模 AI 智算芯片领域当中的发展路径",
+              "speaker": "谢建友 先进封装 & 材料",
+              "tags": [
+                "ai",
+                "robotics-hardware"
+              ]
+            },
+            {
+              "title": "AI，让我欢喜让我忧",
+              "speaker": "张旭光 杭州市杭商研究会会长",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "端侧 AI 时代来了",
+              "speaker": "周强 光羽芯辰创始人",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "从代码到时钟：生命信息的重构",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "14:30-16:00",
+          "location_hint": "A区 1F 彩云厅",
+          "topic_tags": [
+            "ai",
+            "health-medical",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "衰老中的表观遗传变化",
+              "speaker": "戚宏建 西湖大学医学院博士生导师",
+              "tags": [
+                "ai",
+                "health-medical",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "AI 炼丹术",
+              "speaker": "高睿祺 独立开发人、命理师、前科技投资人",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "「数学 + AI」就是这样！快闪 n 对",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12337"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "16:30-18:30",
+          "location_hint": "A区 1F 彩云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "arts-media-design",
+            "community-youth"
+          ],
+          "talks": [
+            {
+              "title": "人机对决：数学证明能力巅峰比拼",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "案例分享：「数学 + AI」向善最佳实践",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science"
+              ]
+            },
+            {
+              "title": "共创未来：青年数学与 AI 未来宣言集体创作",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "arts-media-design",
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "有趣的量子力学与非线性物理（圆桌物理学家们的日常讨论）",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12480"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "09:30-12:00",
+          "location_hint": "A区 1F 彩云厅",
+          "topic_tags": [
+            "research-science"
+          ],
+          "talks": [
+            {
+              "title": "角动量的量子理论",
+              "speaker": "汪克林 中国科学技术大学物理学院退休教授、博士生导师，理论物理学家",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "有序算符内的积分理论",
+              "speaker": "范洪义 中国科学技术大学",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "物理常数的算术几何不变性",
+              "speaker": "刘涛 西南科技大学",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "【待定】",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "硬核杂货铺",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "13:00-14:45",
+          "location_hint": "A区 1F 彩云厅",
+          "topic_tags": [
+            "research-science"
+          ],
+          "talks": [
+            {
+              "title": "从\"芯\"出发：我的仿生微观机理探索与应用案例",
+              "speaker": "姚嘉琦 研究生",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "单兵飞越生态的科学",
+              "speaker": "王硕 微电子学博士生",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "从\"执行助理\"到\"领域专家\"：FORGE 的自省与蜕变",
+              "speaker": "陈集禹 在读研究生",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "【待定】",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "「身体在场」——AI 时代的碳基生存宣言",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12663"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "09:00-10:30",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "ai",
+            "arts-media-design",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "IT 工程师登顶珠峰的故事《开始登山吧》",
+              "speaker": "谢雪梅 登顶珠峰的 IT 工程师",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "从户外小白到户外运动心流设计教练的 15 年探索之路",
+              "speaker": "张宝 户外心流教练",
+              "tags": [
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "「身体从不说谎」——AI 时代，用身体找回\"活着\"的现实感知力",
+              "speaker": "孙丹 探索舞动治疗的前舞者",
+              "tags": [
+                "ai",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "硅基时代，一个碳基人类的 799 公里\"慢\"革命",
+              "speaker": "张小斑 躬行 | SOMA 创始人，热爱长距离的企业人才发展专家",
+              "tags": [
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "13 岁少年 V.S.8000 万人的沉默需求——AI for Good 公益孵化论坛",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12308"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "10:30-12:30",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "ai",
+            "education",
+            "health-medical",
+            "arts-media-design",
+            "philosophy-mind",
+            "social-impact",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "共鸣——所有人的声音都值得被听懂（构音障碍语音转译 web app）",
+              "speaker": "Jonas 团队成员（14 岁）",
+              "tags": [
+                "ai",
+                "education",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "无碍心声——所有人的需求都该被听到（帮助阐述无障碍需求的 app）",
+              "speaker": "张艺腾 团队成员（13 岁）",
+              "tags": [
+                "philosophy-mind",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "步步有伴——他们，在等你（匹配志愿者陪伴视障人群跑步的 app）",
+              "speaker": "许睿麟 等 团队成员（12 岁）",
+              "tags": [
+                "ai",
+                "education",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "开口说话吧，大叔 / 大姨！（用于脑卒中人群早期康复的语音麻将游戏）",
+              "speaker": "Mike 团队成员（13 岁）",
+              "tags": [
+                "health-medical",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "AI for Good：从\"点燃\"的 48 小时到\"真实创造\"的 365 天",
+              "speaker": "Michael 超脑 AI 孵化器创始人，触宝科技联合创始人兼 CEO",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "分享",
+              "speaker": "富彬 无障碍嘉宾 1（肝豆状核变性），\"从两只羊到 200 只羊的羊总\"",
+              "tags": [
+                "ai",
+                "education",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "圆桌 1：看不见的故事",
+              "speaker": "詹娜老师 主持人，资深创新教育专家",
+              "tags": [
+                "ai",
+                "education",
+                "health-medical"
+              ]
+            },
+            {
+              "title": "圆桌 2：看见更多（的产品以及公益孵化的可持续发展）",
+              "speaker": "月亮 主持人，研究 AI 创新教育的人类学冒险家",
+              "tags": [
+                "social-impact",
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "九个孩子和一条龙的故事",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12640"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "12:30-13:00",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "education",
+            "arts-media-design",
+            "social-impact"
+          ],
+          "talks": [
+            {
+              "title": "我和孩子在课上手搓了一条十米竹龙",
+              "speaker": "",
+              "tags": [
+                "education",
+                "arts-media-design",
+                "social-impact"
+              ]
+            },
+            {
+              "title": "任学梅（安可）\"非典型\"教育者、\"溜村\"发起人。善用在地资源做教育实践的设计师妈妈",
+              "speaker": "",
+              "tags": [
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "一所濒临撤并的百年村小，如何用乡土守护、逆袭生存",
+              "speaker": "",
+              "tags": [
+                "social-impact"
+              ]
+            },
+            {
+              "title": "斯剑光 斯民小学的\"守灯人\"兼\"破壁者\"",
+              "speaker": "",
+              "tags": [
+                "education",
+                "arts-media-design",
+                "social-impact"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "少数派的共创时代",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12358"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "13:00-14:00",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "arts-media-design",
+            "community-youth",
+            "startup-product",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "少数派产品共创实践，社区想法如何通过共创模式变成落地产品",
+              "speaker": "",
+              "tags": [
+                "community-youth",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "老麦 少数派创始人",
+              "speaker": "",
+              "tags": [
+                "arts-media-design",
+                "community-youth",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "独立开发的经验分享，从想法到落地的发展之路",
+              "speaker": "",
+              "tags": [
+                "arts-media-design",
+                "community-youth",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "陶新乐 白描开发者 & 优零科技 CEO",
+              "speaker": "",
+              "tags": [
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "跨身份创作者视角，跨界作者如何打造商业产品",
+              "speaker": "",
+              "tags": [
+                "arts-media-design",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "佑酱 汽车博主 & 独立开发者",
+              "speaker": "",
+              "tags": [
+                "opensource-tech"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI 越强大，我们为什么越需要手工艺？",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12491"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "14:00-15:00",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "ai",
+            "arts-media-design",
+            "philosophy-mind",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "手上的朴光：人工与自然交汇而成的光芒。",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "令狐磊 超媒体集团《周末画报》出版人、集团商业策划总监，《生活月刊》主编",
+              "speaker": "",
+              "tags": [
+                "startup-product"
+              ]
+            },
+            {
+              "title": "以民艺构建未来生活的意义之网：用民艺让我们的生活更有趣味。",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "金晓依 中国美术学院民艺博物馆副馆长",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "从地方出发——民艺在当代生活中的再发现。",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "琳 碧山工销社、D&Department 中国黄山店负责人",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "如何让古老的手工艺在 AI 时代参与我们的未来？",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "洪张良 绞胎艺术家、千万间艺术中心创始人",
+              "speaker": "",
+              "tags": [
+                "arts-media-design",
+                "philosophy-mind"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "AI 时代的人类",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12275"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "15:00-17:00",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education",
+            "robotics-hardware",
+            "arts-media-design",
+            "philosophy-mind"
+          ],
+          "talks": [
+            {
+              "title": "AI 时代我们还需要爱情和家庭吗？",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "顾备 科幻翻译，中国科普作家协会理事，上海浦东新区科幻协会会长。",
+              "speaker": "",
+              "tags": [
+                "education"
+              ]
+            },
+            {
+              "title": "宝树 科幻作家、译者，中国作协科幻文学专委会委员，",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "张炜 上海市动漫行业协会秘书长",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "AI 时代的人类还需要工作吗？",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "徐超 中国广告协会文创与 IP 专委会 秘书长",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "张文卓 零密量子创始人 CEO，中国通信学会普及与教育工作委员会委员，",
+              "speaker": "",
+              "tags": [
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "江波 著名科幻作家，中国科普作家协会理事，华人科幻协会副主席。",
+              "speaker": "",
+              "tags": [
+                "education"
+              ]
+            },
+            {
+              "title": "AI + 具身智能对人类社会的影响",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "robotics-hardware",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "张烽 万商天勤律师事务所合伙人，国版链数据要素合规专家",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "林圆圆 上海人工智能研究院技术与创新中心主任",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "姚嵩 上海天文馆 天文研究中心 助理研究员",
+              "speaker": "",
+              "tags": [
+                "research-science",
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "AI 时代的年轻人需要培养什么样的能力",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "夏青 蘑菇云创客空间共同创始人，DFRobot 高级工程师。",
+              "speaker": "",
+              "tags": [
+                "education"
+              ]
+            },
+            {
+              "title": "丁粲 中国移动咪咕数媒内容部总监、原创内容中心负责人。",
+              "speaker": "",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "郁刚 时光矩阵联合创始人，流浪地球 B 组导演",
+              "speaker": "其他嘉宾",
+              "tags": [
+                "research-science",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "刘婧 少年儿童出版社《未来少年派》杂志主编",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            },
+            {
+              "title": "零始真 《零重力报》联合创始人，《幻未来》主编",
+              "speaker": "",
+              "tags": [
+                "ai",
+                "research-science",
+                "education"
+              ]
+            }
+          ],
+          "confidence": "medium"
+        },
+        {
+          "section_title": "钱学森读书会",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12510"
+          ],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "17:00-18:00",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "research-science",
+            "health-medical",
+            "community-youth",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "从两弹一星大科学系统工程到生命系统的组织视角",
+              "speaker": "金豆豆 行知体验研究院院长，科技文化和组织发展研究 / 实践者",
+              "tags": [
+                "research-science",
+                "health-medical",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "钱学森在加州理工 & 未来的钱学森",
+              "speaker": "蒲佳意 冷湖实验室联合创始人，科创头奖收割机，专利发明家",
+              "tags": [
+                "research-science",
+                "health-medical",
+                "community-youth"
+              ]
+            },
+            {
+              "title": "钱学森与复杂科学",
+              "speaker": "魏云初 科技领域连续创业者",
+              "tags": [
+                "research-science"
+              ]
+            },
+            {
+              "title": "中华天人之学与钱学森开放复杂巨系统",
+              "speaker": "黄拓 全科中医，探究扁鹊医学与\"孤独的三焦\"",
+              "tags": [
+                "research-science",
+                "health-medical",
+                "community-youth"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "解读宇宙密信",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-25"
+          ],
+          "time_range": "18:00-19:30",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "research-science"
+          ],
+          "talks": [
+            {
+              "title": "解读宇宙密信",
+              "speaker": "",
+              "tags": [
+                "research-science"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AI 时代我们要成为什么样的人？",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "09:00-10:00",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "ai",
+            "research-science",
+            "education"
+          ],
+          "talks": [
+            {
+              "title": "公共性视角下，AI 技术对生活的影响",
+              "speaker": "张从志 三联生活周刊资深主笔",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "云谷学校怎么具体培养学生的 AI 素养",
+              "speaker": "毛露 杭州云谷学校中学部校长助理、初中科学老师",
+              "tags": [
+                "ai",
+                "education"
+              ]
+            },
+            {
+              "title": "圆桌讨论，AI 时代，我们对技术乐观还是保守？",
+              "speaker": "杨璐 《三联生活周刊》资深编辑",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "article_only"
+        },
+        {
+          "section_title": "AI 时代上什么学？——探索未来教育模式的案例分享",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12453"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "10:00-11:15",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "ai",
+            "education",
+            "arts-media-design",
+            "philosophy-mind",
+            "community-youth",
+            "opensource-tech"
+          ],
+          "talks": [
+            {
+              "title": "不作恶，允许生长",
+              "speaker": "史慧亮 竹子学校首席学习官（副校长）| 在场式教育提出者 · 80 分家庭发起人",
+              "tags": [
+                "ai",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "我们颠覆了大学教育",
+              "speaker": "唐弈 BOSA 播撒社区创始人，前投行 / 风投，无限游戏系统设计师",
+              "tags": [
+                "education"
+              ]
+            },
+            {
+              "title": "亿点点不一样的 AI 编程课",
+              "speaker": "詹娜 超脑 AI 孵化器核心导师，热爱创造性学习体验设计 + 包容性设计思维教学",
+              "tags": [
+                "ai",
+                "opensource-tech"
+              ]
+            },
+            {
+              "title": "AI 素养，没有标准答案",
+              "speaker": "陈文娟 中传副教授 / HCI 与 AI 素养教育研究者 / 童年 AI 想象捕手",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "圆桌讨论：借 AI 之名，看见孩子",
+              "speaker": "",
+              "tags": [
+                "ai"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "培养独特创造者",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12470"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "11:15-12:15",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "ai",
+            "education",
+            "arts-media-design",
+            "philosophy-mind",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "用独特创造的微光，照亮不该被 AI 平均掉的角落",
+              "speaker": "徐雁斐（艾芙） 深圳明湾学校教师，超脑 AI 联创，南瓜博士主笔，好奇星人",
+              "tags": [
+                "ai"
+              ]
+            },
+            {
+              "title": "当孩子们有空间释放本真性时，会发生什么？",
+              "speaker": "谭西 独立教师，【个人项目实验室】课程设计者",
+              "tags": [
+                "ai",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "给创造力装上同理心的引擎",
+              "speaker": "王琳玉（仔仔） 博悦工作室创始人，有温度的跨学科教学践行者",
+              "tags": [
+                "philosophy-mind"
+              ]
+            },
+            {
+              "title": "从 AI 使用者到系统设计者：在智能体时代重塑学生能力",
+              "speaker": "柳少华 复旦附中国际老师，构建学生优势的实践者",
+              "tags": [
+                "ai",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "长出来的独特性：回归\"附近\"的跨界教育实践",
+              "speaker": "刘珺婕 Joyce CurioWorks 至未至奇创始人，跨界科技创新教育者",
+              "tags": [
+                "education"
+              ]
+            },
+            {
+              "title": "一位老师（执行者）眼中，哪些措施有助于培养独特创造者？",
+              "speaker": "王佳哲 小学信息老师，致力于让每个孩子成为更好的自己",
+              "tags": [
+                "ai",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "那些不太一般的孩子",
+              "speaker": "翟建勋 点萌科创创始人",
+              "tags": [
+                "ai",
+                "education",
+                "arts-media-design"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "别叫我\"同学\"，叫我 CEO：青少年创业孵化论坛",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12494"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "12:15-13:30",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "ai",
+            "education",
+            "arts-media-design",
+            "philosophy-mind",
+            "community-youth",
+            "startup-product"
+          ],
+          "talks": [
+            {
+              "title": "带 50 个孩子用 AI 创业，坑与光",
+              "speaker": "马渊洁 青少年 AI 孵化器创始人 | 三年陪跑 50 个 10 后从 0 到 1",
+              "tags": [
+                "ai",
+                "community-youth",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "爱玩游戏、不咋上学，明年中考，你想怎样？",
+              "speaker": "习劲翀 游戏 / 教育 / AI 连续创业者，2 个初中生的爹。习惯跨界，不爱内卷，一身反骨，心平气和",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "青少年 AI 创业是不是伪命题",
+              "speaker": "老五 友仁大学共同发起人，IEYI/GSIC 国际评审，批判性思维 / 创造力 / AI 教育实践者",
+              "tags": [
+                "ai",
+                "education",
+                "community-youth",
+                "startup-product"
+              ]
+            },
+            {
+              "title": "辩论：青少年 AI 创业 YES or NO",
+              "speaker": "正方 AI 时代青少年应该尽早开始创业实践",
+              "tags": [
+                "ai",
+                "education",
+                "community-youth",
+                "startup-product"
+              ]
+            }
+          ],
+          "confidence": "high"
+        },
+        {
+          "section_title": "冷湖宇宙 · 科幻圆桌",
+          "unit_type": "forum_block",
+          "matched_activity_ids": [
+            "12509"
+          ],
+          "date_tags": [
+            "2026-04-26"
+          ],
+          "time_range": "13:30-15:30",
+          "location_hint": "A区 1F 贤云厅",
+          "topic_tags": [
+            "research-science",
+            "education",
+            "arts-media-design"
+          ],
+          "talks": [
+            {
+              "title": "冷湖火星小镇的消失与复活",
+              "speaker": "袁振民 冷湖火星小镇、冷湖奖联合创始人",
+              "tags": [
+                "research-science",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "从科幻产业角度看冷湖文旅的发展",
+              "speaker": "吴岩 冷湖奖评委会主席",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "投向冷湖的一束\"光\"——冷湖科幻文学奖发展历程",
+              "speaker": "杨枫 冷湖奖联合创始人、评委",
+              "tags": [
+                "research-science",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "冷湖科幻影视发展及冷湖科幻影视基地的建设",
+              "speaker": "文成才旦 冷湖影业导演",
+              "tags": [
+                "research-science",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "冷湖奖获奖作者分享创作历程与创作视角",
+              "speaker": "谈雀，李图野，惊闻语 第八届冷湖奖获奖作者",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "冷湖科幻文学向游戏的转化与实现",
+              "speaker": "陆浩宇，汪宇杰 北京工业大学耿丹学院学生",
+              "tags": [
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "科幻圆桌（一）：两千三百万字中的绝杀，冷湖奖获奖作品如何炼成？",
+              "speaker": "袁振民 金豆豆，谈雀，李图野，潘海天，惊闻语",
+              "tags": [
+                "research-science",
+                "education",
+                "arts-media-design"
+              ]
+            },
+            {
+              "title": "科幻圆桌（二）：从文字到宇宙，冷湖科幻 IP 的生发与破圈。",
+              "speaker": "杨枫 吴岩，文成才旦，陆浩宇，汪宇杰",
+              "tags": [
+                "research-science"
+              ]
+            }
+          ],
+          "confidence": "high"
         }
       ]
     }

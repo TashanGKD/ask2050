@@ -18,6 +18,7 @@ PLAN_SCRIPT = ROOT / "scripts" / "plan_itinerary.py"
 SOURCE_CHANNELS_SCRIPT = ROOT / "scripts" / "source_channels.py"
 REBUILD_SLICES_SCRIPT = ROOT / "scripts" / "rebuild_reference_slices.py"
 EXTRACT_OFFICIAL_DETAIL_SCRIPT = ROOT / "scripts" / "extract_official_detail_terms.py"
+IMPORT_NEWBORN_FORUM_SCRIPT = ROOT / "scripts" / "import_newborn_forum_article.py"
 
 
 REQUIRED_FILES = [
@@ -40,6 +41,7 @@ REQUIRED_FILES = [
     SOURCE_CHANNELS_SCRIPT,
     REBUILD_SLICES_SCRIPT,
     EXTRACT_OFFICIAL_DETAIL_SCRIPT,
+    IMPORT_NEWBORN_FORUM_SCRIPT,
 ]
 
 FORBIDDEN_REFERENCE_DOCS = {
@@ -144,6 +146,11 @@ OUTPUT_CASES = [
     {"name": "latest_space_life_focus", "q": "探索空间 太空 生活 航天", "require": ["重点 part:", "未来在地球以外：星际生活场景体验", "探索空间1号展位"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "latest_parent_ai_focus", "q": "AI反哺 父母 养老", "require": ["重点 part:", "AI反哺计划：年轻人能用AI为父母做些什么", "探索空间74号展位"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "supplemental_tashan_forum", "q": "他山 国科大 中科院", "require": ["补充活动线索", "他山青年论坛", "A区 3F 青云厅", "中国科学院大学他山学科交叉创新协会"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "shale_report_article_unit", "q": "页岩层系 龟兔赛跑", "require": ["文章小节", "页岩油气富集机理", "页岩层系中持续百万年的\"龟兔赛跑\"", "A区 2F 360环屏(千人云栖厅)"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "earth_sustainability_report", "q": "AI与地球可持续发展 Nancy House", "require": ["文章小节", "AI与地球可持续发展新生论坛", "机遇与平衡", "Nancy House"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "opc_report_focus", "q": "AI + OPC 文科生 Agent 协作赚到钱", "require": ["重点 part:", "AI + OPC：一个人的 AI 时代生存指南", "AI 时代的文科生：如何跟 Agent 协作并赚到钱", "周晨"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "qian_xuesen_complexity_report", "q": "钱学森 复杂科学 魏云初", "require": ["重点 part:", "钱学森读书会", "钱学森与复杂科学", "魏云初"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "tashan_article_parts", "q": "他山青年论坛", "require": ["补充活动线索", "文章小节", "AI 时代科研协作模式如何重构", "国科大"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
 ]
 
 EXPECTED_FORUM_LOCATIONS = {
@@ -182,8 +189,8 @@ ITINERARY_PROFILE = (
 
 UNIT_CASES = [
     {"name": "painting_truth_unit", "q": "绘画的真理", "min_units": 1},
-    {"name": "future_programming_unit", "q": "未来编程", "min_units": 1},
-    {"name": "sustainable_youth_unit", "q": "童星未来", "min_units": 1},
+    {"name": "future_city_unit", "q": "未来城邦", "min_units": 1},
+    {"name": "sustainable_future_unit", "q": "重塑未来 可持续发展", "min_units": 1},
     {"name": "young_director_unit", "q": "青年导演 X AI", "min_units": 1},
     {"name": "ai_jargon_unit", "q": "黑话", "min_units": 1},
     {"name": "four_hundred_boxes_unit", "q": "四百盒子社区", "min_units": 1},
@@ -520,8 +527,8 @@ def main() -> int:
         fail(f"article index has {len(articles)} rows, expected at least 77")
     if set(official_detail_terms.get("activities", {})) != {str(item.get("activity_id")) for item in activities}:
         fail("official_detail_terms.json must cover exactly the packaged activity IDs")
-    if len(focus_sessions) < 12:
-        fail(f"focus_sessions.min.json has {len(focus_sessions)} rows, expected at least 12 curated focus sessions")
+    if len(focus_sessions) < 95:
+        fail(f"focus_sessions.min.json has {len(focus_sessions)} rows, expected at least 95 curated focus sessions")
     counts = evidence.get("counts", {})
     expected_evidence_counts = {
         "articles_csv_rows": 77,
@@ -629,6 +636,28 @@ def main() -> int:
         for talk in item.get("talks", []):
             if not isinstance(talk, dict) or not talk.get("title") or not talk.get("tags"):
                 fail(f"focus session talk needs title and tags: {item.get('session_id')}")
+            if talk.get("tags") == ["general"]:
+                fail(f"focus session talk only has a generic tag: {item.get('session_id')}")
+
+    newborn_record = next(
+        (record for record in crosswalk.get("records", []) if record.get("article_url") == "https://mp.weixin.qq.com/s/0pk6F8FvoqjysXBApdrrdA"),
+        None,
+    )
+    if not newborn_record:
+        fail("newborn forum article crosswalk is missing")
+    newborn_units = newborn_record.get("units", [])
+    if len(newborn_units) < 100:
+        fail(f"newborn forum crosswalk has {len(newborn_units)} units, expected full hall-level extraction")
+    newborn_talks = sum(len(unit.get("talks", [])) for unit in newborn_units)
+    if newborn_talks < 450:
+        fail(f"newborn forum crosswalk has {newborn_talks} talks, expected report-level extraction")
+    for unit in newborn_units:
+        for field in ["section_title", "date_tags", "time_range", "location_hint", "topic_tags", "talks", "confidence"]:
+            if not unit.get(field):
+                fail(f"newborn forum unit missing {field}: {unit}")
+        for talk in unit.get("talks", []):
+            if not talk.get("title") or not talk.get("tags") or talk.get("tags") == ["general"]:
+                fail(f"newborn forum talk needs non-generic tags: {unit.get('section_title')}")
     facet_ids = set(activity_facets)
     if facet_ids != activity_ids:
         fail("activity_facets.json must cover exactly the packaged activity IDs")
