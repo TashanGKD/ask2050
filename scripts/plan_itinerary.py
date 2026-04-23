@@ -40,6 +40,19 @@ PROFILE_ALIASES = {
     "社区运营": ["社区", "社群", "找同伴"],
     "哲学": ["哲学", "思想", "深聊"],
     "动手": ["动手工作坊", "看展体验", "硬件"],
+    "硬件": ["robotics-hardware", "机器人", "芯片", "具身", "制造", "AI硬件"],
+    "机器人": ["robotics-hardware", "硬件", "具身", "制造"],
+    "小团体": ["小范围交流", "找同伴", "青年团聚", "热带雨林"],
+}
+
+INTENT_KEYWORDS = {
+    "research_science": ["ai4s", "ai4science", "科研", "博士", "天文学", "科学研究", "物理"],
+    "education": ["教育", "科普", "科教", "课程", "学习", "老师", "学校", "教研"],
+    "hardware": ["硬件", "机器人", "芯片", "具身", "制造", "robotics-hardware"],
+    "philosophy": ["哲学", "思想", "人文", "深聊", "观点", "社会科学"],
+    "community": ["社区", "社群", "运营", "找同伴", "小团体", "合作"],
+    "arts": ["艺术", "创作", "音乐", "表演", "影像", "设计"],
+    "low_energy": ["低能量", "轻松", "放松", "不想太累", "随便逛"],
 }
 
 
@@ -76,6 +89,19 @@ def profile_terms(profile: str) -> list[str]:
     return list(dict.fromkeys(terms))
 
 
+def profile_intents(profile: str, terms: list[str]) -> set[str]:
+    text = f"{profile.lower()} {' '.join(terms)}"
+    intents = set()
+    for intent, keywords in INTENT_KEYWORDS.items():
+        if any(keyword.lower() in text for keyword in keywords):
+            intents.add(intent)
+    return intents
+
+
+def contains_any(text: str, keywords: list[str]) -> bool:
+    return any(keyword.lower() in text for keyword in keywords)
+
+
 def haystack(item: dict, facet: dict | None) -> str:
     parts = [
         item.get("title", ""),
@@ -101,7 +127,8 @@ def haystack(item: dict, facet: dict | None) -> str:
     return " ".join(str(part).lower() for part in parts)
 
 
-def score_item(item: dict, facet: dict | None, terms: list[str], role: str) -> int:
+def score_item(item: dict, facet: dict | None, terms: list[str], role: str, intents: set[str] | None = None) -> int:
+    intents = intents or set()
     text = haystack(item, facet)
     title = str(item.get("title", "")).lower()
     container = str(item.get("container", ""))
@@ -124,7 +151,23 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str) -> i
     if role == "practice" and facet and "动手工作坊" in facet.get("experience_modes", []):
         score += 14
     if role == "forum" and "ai4science" in text:
-        score += 30
+        score += 130 if "research_science" in intents or "ai4science" in terms else -25
+    if role == "forum" and "hardware" in intents and contains_any(text, ["硬件", "机器人", "芯片", "具身", "制造", "robotics-hardware"]):
+        score += 70
+        if contains_any(title, ["硬件", "机器人", "芯片", "具身", "制造"]):
+            score += 35
+    if role == "forum" and "education" in intents and contains_any(text, ["教育", "科普", "科教", "课程", "学习", "学校", "教研"]):
+        score += 60
+        if contains_any(title, ["教育", "科普", "课程", "学习"]):
+            score += 35
+    if role == "forum" and "philosophy" in intents and contains_any(text, ["哲学", "思想", "人文", "社会科学", "观点"]):
+        score += 55
+        if contains_any(title, ["哲学", "思想", "人文", "社会"]):
+            score += 35
+    if role == "forum" and "community" in intents and contains_any(text, ["社区", "社群", "青年", "共创", "合作", "找同伴"]):
+        score += 45
+        if contains_any(title, ["社区", "社群", "青年", "共创"]):
+            score += 30
     if role == "forum" and any(term in terms for term in ["太空", "宇宙", "地外文明", "物理"]) and (
         "太空" in text or "宇宙" in text or "地外文明" in text or "物理" in text
     ):
@@ -137,14 +180,44 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str) -> i
         score += 35
     if role == "practice" and facet and "动手工作坊" in facet.get("experience_modes", []):
         score += 35
+    if role == "practice" and "education" in intents and contains_any(text, ["课程", "学习", "教育", "科普", "提问"]):
+        score += 45
+        if contains_any(title, ["课程", "学习", "提问", "教育", "黑客松"]):
+            score += 70
+    if role == "practice" and "philosophy" in intents and contains_any(text, ["哲学", "思想", "人文", "手工艺", "公共空间", "内在", "社会"]):
+        score += 45
+        if contains_any(title, ["手工艺", "公共空间", "内在", "哲学"]):
+            score += 55
+    if role == "practice" and "community" in intents and contains_any(text, ["社区", "共创", "伙伴", "找同伴"]):
+        score += 35
+    if role == "practice" and "arts" not in intents and contains_any(title, ["音乐", "舞蹈", "混音", "声音橡皮泥"]):
+        score -= 85
+    if role == "deep_talk" and "philosophy" in intents and contains_any(text, ["哲学", "思想", "人文", "社会", "观点"]):
+        score += 70
+    if role == "deep_talk" and "community" in intents and contains_any(text, ["社区", "社群", "共创", "合作"]):
+        score += 45
+    if role == "deep_talk" and "education" in intents and contains_any(text, ["教育", "学习", "课程"]):
+        score += 45
+    if role == "evening" and "community" in intents and contains_any(text, ["waytoagi", "社区", "庆生", "音乐会"]):
+        score += 70
+    if role == "evening" and "arts" in intents and contains_any(text, ["音乐", "表演", "舞台", "影像", "声音"]):
+        score += 70
+    if role == "evening" and "education" in intents and contains_any(text, ["少年", "梦想", "教育", "学习"]):
+        score += 35
     official = parse_time_range(str(item.get("time", "")))
+    if role == "evening" and official:
+        if 19 * 60 <= official[0] <= 21 * 60:
+            score += 35
+        if official[0] >= 23 * 60 and "arts" not in intents and "夜间" not in terms and "深夜" not in terms:
+            score -= 250
     if role == "practice" and official and official[1] - official[0] <= 150:
         score += 25
     if role == "practice" and ("教育" in terms or "科普" in terms or "科教" in terms) and ("课程" in text or "学习" in text):
         score += 20
-    if role in {"deep_talk", "evening"} and ("太空" in text or "地外文明" in text or "宇宙" in text):
+    space_profile = "research_science" in intents and any(term in terms for term in ["太空", "宇宙", "地外文明", "天文学"])
+    if role in {"deep_talk", "evening"} and space_profile and ("太空" in text or "地外文明" in text or "宇宙" in text):
         score += 55
-    if role == "evening" and ("太空" in text or "地外文明" in text):
+    if role == "evening" and space_profile and ("太空" in text or "地外文明" in text):
         score += 35
     if not any(hint in str(item.get("location", "")) for hint in SPECIFIC_LOCATION_HINTS):
         score -= 40
@@ -170,7 +243,8 @@ def session_haystack(session: dict) -> str:
     return " ".join(str(part).lower() for part in parts)
 
 
-def score_session(session: dict, terms: list[str], role: str) -> int:
+def score_session(session: dict, terms: list[str], role: str, intents: set[str] | None = None) -> int:
+    intents = intents or set()
     text = session_haystack(session)
     title = str(session.get("title", "")).lower()
     score = 0
@@ -182,15 +256,27 @@ def score_session(session: dict, terms: list[str], role: str) -> int:
     if role == "forum":
         score += 35
     if "ai4science" in text:
-        score += 45
+        score += 120 if "research_science" in intents or "ai4science" in terms else -20
     if "ai4science" in terms and "ai4science" in text:
         score += 80
     if "科学" in terms and ("science" in text or "科学" in text):
         score += 25
+    if role == "forum" and "hardware" in intents and contains_any(text, ["硬件", "机器人", "芯片", "具身", "制造", "chip"]):
+        score += 80
+        if contains_any(title, ["硬件", "机器人", "芯片", "具身", "制造"]):
+            score += 30
+    if role == "forum" and "education" in intents and contains_any(text, ["教育", "科普", "课程", "学习", "学校", "教研"]):
+        score += 70
+        if contains_any(title, ["教育", "学习", "课程"]):
+            score += 30
+    if role == "forum" and "philosophy" in intents and contains_any(text, ["哲学", "思想", "人文", "社会科学", "观点"]):
+        score += 65
+    if role == "forum" and "community" in intents and contains_any(text, ["社区", "社群", "青年", "共创", "合作"]):
+        score += 45
     return score
 
 
-def focus_session_for(item: dict, terms: list[str], role: str) -> dict | None:
+def focus_session_for(item: dict, terms: list[str], role: str, intents: set[str] | None = None) -> dict | None:
     if not FOCUS_SESSIONS.exists():
         return None
     parent_id = str(item.get("activity_id"))
@@ -202,7 +288,7 @@ def focus_session_for(item: dict, terms: list[str], role: str) -> dict | None:
             continue
         if not parse_time_range(str(session.get("time", ""))):
             continue
-        score = score_session(session, terms, role)
+        score = score_session(session, terms, role, intents)
         if score > 0:
             candidates.append((score, session))
     candidates.sort(key=lambda pair: (-pair[0], pair[1].get("time", ""), pair[1].get("title", "")))
@@ -218,7 +304,7 @@ def location_note(location: str) -> str:
     return f"{value}（官方地点仅到总场馆，入场前复核厅/展位）"
 
 
-def choose(
+def ranked_choices(
     activities: list[dict],
     facets: dict,
     *,
@@ -227,7 +313,9 @@ def choose(
     role: str,
     containers: set[str],
     exclude_ids: set[str],
-) -> dict | None:
+    intents: set[str] | None = None,
+) -> list[dict]:
+    intents = intents or set()
     candidates = []
     for item in activities:
         activity_id = str(item.get("activity_id"))
@@ -238,12 +326,36 @@ def choose(
         if not parse_time_range(str(item.get("time", ""))):
             continue
         facet = facets.get(activity_id)
-        score = score_item(item, facet, terms, role)
+        score = score_item(item, facet, terms, role, intents)
         if score <= 0:
             continue
         candidates.append((score, item))
     candidates.sort(key=lambda pair: (-pair[0], pair[1].get("time", ""), pair[1].get("title", "")))
-    return candidates[0][1] if candidates else None
+    return [item for _, item in candidates]
+
+
+def choose(
+    activities: list[dict],
+    facets: dict,
+    *,
+    date: str,
+    terms: list[str],
+    role: str,
+    containers: set[str],
+    exclude_ids: set[str],
+    intents: set[str] | None = None,
+) -> dict | None:
+    candidates = ranked_choices(
+        activities,
+        facets,
+        date=date,
+        terms=terms,
+        role=role,
+        containers=containers,
+        exclude_ids=exclude_ids,
+        intents=intents,
+    )
+    return candidates[0] if candidates else None
 
 
 def planned_window(item: dict, role: str, occupied: list[tuple[int, int]]) -> tuple[int, int]:
@@ -271,8 +383,8 @@ def planned_window(item: dict, role: str, occupied: list[tuple[int, int]]) -> tu
     return official
 
 
-def effective_item(item: dict, terms: list[str], role: str) -> tuple[dict, dict | None]:
-    session = focus_session_for(item, terms, role)
+def effective_item(item: dict, terms: list[str], role: str, intents: set[str] | None = None) -> tuple[dict, dict | None]:
+    session = focus_session_for(item, terms, role, intents)
     if not session:
         return item, None
     merged = dict(item)
@@ -293,6 +405,7 @@ def build_plan(profile: str, date: str) -> dict:
     activities = load_json(REF / "activity_index.min.json")
     facets = load_json(REF / "activity_facets.json")
     terms = profile_terms(profile)
+    intents = profile_intents(profile, terms)
     exclude_ids: set[str] = set()
     occupied: list[tuple[int, int]] = []
     rows = []
@@ -304,7 +417,8 @@ def build_plan(profile: str, date: str) -> dict:
         ("晚间收尾", "evening", {"星空露营", "青春舞台"}, "用低压力场景收束当天，也适合继续聊。"),
     ]
     for label, role, containers, reason in slots:
-        item = choose(
+        selected = None
+        for item in ranked_choices(
             activities,
             facets,
             date=date,
@@ -312,13 +426,17 @@ def build_plan(profile: str, date: str) -> dict:
             role=role,
             containers=containers,
             exclude_ids=exclude_ids,
-        )
-        if not item:
+            intents=intents,
+        ):
+            route_item, session = effective_item(item, terms, role, intents)
+            window = planned_window(route_item, role, occupied)
+            if overlaps(window, occupied):
+                continue
+            selected = (item, route_item, session, window)
+            break
+        if not selected:
             continue
-        route_item, session = effective_item(item, terms, role)
-        window = planned_window(route_item, role, occupied)
-        if overlaps(window, occupied):
-            continue
+        item, route_item, session, window = selected
         activity_id = str(item.get("activity_id"))
         facet = facets.get(activity_id, {})
         occupied.append(window)

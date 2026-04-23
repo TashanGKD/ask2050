@@ -47,6 +47,15 @@ SOURCE_ROLE_LABELS = {
     "mixed": "补充线索",
 }
 
+TOPIC_QUERY_ALIASES = {
+    "education": ["教育", "课程", "学习", "科普", "教研", "学校"],
+    "robotics-hardware": ["硬件", "机器人", "芯片", "具身", "制造", "动手"],
+    "philosophy-mind": ["哲学", "思想", "人文", "深聊", "观点"],
+    "community-youth": ["社区", "青年", "社群", "共创", "合作", "找同伴"],
+    "opensource-tech": ["开源", "技术", "开发者", "社区"],
+    "arts-media-design": ["艺术", "创作", "设计", "影像", "音乐"],
+}
+
 
 def display_source_title(title: str | None) -> str:
     value = str(title or "").strip()
@@ -109,6 +118,15 @@ def query_terms(query: str) -> list[str]:
         if phrase in q_lower:
             terms.extend(alias.lower() for alias in aliases)
     return list(dict.fromkeys(terms))
+
+
+def topic_query_text(topics: list[str]) -> str:
+    terms = []
+    for topic in topics:
+        value = str(topic)
+        terms.append(value)
+        terms.extend(TOPIC_QUERY_ALIASES.get(value, []))
+    return " ".join(terms)
 
 
 def matched_term_count(haystack: str, terms: list[str]) -> int:
@@ -426,10 +444,12 @@ def main() -> int:
         if args.container and args.container not in item.get("container", ""):
             continue
         tags = item_tags(item)
-        if args.topic and not all(topic in tags for topic in args.topic):
+        topic_pool = " ".join(tags + facet_terms(activity_facets.get(activity_id)) + focus_terms_by_activity.get(activity_id, [])).lower()
+        if args.topic and not all(str(topic).lower() in topic_pool for topic in args.topic):
             continue
         manual_match = activity_id in manual_ids
-        score = query_score(haystack, args.q, manual_match=manual_match) + field_boost(item, args.q)
+        score_query = args.q or topic_query_text(args.topic)
+        score = query_score(haystack, score_query, manual_match=manual_match) + field_boost(item, score_query)
         if args.q and not query_matches(haystack, args.q, manual_match=manual_match):
             continue
         if activity_id in seen:

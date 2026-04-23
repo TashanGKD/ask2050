@@ -329,9 +329,13 @@ def main() -> int:
     for required_phrase in [
         "scripts/search_activities.py",
         "不要把脚本输出原样粘给用户",
+        "如果 `--topic` 在当前运行环境里不可用",
+        "改用 `--q` 写入同义主题词、身份和需求重新检索",
         "不要为了第一轮匹配整篇加载很大的 `by_topic` 或 `by_location` 文件",
         "认知主线：至少安排一个相关的新生论坛",
         "不要因为低压力活动更容易匹配，就在正常行程里省掉新生论坛",
+        "新生论坛不是固定模板",
+        "用户画像不同，论坛锚点和后续实践都应该不同",
         "路线里都先找一个相关新生论坛做认知锚点",
         "好的 2050 路线要有节奏",
         "行程规划必须先过这些硬约束",
@@ -734,7 +738,7 @@ def main() -> int:
     except json.JSONDecodeError as exc:
         fail(f"plan_itinerary.py did not return valid JSON: {exc}")
     plan_text = json.dumps(plan, ensure_ascii=False)
-    for required_text in ["AI4Science 专场", "AGI4Science：正在生长的科学地图", "A区 2F 2050学习节(五云厅)", "把AI装进硬件里", "太空时代开启", "suggested_window", "official_time"]:
+    for required_text in ["AI4Science 专场", "AGI4Science：正在生长的科学地图", "A区 2F 2050学习节(五云厅)", "把AI装进硬件里", "suggested_window", "official_time"]:
         if required_text not in plan_text:
             fail(f"plan_itinerary.py output missing expected route element: {required_text}")
     if "AI4Science 专场 | 云栖小镇国际会展中心（官方地点仅到总场馆" in plan_text:
@@ -760,6 +764,65 @@ def main() -> int:
             fail(f"plan_itinerary.py kept generic location without caveat: {item.get('title')}")
     if not any(item.get("container") == "新生论坛" for item in plan.get("items", [])):
         fail("plan_itinerary.py route lacks forum anchor")
+
+    route_profiles = {
+        "ai4s": {
+            "profile": ITINERARY_PROFILE,
+            "forum_id": "12402",
+            "must": ["AGI4Science：正在生长的科学地图"],
+        },
+        "education": {
+            "profile": "第一次来2050 喜欢教育 科普 社区运营 小团体交流",
+            "forum_id": "12574",
+            "must": ["AI+X高校教育联盟论坛", "AI时代的学习，由你来定义"],
+            "forbid": ["声音橡皮泥", "离谱村音乐会"],
+        },
+        "hardware": {
+            "profile": "第一次来2050 硬件 机器人 动手体验 开源技术",
+            "forum_id_not": "12402",
+            "must": ["具身智能", "把AI装进硬件里"],
+        },
+        "philosophy": {
+            "profile": "第一次来2050 哲学 人文 深聊 AI教育 社会科学",
+            "forum_id": "12298",
+            "must": ["AI时代的教育与社会科学", "AI时代的高等教育困境"],
+            "forbid": ["离谱村音乐会"],
+        },
+    }
+    forum_ids = set()
+    for name, case in route_profiles.items():
+        completed = subprocess.run(
+            [sys.executable, str(PLAN_SCRIPT), "--profile", case["profile"], "--date", "2026-04-25", "--json"],
+            cwd=ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        if completed.returncode != 0:
+            fail(f"plan_itinerary.py profile {name} failed: {completed.stderr.strip() or completed.stdout.strip()}")
+        case_plan = json.loads(completed.stdout)
+        case_text = json.dumps(case_plan, ensure_ascii=False)
+        forums = [item for item in case_plan.get("items", []) if item.get("container") == "新生论坛"]
+        if not forums:
+            fail(f"plan_itinerary.py profile {name} lacks forum anchor")
+        forum_id = str(forums[0].get("activity_id"))
+        forum_ids.add(forum_id)
+        if case.get("forum_id") and forum_id != case["forum_id"]:
+            fail(f"plan_itinerary.py profile {name} expected forum {case['forum_id']}, got {forum_id}")
+        if case.get("forum_id_not") and forum_id == case["forum_id_not"]:
+            fail(f"plan_itinerary.py profile {name} still collapses to forbidden forum {forum_id}")
+        for required_text in case.get("must", []):
+            if required_text not in case_text:
+                fail(f"plan_itinerary.py profile {name} missing differentiated route text: {required_text}")
+        for forbidden_text in case.get("forbid", []):
+            if forbidden_text in case_text:
+                fail(f"plan_itinerary.py profile {name} included mismatched route text: {forbidden_text}")
+        for item in case_plan.get("items", []):
+            if re.search(r"2[4-9]:", str(item.get("suggested_window", ""))):
+                fail(f"plan_itinerary.py profile {name} exposed post-midnight clock in default route: {item.get('suggested_window')}")
+    if len(forum_ids) < 3:
+        fail(f"plan_itinerary.py profiles are not differentiated enough; forum anchors={sorted(forum_ids)}")
 
     source_channels = subprocess.run(
         [sys.executable, str(SOURCE_CHANNELS_SCRIPT)],
