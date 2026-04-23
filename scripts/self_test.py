@@ -932,6 +932,61 @@ def main() -> int:
         fail("plan_itinerary.py morning-person route should use the morning slot")
     if "舞动竹龙" in json.dumps(constraint_plans["morning_person"], ensure_ascii=False):
         fail("plan_itinerary.py morning-person route should not fill a deep-talk slot with unrelated early performance")
+    low_energy_profile = "第一次来2050 教育工作者 科普 科教 喜欢小团体交流 不想太累"
+    completed = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", low_energy_profile, "--date", "2026-04-25", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if completed.returncode != 0:
+        fail(f"plan_itinerary.py low-energy profile failed: {completed.stderr.strip() or completed.stdout.strip()}")
+    low_energy_plan = json.loads(completed.stdout)
+    for item in low_energy_plan.get("items", []):
+        match = re.match(r"(\d{2}):(\d{2})-", str(item.get("suggested_window", "")))
+        if match and int(match.group(1)) >= 19:
+            fail(f"plan_itinerary.py low-energy route should not schedule evening item without explicit evening preference: {item.get('suggested_window')}")
+    if any(item_contains_any(item, ["离谱村音乐会", "壁画动次大次", "三周年庆生"]) for item in low_energy_plan.get("items", [])):
+        fail("plan_itinerary.py low-energy route should not use unrelated entertainment as filler")
+    mobility_philosophy_profile = "行动不便 不想跨区 少走路 哲学 人文 深聊"
+    completed = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", mobility_philosophy_profile, "--date", "2026-04-25", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if completed.returncode != 0:
+        fail(f"plan_itinerary.py mobility philosophy profile failed: {completed.stderr.strip() or completed.stdout.strip()}")
+    mobility_philosophy_plan = json.loads(completed.stdout)
+    for item in mobility_philosophy_plan.get("items", []):
+        match = re.match(r"(\d{2}):(\d{2})-(\d{2}):(\d{2})$", str(item.get("suggested_window", "")))
+        if not match:
+            fail(f"plan_itinerary.py mobility route has invalid window: {item.get('suggested_window')}")
+        duration = (int(match.group(3)) * 60 + int(match.group(4))) - (int(match.group(1)) * 60 + int(match.group(2)))
+        if duration > 150:
+            fail(f"plan_itinerary.py mobility route should not create a long standing window: {item.get('suggested_window')}")
+    hardware_networking_profile = "第一次来2050 硬件 机器人 开源 动手 想找合作伙伴"
+    completed = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", hardware_networking_profile, "--date", "2026-04-25", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if completed.returncode != 0:
+        fail(f"plan_itinerary.py hardware networking profile failed: {completed.stderr.strip() or completed.stdout.strip()}")
+    hardware_networking_plan = json.loads(completed.stdout)
+    for item in hardware_networking_plan.get("items", []):
+        match = re.match(r"(\d{2}):(\d{2})-", str(item.get("suggested_window", "")))
+        if match and int(match.group(1)) >= 19:
+            fail(f"plan_itinerary.py should not add evening filler when hardware networking user did not ask for night events: {item.get('suggested_window')}")
+    if not any(item_contains_any(item, ["硬件", "机器人", "芯片", "具身", "openclaw", "maker"]) for item in hardware_networking_plan.get("items", [])):
+        fail("plan_itinerary.py hardware networking route lacks a hardware/robotics stop")
     for item in constraint_plans["early_sleep"].get("items", []):
         match = re.match(r"(\d{2}):(\d{2})-", str(item.get("suggested_window", "")))
         if match and int(match.group(1)) >= 19:

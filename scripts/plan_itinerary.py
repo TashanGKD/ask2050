@@ -70,6 +70,10 @@ INTENT_KEYWORDS = {
 }
 
 ZONE_ORDER = {"D区": 0, "C区": 1, "B区": 2, "A区": 3, "户外": 4, "未知": 5}
+EVENING_TERMS = ["晚上", "夜间", "露营", "音乐", "舞台", "放松收尾", "晚间"]
+HARDWARE_TERMS = ["硬件", "机器人", "芯片", "具身", "制造", "openclaw", "物理外挂", "maker"]
+COMMUNITY_TERMS = ["社区", "社群", "共创", "合作", "waytoagi", "builder", "开源", "找同伴"]
+STRONG_COMMUNITY_TERMS = ["社区", "社群", "合作", "waytoagi", "builder", "开源", "找同伴"]
 
 
 def load_json(path: Path):
@@ -112,6 +116,11 @@ def profile_intents(profile: str, terms: list[str]) -> set[str]:
         if any(keyword.lower() in text for keyword in keywords):
             intents.add(intent)
     return intents
+
+
+def has_explicit_evening_preference(profile: str, terms: list[str]) -> bool:
+    text = f"{profile.lower()} {' '.join(terms)}"
+    return contains_any(text, EVENING_TERMS)
 
 
 def contains_any(text: str, keywords: list[str]) -> bool:
@@ -491,7 +500,7 @@ def planned_window(item: dict, role: str, occupied: list[tuple[int, int]]) -> tu
         raise ValueError(f"activity without parseable time: {item.get('activity_id')}")
     start, end = official
     duration = end - start
-    if item.get("container") in LONG_WINDOW_CONTAINERS and duration > 90:
+    if (item.get("container") in LONG_WINDOW_CONTAINERS and duration > 90) or duration > 180:
         role_windows = {
             "forum": [(start, min(start + 120, end)), (start + 60, min(start + 180, end))],
             "bridge": [(max(start, 11 * 60), min(max(start, 11 * 60) + 45, end)), (max(start, 12 * 60), min(max(start, 12 * 60) + 45, end))],
@@ -534,6 +543,7 @@ def build_plan(profile: str, date: str) -> dict:
     facets = load_json(REF / "activity_facets.json")
     terms = profile_terms(profile)
     intents = profile_intents(profile, terms)
+    wants_evening = has_explicit_evening_preference(profile, terms)
     exclude_ids: set[str] = set()
     occupied: list[tuple[int, int]] = []
     rows = []
@@ -562,6 +572,8 @@ def build_plan(profile: str, date: str) -> dict:
         if "morning_person" not in intents:
             slots = [slot for slot in slots if slot[0] != "晨间入口"]
         if "early_sleep" in intents:
+            slots = [slot for slot in slots if slot[1] != "evening"]
+        if "low_energy" in intents and not wants_evening:
             slots = [slot for slot in slots if slot[1] != "evening"]
         if "max_density" in intents:
             slots.insert(1, ("午间桥接", "bridge", {"探索空间", "热带雨林"}, "效率优先时用短窗口补一个同主题项目，避免上午主线后空档过长。"))
@@ -614,21 +626,43 @@ def build_plan(profile: str, date: str) -> dict:
                 str(route_item.get(key, ""))
                 for key in ["title", "summary", "container", "location"]
             ).lower()
+            facet = facets.get(str(item.get("activity_id")), {})
+            if "low_energy" in intents:
+                if facet.get("intensity") == "high":
+                    adjusted_score -= 260
+                if role == "deep_talk" and facet.get("social_density") == "deep-talk":
+                    adjusted_score -= 140
+                if window[0] >= 19 * 60 and not wants_evening:
+                    adjusted_score -= 320
             if "hardware" in intents and role in {"bridge", "practice"} and not contains_any(
                 direct_text,
-                ["硬件", "机器人", "芯片", "具身", "制造", "openclaw", "物理外挂", "maker"],
+                HARDWARE_TERMS,
             ):
                 adjusted_score -= 320
+            if "hardware" in intents and role == "deep_talk" and not contains_any(
+                direct_text,
+                HARDWARE_TERMS + STRONG_COMMUNITY_TERMS,
+            ):
+                adjusted_score -= 220
             if "community" in intents and role == "deep_talk" and not contains_any(
                 direct_text,
-                ["ai", "agent", "社区", "社群", "共创", "合作", "waytoagi", "builder", "开源"],
+                COMMUNITY_TERMS,
+            ):
+                adjusted_score -= 220
+            if "community" in intents and role == "practice" and "hardware" not in intents and not contains_any(
+                direct_text,
+                COMMUNITY_TERMS + ["互助", "志愿", "青年", "团聚", "对话"],
             ):
                 adjusted_score -= 220
             if "max_density" in intents and role == "evening" and not contains_any(
                 direct_text,
-                ["ai", "agent", "硬件", "机器人", "社区", "社群", "音乐", "露营"],
+                HARDWARE_TERMS + COMMUNITY_TERMS + ["音乐", "露营"],
             ):
                 adjusted_score -= 180
+            if role == "evening" and window[0] >= 21 * 60 and not wants_evening:
+                adjusted_score -= 260
+            if role == "evening" and not wants_evening:
+                adjusted_score -= 260
             if adjusted_score <= 0:
                 continue
             viable.append((adjusted_score, base_score, item, route_item, session, window))
