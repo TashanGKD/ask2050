@@ -16,6 +16,7 @@ ARTICLE_EVIDENCE = ROOT / "references" / "article_evidence_index.json"
 ACTIVITY_FACETS = ROOT / "references" / "activity_facets.json"
 ARTICLE_FACETS = ROOT / "references" / "article_facets.json"
 FOCUS_SESSIONS = ROOT / "references" / "focus_sessions.min.json"
+SUPPLEMENTAL_EVENTS = ROOT / "references" / "manual" / "supplemental_events.json"
 KNOWN_CONTAINERS = [
     "新生论坛",
     "探索空间",
@@ -48,6 +49,7 @@ SOURCE_ROLE_LABELS = {
 }
 
 TOPIC_QUERY_ALIASES = {
+    "research-science": ["AI4Science", "AI4S", "AI for Science", "科研", "科学", "学科交叉"],
     "education": ["教育", "课程", "学习", "科普", "教研", "学校"],
     "robotics-hardware": ["硬件", "机器人", "芯片", "具身", "制造", "动手"],
     "philosophy-mind": ["哲学", "思想", "人文", "深聊", "观点"],
@@ -93,8 +95,24 @@ QUERY_ALIASES = {
     "罕见病 ai 医疗": ["从大模型到罕见病", "认真聊一聊AI+医疗", "五云厅", "OpenRD"],
     "罕见病医疗": ["从大模型到罕见病", "认真聊一聊AI+医疗", "五云厅", "OpenRD"],
     "ai医疗": ["AI+医疗", "从大模型到罕见病", "五云厅"],
+    "他山": ["他山青年论坛", "中国科学院大学", "国科大", "中科院", "学科交叉", "科研协作", "科教升级"],
+    "他山青年论坛": ["中国科学院大学", "国科大", "中科院", "学科交叉", "科研协作", "科教升级", "青云厅"],
+    "国科大": ["中国科学院大学", "他山青年论坛", "学科交叉", "科研协作"],
+    "中科院": ["中国科学院", "中国科学院大学", "他山青年论坛", "科研协作"],
+    "中国科学院大学": ["国科大", "中科院", "他山青年论坛", "学科交叉"],
+    "通往agi之路": ["WaytoAGI", "AGI社区", "AI社区"],
+    "agi社区": ["WaytoAGI", "通往AGI之路", "AI社区"],
+    "ai4s": ["AI4Science", "AI for Science", "AI驱动科研", "科研协作"],
+    "ai for science": ["AI4Science", "AI4S", "AI驱动科研", "科研协作"],
 }
 STOP_TERMS = {"我", "想", "要", "可以", "适合", "参加", "2050", "活动", "推荐", "一下", "看看"}
+
+
+def load_json(path: Path, default):
+    if not path.exists():
+        return default
+    with open(path, "r", encoding="utf-8") as handle:
+        return json.load(handle)
 
 
 def is_itinerary_query(query: str) -> bool:
@@ -214,6 +232,42 @@ def source_field_boost(record: dict, query: str) -> int:
             score += 12
         if term in summary:
             score += 4
+    return score
+
+
+def supplemental_terms(event: dict) -> list[str]:
+    terms = [
+        event.get("supplemental_id", ""),
+        event.get("title", ""),
+        event.get("container", ""),
+        event.get("date", ""),
+        event.get("time", ""),
+        event.get("location", ""),
+        event.get("summary", ""),
+        event.get("organizer", ""),
+        event.get("source", ""),
+        event.get("source_level", ""),
+    ]
+    for key in ["search_terms", "topic_tags", "recommended_for"]:
+        value = event.get(key)
+        if isinstance(value, list):
+            terms.extend(str(item) for item in value)
+    return [str(term) for term in terms if term]
+
+
+def supplemental_field_boost(event: dict, query: str) -> int:
+    terms = query_terms(query)
+    title = str(event.get("title", "")).lower()
+    summary = str(event.get("summary", "")).lower()
+    organizer = str(event.get("organizer", "")).lower()
+    score = 0
+    for term in terms:
+        if term in title:
+            score += 14
+        if term in organizer:
+            score += 10
+        if term in summary:
+            score += 5
     return score
 
 
@@ -400,16 +454,11 @@ def main() -> int:
     parser.add_argument("--debug", action="store_true")
     args = parser.parse_args()
 
-    data = json.loads(INDEX.read_text(encoding="utf-8"))
-    activity_facets = {}
-    if ACTIVITY_FACETS.exists():
-        activity_facets = json.loads(ACTIVITY_FACETS.read_text(encoding="utf-8"))
-    article_facets = {}
-    if ARTICLE_FACETS.exists():
-        article_facets = json.loads(ARTICLE_FACETS.read_text(encoding="utf-8"))
-    focus_sessions = []
-    if FOCUS_SESSIONS.exists():
-        focus_sessions = json.loads(FOCUS_SESSIONS.read_text(encoding="utf-8"))
+    data = load_json(INDEX, [])
+    activity_facets = load_json(ACTIVITY_FACETS, {})
+    article_facets = load_json(ARTICLE_FACETS, {})
+    focus_sessions = load_json(FOCUS_SESSIONS, [])
+    supplemental_events = load_json(SUPPLEMENTAL_EVENTS, [])
     focus_terms_by_activity: dict[str, list[str]] = {}
     focus_dates_by_activity: dict[str, set[str]] = {}
     for session in focus_sessions:
@@ -419,7 +468,7 @@ def main() -> int:
             focus_dates_by_activity.setdefault(parent_activity_id, set()).add(str(session.get("date")))
     manual_ids = []
     if args.q and ARTICLE_ALIASES.exists():
-        aliases = json.loads(ARTICLE_ALIASES.read_text(encoding="utf-8"))
+        aliases = load_json(ARTICLE_ALIASES, {})
         q_lower = args.q.lower()
         for alias, ids in aliases.items():
             if q_lower in alias.lower() or alias.lower() in q_lower:
@@ -493,9 +542,45 @@ def main() -> int:
         print(f"  来源: {item['url']}")
         printed += 1
 
+    supplemental_results = []
+    score_query = args.q or topic_query_text(args.topic)
+    if score_query:
+        for event in supplemental_events:
+            if args.date and args.date != event.get("date"):
+                continue
+            if args.container and args.container not in str(event.get("container", "")) and args.container not in str(event.get("title", "")):
+                continue
+            event_haystack = " ".join(supplemental_terms(event)).lower()
+            if args.topic:
+                topic_text = topic_query_text(args.topic)
+                if not query_matches(event_haystack, topic_text):
+                    continue
+            if args.q and not query_matches(event_haystack, args.q):
+                continue
+            score = query_score(event_haystack, score_query) + supplemental_field_boost(event, score_query)
+            supplemental_results.append((score, event))
+
+    remaining = max(0, args.limit - printed)
+    supplemental_results.sort(key=lambda pair: (-pair[0], pair[1].get("date", ""), pair[1].get("time", "")))
+    for _, event in supplemental_results[:remaining]:
+        print(
+            "{date} {time} | 补充活动线索 | {title} | {location}".format(
+                date=event.get("date", ""),
+                time=event.get("time", ""),
+                title=event.get("title", ""),
+                location=event.get("location", ""),
+            )
+        )
+        if event.get("summary"):
+            print(f"  主题: {event.get('summary')}")
+        if event.get("organizer"):
+            print(f"  组织方: {event.get('organizer')}")
+        print("  来源: 人工补充线索，未并入官网活动表；到场前请复核现场日程。")
+        printed += 1
+
     unit_results = []
     if args.q and CROSSWALK.exists():
-        crosswalk = json.loads(CROSSWALK.read_text(encoding="utf-8"))
+        crosswalk = load_json(CROSSWALK, {})
         q_lower = args.q.lower()
         for record in crosswalk.get("records", []):
             if args.container and args.container not in record.get("container", ""):
@@ -537,7 +622,7 @@ def main() -> int:
 
     source_results = []
     if args.q and ARTICLE_EVIDENCE.exists():
-        evidence = json.loads(ARTICLE_EVIDENCE.read_text(encoding="utf-8"))
+        evidence = load_json(ARTICLE_EVIDENCE, {})
         q_lower = args.q.lower()
         old_year_only = q_lower.strip() in {"2024", "2025"}
         if not old_year_only:
@@ -591,7 +676,10 @@ def main() -> int:
         print("也可以放宽日期、去掉过窄关键词，或改问“我是什么背景，哪天在场，想听报告还是找人聊”。")
 
     if args.debug:
-        print(f"matched={len(results)} matched_units={len(unit_results)} matched_sources={len(source_results)}")
+        print(
+            f"matched={len(results)} matched_supplemental={len(supplemental_results)} "
+            f"matched_units={len(unit_results)} matched_sources={len(source_results)}"
+        )
     return 0
 
 

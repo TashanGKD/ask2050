@@ -34,6 +34,7 @@ REQUIRED_FILES = [
     REF / "official_detail_terms.json",
     MANUAL / "article_curation.md",
     MANUAL / "article_aliases.json",
+    MANUAL / "supplemental_events.json",
     SCRIPT,
     PLAN_SCRIPT,
     SOURCE_CHANNELS_SCRIPT,
@@ -79,14 +80,14 @@ CONFLICT_EXCLUDED = {
 
 EXPECTED_DATE_COUNTS = {
     "2026-04-24": 54,
-    "2026-04-25": 196,
-    "2026-04-26": 35,
+    "2026-04-25": 198,
+    "2026-04-26": 36,
 }
 
 EXPECTED_CONTAINER_COUNTS = {
     "新生论坛": 97,
-    "热带雨林": 57,
-    "青年团聚": 47,
+    "热带雨林": 59,
+    "青年团聚": 48,
     "探索空间": 44,
     "思想约会": 19,
     "青春舞台": 13,
@@ -142,6 +143,7 @@ OUTPUT_CASES = [
     {"name": "latest_waytoagi_youth_focus", "q": "WaytoAGI 社区 青年团聚", "require": ["重点 part:", "WaytoAGI 社区青年团聚", "云栖小镇国际会展中心-3F蔚云厅"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "latest_space_life_focus", "q": "探索空间 太空 生活 航天", "require": ["重点 part:", "未来在地球以外：星际生活场景体验", "探索空间1号展位"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "latest_parent_ai_focus", "q": "AI反哺 父母 养老", "require": ["重点 part:", "AI反哺计划：年轻人能用AI为父母做些什么", "探索空间74号展位"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "supplemental_tashan_forum", "q": "他山 国科大 中科院", "require": ["补充活动线索", "他山青年论坛", "A区 3F 青云厅", "中国科学院大学他山学科交叉创新协会"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
 ]
 
 EXPECTED_FORUM_LOCATIONS = {
@@ -210,7 +212,8 @@ def fail(message: str) -> None:
 
 def load_json(path: Path):
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        with open(path, "r", encoding="utf-8") as handle:
+            return json.load(handle)
     except Exception as exc:  # noqa: BLE001
         fail(f"{path.relative_to(ROOT)} is not valid JSON: {exc}")
 
@@ -411,6 +414,8 @@ def main() -> int:
         "不要用安装、刷新或命令文本代替推荐结果",
         "如果用户没有给足标签，主动问 1-3 个最影响推荐的问题",
         "个性化路线也不要先谈后台接入",
+        "references/manual/supplemental_events.json",
+        "不要把它说成官网活动表里的正式条目",
     ]:
         if required_phrase not in skill_text:
             fail(f"SKILL.md missing service guidance: {required_phrase}")
@@ -507,9 +512,10 @@ def main() -> int:
     articles = load_json(REF / "articles_index.json")
     official_detail_terms = load_json(REF / "official_detail_terms.json")
     aliases = load_json(MANUAL / "article_aliases.json")
+    supplemental_events = load_json(MANUAL / "supplemental_events.json")
 
-    if len(activities) != 285:
-        fail(f"activity index has {len(activities)} rows, expected 285 from current 2050 official list")
+    if len(activities) != 288:
+        fail(f"activity index has {len(activities)} rows, expected 288 from current 2050 official list")
     if len(articles) < 77:
         fail(f"article index has {len(articles)} rows, expected at least 77")
     if set(official_detail_terms.get("activities", {})) != {str(item.get("activity_id")) for item in activities}:
@@ -546,6 +552,28 @@ def main() -> int:
         fail("full activity index should not be packaged in the default skill")
     if any((REF / "article_ocr").glob("*.md")):
         fail("raw article_ocr markdown should not be packaged in the default skill")
+
+    required_supplemental_fields = {
+        "supplemental_id",
+        "title",
+        "date",
+        "time",
+        "location",
+        "summary",
+        "organizer",
+        "source_level",
+        "source",
+        "search_terms",
+    }
+    for event in supplemental_events:
+        if not required_supplemental_fields.issubset(event):
+            fail(f"supplemental event missing required fields: {event}")
+        if event.get("source_level") != "user-supplied-manual":
+            fail(f"supplemental event must be marked manual: {event.get('supplemental_id')}")
+        if not isinstance(event.get("search_terms"), list) or len(event.get("search_terms", [])) < 5:
+            fail(f"supplemental event needs searchable aliases: {event.get('supplemental_id')}")
+        if str(event.get("date", "")) not in EXPECTED_DATE_COUNTS:
+            fail(f"supplemental event date outside 2050@2026 scope: {event.get('supplemental_id')}")
 
     activity_ids = {str(item.get("activity_id")) for item in activities}
     required_activity_fields = {
@@ -768,6 +796,12 @@ def main() -> int:
         forbidden = [text for text in case["forbid"] if text in output]
         if forbidden:
             fail(f"output case {case['name']} leaked internal display text: {forbidden}")
+
+    for query in ["他山", "国科大", "中科院", "中国科学院大学", "人工智能驱动的科研协作与科教升级"]:
+        output = output_from_search(query)
+        for required_text in ["补充活动线索", "他山青年论坛", "A区 3F 青云厅"]:
+            if required_text not in output:
+                fail(f"supplemental query {query} missing display text: {required_text}")
 
     itinerary = subprocess.run(
         [sys.executable, str(PLAN_SCRIPT), "--profile", ITINERARY_PROFILE, "--date", "2026-04-25", "--json"],

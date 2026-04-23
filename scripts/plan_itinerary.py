@@ -12,6 +12,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 REF = ROOT / "references"
 FOCUS_SESSIONS = REF / "focus_sessions.min.json"
+JSON_CACHE: dict[str, object] = {}
+PLAN_CACHE: dict[tuple[str, str], dict] = {}
 
 INTENSITY_LABELS = {"low": "低", "medium": "中", "high": "高"}
 LONG_WINDOW_CONTAINERS = {"新生论坛", "探索空间", "思想约会"}
@@ -77,7 +79,15 @@ STRONG_COMMUNITY_TERMS = ["社区", "社群", "合作", "waytoagi", "builder", "
 
 
 def load_json(path: Path):
-    return json.loads(path.read_text(encoding="utf-8"))
+    cache_key = str(path.resolve())
+    if cache_key not in JSON_CACHE:
+        with open(path, "r", encoding="utf-8") as handle:
+            JSON_CACHE[cache_key] = json.load(handle)
+    return JSON_CACHE[cache_key]
+
+
+def clone_json(value):
+    return json.loads(json.dumps(value, ensure_ascii=False))
 
 
 def minutes(value: str) -> int:
@@ -539,6 +549,9 @@ def overlaps(candidate: tuple[int, int], occupied: list[tuple[int, int]]) -> boo
 
 
 def build_plan(profile: str, date: str) -> dict:
+    cache_key = (profile, date)
+    if cache_key in PLAN_CACHE:
+        return clone_json(PLAN_CACHE[cache_key])
     activities = load_json(REF / "activity_index.min.json")
     facets = load_json(REF / "activity_facets.json")
     terms = profile_terms(profile)
@@ -550,7 +563,7 @@ def build_plan(profile: str, date: str) -> dict:
     anchor_zone = ""
 
     if "no_participation" in intents:
-        return {
+        plan = {
             "date": date,
             "profile": profile,
             "intents": sorted(intents),
@@ -561,6 +574,8 @@ def build_plan(profile: str, date: str) -> dict:
                 "恢复后再重新给出兴趣、日期和精力，我再按低强度路线重新排。",
             ],
         }
+        PLAN_CACHE[cache_key] = plan
+        return clone_json(plan)
     else:
         slots = [
             ("晨间入口", "social", {"热带雨林"}, "晨型或早起用户可用低压力活动进入状态。"),
@@ -703,7 +718,9 @@ def build_plan(profile: str, date: str) -> dict:
     for row in rows:
         row["move_note"] = transition_note(previous, row)
         previous = row
-    return {"date": date, "profile": profile, "intents": sorted(intents), "items": rows}
+    plan = {"date": date, "profile": profile, "intents": sorted(intents), "items": rows}
+    PLAN_CACHE[cache_key] = plan
+    return clone_json(plan)
 
 
 def validate_plan(plan: dict) -> list[str]:

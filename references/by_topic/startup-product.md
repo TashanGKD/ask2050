@@ -1,6 +1,6 @@
 # 主题：startup-product
 
-- 记录数: 118
+- 记录数: 121
 
 ### 13:30-15:50 2026DIA创新孵化行动
 - 容器: 青年团聚
@@ -361,6 +361,14 @@
 - 标签: `2026-04-25` `探索空间` `education` `health-medical` `startup-product` `city-rural-future` `arts-media-design` `community-youth` `hackathon` `exhibition-demo`
 - 这 part 是干嘛的: "授人以鱼不如授人以渔"——不是帮助他们翻译，而是让听障人群掌握文字沟通的能力。
 - 来源: https://2050.org/#/activity/12715
+
+### 09:00-15:30 以唇语为引，以键盘为声
+- 容器: 青年团聚
+- 地点: 云栖小镇国际会展中心
+- 召集人: 张舒晨
+- 标签: `2026-04-25` `青年团聚` `education` `health-medical` `startup-product` `arts-media-design` `community-youth` `hackathon` `exhibition-demo` `meetup`
+- 这 part 是干嘛的: 不是帮助听障人群翻译，而是让他们掌握文字沟通的能力。
+- 来源: https://2050.org/#/activity/12711
 
 ### 09:00-15:30 以唇语为引，以键盘为声"
 - 容器: 热带雨林
@@ -762,6 +770,14 @@
 - 这 part 是干嘛的: 3小时workshop，把灵感打磨成一个具体、可落地的文创产品设计方案。
 - 来源: https://2050.org/#/activity/12206
 
+### 16:00-17:00 让我们一起来养“虾”吧
+- 容器: 热带雨林
+- 地点: 云栖小镇国际会展中心
+- 召集人: 王俊
+- 标签: `2026-04-25` `热带雨林` `ai` `opensource-tech` `education` `startup-product` `community-youth` `workshop` `meetup`
+- 这 part 是干嘛的: 围绕“国产龙虾免费季”的轻量动手活动，适合带电脑参与；现场最好有稳定 Wi-Fi、桌子和电源。
+- 来源: https://2050.org/#/activity/12781
+
 ### 16:15-16:30 碳硅共生局：当AI拥有“数字肉体”，人类如何进化？
 - 容器: 新生论坛
 - 地点: A区 2F 360环屏(千人云栖厅)
@@ -865,6 +881,14 @@
 - 标签: `2026-04-26` `新生论坛` `ai` `education` `startup-product` `city-rural-future` `arts-media-design` `community-youth` `opensource-tech` `forum` `roundtable` `exhibition-demo` `meetup`
 - 这 part 是干嘛的: AI时代的教育，有哪些新的可能性？
 - 来源: https://2050.org/#/activity/12453
+
+### 10:00-12:00 脑洞 × 开发双在线｜2050AI 创客局，重新定义 AI 的陪伴与工作价值
+- 容器: 热带雨林
+- 地点: 云栖小镇国际会展中心
+- 召集人: 2050的朋友
+- 标签: `2026-04-26` `热带雨林` `ai` `opensource-tech` `startup-product` `community-youth` `hackathon` `workshop` `meetup`
+- 这 part 是干嘛的: 一次开发者现场共创和 commit 的实验场，讨论并实践 AI 的陪伴与工作价值。
+- 来源: https://2050.org/#/activity/12762
 
 ### 10:30-12:00 AI时代的医疗探索
 - 容器: 新生论坛

@@ -1,6 +1,6 @@
 # 主题：opensource-tech
 
-- 记录数: 99
+- 记录数: 101
 
 ### 09:00-15:30 罕见病基因 AI 黑客松：用 AI 破解生命难题
 - 容器: 热带雨林
@@ -642,6 +642,14 @@
 - 这 part 是干嘛的: 3小时workshop，把灵感打磨成一个具体、可落地的文创产品设计方案。
 - 来源: https://2050.org/#/activity/12206
 
+### 16:00-17:00 让我们一起来养“虾”吧
+- 容器: 热带雨林
+- 地点: 云栖小镇国际会展中心
+- 召集人: 王俊
+- 标签: `2026-04-25` `热带雨林` `ai` `opensource-tech` `education` `startup-product` `community-youth` `workshop` `meetup`
+- 这 part 是干嘛的: 围绕“国产龙虾免费季”的轻量动手活动，适合带电脑参与；现场最好有稳定 Wi-Fi、桌子和电源。
+- 来源: https://2050.org/#/activity/12781
+
 ### 17:00-18:00 2050无障碍游戏厅
 - 容器: 热带雨林
 - 地点: A区 1F 慧云厅
@@ -713,6 +721,14 @@
 - 标签: `2026-04-26` `新生论坛` `ai` `education` `startup-product` `city-rural-future` `arts-media-design` `community-youth` `opensource-tech` `forum` `roundtable` `exhibition-demo` `meetup`
 - 这 part 是干嘛的: AI时代的教育，有哪些新的可能性？
 - 来源: https://2050.org/#/activity/12453
+
+### 10:00-12:00 脑洞 × 开发双在线｜2050AI 创客局，重新定义 AI 的陪伴与工作价值
+- 容器: 热带雨林
+- 地点: 云栖小镇国际会展中心
+- 召集人: 2050的朋友
+- 标签: `2026-04-26` `热带雨林` `ai` `opensource-tech` `startup-product` `community-youth` `hackathon` `workshop` `meetup`
+- 这 part 是干嘛的: 一次开发者现场共创和 commit 的实验场，讨论并实践 AI 的陪伴与工作价值。
+- 来源: https://2050.org/#/activity/12762
 
 ### 10:15-11:15 D&A Lab的人工智能艺术设计跨领域创新实践
 - 容器: 新生论坛
