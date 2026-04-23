@@ -345,6 +345,12 @@ def main() -> int:
         "python scripts/plan_itinerary.py",
         "低能量用户，不是删除新生论坛，而是降低强度",
         "先判断用户真正要解决什么",
+        "用户说“睡觉、不想参加、躺平、只想休息”时，尊重低参与意愿",
+        "用户说“行动不便、不想跨区、少走路”时，地点和换场成本优先",
+        "用户说“效率优先、参加最多、高密度”时，才增加活动密度",
+        "用户说“晨型、早起、晨读”时，可以安排 07:00-08:00 等早间活动",
+        "用户说“早睡、晚上回酒店、不想太晚”时，不安排 19:00 后主活动",
+        "搜索没有结果时，不要空白返回",
         "要像一个熟悉 2050 的同伴",
         "区分事实和推荐判断",
         "用户想找人或合作时，要告诉他去哪里遇见人、适合用什么开场问题",
@@ -823,6 +829,52 @@ def main() -> int:
                 fail(f"plan_itinerary.py profile {name} exposed post-midnight clock in default route: {item.get('suggested_window')}")
     if len(forum_ids) < 3:
         fail(f"plan_itinerary.py profiles are not differentiated enough; forum anchors={sorted(forum_ids)}")
+
+    constraint_profiles = {
+        "no_participation": "只想睡觉 不想参加 躺平 休息",
+        "mobility_limited": "行动不便 不想跨区 少走路 第一次来",
+        "max_density": "效率优先 想参加最多 高密度 AI 硬件 社区",
+        "morning_person": "晨型人 早起 喜欢晨读 教育 科普",
+        "early_sleep": "早睡 晚上回酒店 不想太晚 教育 科普",
+    }
+    constraint_plans = {}
+    for name, profile in constraint_profiles.items():
+        completed = subprocess.run(
+            [sys.executable, str(PLAN_SCRIPT), "--profile", profile, "--date", "2026-04-25", "--json"],
+            cwd=ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        if completed.returncode != 0:
+            fail(f"plan_itinerary.py constraint profile {name} failed: {completed.stderr.strip() or completed.stdout.strip()}")
+        constraint_plans[name] = json.loads(completed.stdout)
+    if constraint_plans["no_participation"].get("items"):
+        fail("plan_itinerary.py should not force activities for no-participation profile")
+    if "不强行推荐" not in json.dumps(constraint_plans["no_participation"], ensure_ascii=False):
+        fail("plan_itinerary.py no-participation profile lacks explicit respect for user intent")
+    mobility_items = constraint_plans["mobility_limited"].get("items", [])
+    if len(mobility_items) > 2:
+        fail("plan_itinerary.py mobility-limited route should be short")
+    mobility_zones = {str(item.get("location", "")).split("区")[0] + "区" for item in mobility_items if "区" in str(item.get("location", ""))}
+    if len(mobility_zones) > 1:
+        fail(f"plan_itinerary.py mobility-limited route crosses zones: {mobility_zones}")
+    if len(constraint_plans["max_density"].get("items", [])) <= len(constraint_plans["mobility_limited"].get("items", [])):
+        fail("plan_itinerary.py max-density route should contain more items than mobility-limited route")
+    if "晨读" not in json.dumps(constraint_plans["morning_person"], ensure_ascii=False):
+        fail("plan_itinerary.py morning-person route should use the morning slot")
+    for item in constraint_plans["early_sleep"].get("items", []):
+        match = re.match(r"(\d{2}):(\d{2})-", str(item.get("suggested_window", "")))
+        if match and int(match.group(1)) >= 19:
+            fail(f"plan_itinerary.py early-sleep route should not schedule evening item: {item.get('suggested_window')}")
+    if not any("move_note" in item for item in constraint_plans["max_density"].get("items", [])):
+        fail("plan_itinerary.py should include transition notes")
+
+    no_result = output_from_search("海洋生物 潜水")
+    for required_text in ["没有找到与", "可以试试这些方向重新检索", "探索空间", "思想约会"]:
+        if required_text not in no_result:
+            fail(f"search_activities.py no-result feedback missing: {required_text}")
 
     source_channels = subprocess.run(
         [sys.executable, str(SOURCE_CHANNELS_SCRIPT)],

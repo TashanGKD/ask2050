@@ -43,6 +43,15 @@ PROFILE_ALIASES = {
     "硬件": ["robotics-hardware", "机器人", "芯片", "具身", "制造", "AI硬件"],
     "机器人": ["robotics-hardware", "硬件", "具身", "制造"],
     "小团体": ["小范围交流", "找同伴", "青年团聚", "热带雨林"],
+    "晨型": ["早起", "晨读", "上午"],
+    "早起": ["晨型", "晨读", "上午"],
+    "早睡": ["不安排晚间", "晚上回酒店"],
+    "行动不便": ["少走路", "不跨区", "同区"],
+    "不想跨区": ["少走路", "同区"],
+    "效率": ["高密度", "最多", "效率优先"],
+    "最多": ["高密度", "效率优先"],
+    "睡觉": ["休息", "不想参加", "低意愿"],
+    "躺平": ["休息", "不想参加", "低意愿"],
 }
 
 INTENT_KEYWORDS = {
@@ -53,7 +62,14 @@ INTENT_KEYWORDS = {
     "community": ["社区", "社群", "运营", "找同伴", "小团体", "合作"],
     "arts": ["艺术", "创作", "音乐", "表演", "影像", "设计"],
     "low_energy": ["低能量", "轻松", "放松", "不想太累", "随便逛"],
+    "no_participation": ["睡觉", "躺平", "不想参加", "只想休息", "不想出门"],
+    "mobility_limited": ["行动不便", "不想跨区", "少走路", "同区", "轮椅"],
+    "max_density": ["效率优先", "参加最多", "高密度", "尽量多", "最多"],
+    "morning_person": ["晨型", "早起", "上午优先", "晨读"],
+    "early_sleep": ["早睡", "晚上回酒店", "不想太晚", "不熬夜"],
 }
+
+ZONE_ORDER = {"D区": 0, "C区": 1, "B区": 2, "A区": 3, "户外": 4, "未知": 5}
 
 
 def load_json(path: Path):
@@ -100,6 +116,49 @@ def profile_intents(profile: str, terms: list[str]) -> set[str]:
 
 def contains_any(text: str, keywords: list[str]) -> bool:
     return any(keyword.lower() in text for keyword in keywords)
+
+
+def location_zone(location: str) -> str:
+    value = str(location or "")
+    for zone in ["A区", "B区", "C区", "D区"]:
+        if zone in value:
+            return zone
+    if any(term in value for term in ["户外", "草坪", "星空露营", "云栖之眼", "帐篷", "绿地"]):
+        return "户外"
+    return "未知"
+
+
+def zone_distance(left: str, right: str) -> int:
+    if left == "未知" or right == "未知":
+        return 1
+    return abs(ZONE_ORDER.get(left, 5) - ZONE_ORDER.get(right, 5))
+
+
+def transition_note(previous: dict | None, current: dict) -> str:
+    if not previous:
+        return "首站，建议提前到场找入口。"
+    prev_zone = location_zone(str(previous.get("location", "")))
+    curr_zone = location_zone(str(current.get("location", "")))
+    distance = zone_distance(prev_zone, curr_zone)
+    if distance == 0:
+        minutes_needed = "5-10"
+    elif distance == 1:
+        minutes_needed = "10-20"
+    elif "户外" in {prev_zone, curr_zone}:
+        minutes_needed = "20-30"
+    else:
+        minutes_needed = "15-25"
+    prev_window = str(previous.get("suggested_window", ""))
+    curr_window = str(current.get("suggested_window", ""))
+    try:
+        prev_end = minutes(prev_window.split("-")[-1])
+        curr_start = minutes(curr_window.split("-")[0])
+    except Exception:
+        prev_end = curr_start = 0
+    if curr_start - prev_end >= 45:
+        return f"中间有 {curr_start - prev_end} 分钟缓冲，可休息、吃饭或提前找入口。"
+    depart = prev_window.split("-")[-1] if "-" in prev_window else "上一站结束后"
+    return f"从上一站约 {minutes_needed} 分钟；建议 {depart} 左右出发。"
 
 
 def haystack(item: dict, facet: dict | None) -> str:
@@ -192,6 +251,23 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
         score += 35
     if role == "practice" and "arts" not in intents and contains_any(title, ["音乐", "舞蹈", "混音", "声音橡皮泥"]):
         score -= 85
+    if "no_participation" in intents:
+        if facet and facet.get("intensity") == "low":
+            score += 25
+        if role in {"forum", "practice", "deep_talk"}:
+            score -= 140
+        if role == "evening":
+            score -= 60
+        if contains_any(text, ["休息", "放松", "低强度", "草坪", "散步"]):
+            score += 45
+    if "mobility_limited" in intents:
+        if location_zone(str(item.get("location", ""))) != "未知":
+            score += 25
+        if "户外" == location_zone(str(item.get("location", ""))):
+            score -= 35
+    if "morning_person" in intents and role in {"forum", "practice", "deep_talk"}:
+        if contains_any(text, ["晨读", "早晨", "上午", "07:00", "08:00"]):
+            score += 90
     if role == "deep_talk" and "philosophy" in intents and contains_any(text, ["哲学", "思想", "人文", "社会", "观点"]):
         score += 70
     if role == "deep_talk" and "community" in intents and contains_any(text, ["社区", "社群", "共创", "合作"]):
@@ -205,6 +281,16 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
     if role == "evening" and "education" in intents and contains_any(text, ["少年", "梦想", "教育", "学习"]):
         score += 35
     official = parse_time_range(str(item.get("time", "")))
+    if official and "morning_person" in intents and official[0] < 9 * 60:
+        score += 100
+    if official and "early_sleep" in intents and official[0] >= 19 * 60:
+        score -= 220
+    if official and "max_density" in intents:
+        duration = official[1] - official[0]
+        if duration <= 90:
+            score += 35
+        elif duration > 180 and role != "forum":
+            score -= 25
     if role == "evening" and official:
         if 19 * 60 <= official[0] <= 21 * 60:
             score += 35
@@ -409,14 +495,38 @@ def build_plan(profile: str, date: str) -> dict:
     exclude_ids: set[str] = set()
     occupied: list[tuple[int, int]] = []
     rows = []
+    anchor_zone = ""
 
-    slots = [
-        ("认知主线", "forum", {"新生论坛"}, "先建立当天主题骨架；不要再并排安排另一个上午长时段活动。"),
-        ("实践体验", "practice", {"探索空间", "热带雨林"}, "把论坛里的概念落到项目、硬件或课程原型上。"),
-        ("深聊/社群", "deep_talk", {"思想约会", "青年团聚", "热带雨林"}, "选择一个讨论或社群入口，不和实践体验并行。"),
-        ("晚间收尾", "evening", {"星空露营", "青春舞台"}, "用低压力场景收束当天，也适合继续聊。"),
-    ]
+    if "no_participation" in intents:
+        return {
+            "date": date,
+            "profile": profile,
+            "intents": sorted(intents),
+            "items": [],
+            "advice": [
+                "你明确表达了不想参加活动，路线规划应尊重这个约束，不强行推荐论坛或展台。",
+                "如果只是想保留一个低压力备选，现场可临时选择热带雨林、草坪休息、餐饮补给或晚间轻松节目。",
+                "恢复后再重新给出兴趣、日期和精力，我再按低强度路线重新排。",
+            ],
+        }
+    else:
+        slots = [
+            ("晨间入口", "social", {"热带雨林"}, "晨型或早起用户可用低压力活动进入状态。"),
+            ("认知主线", "forum", {"新生论坛"}, "先建立当天主题骨架；不要再并排安排另一个上午长时段活动。"),
+            ("实践体验", "practice", {"探索空间", "热带雨林"}, "把论坛里的概念落到项目、硬件或课程原型上。"),
+            ("深聊/社群", "deep_talk", {"思想约会", "青年团聚", "热带雨林"}, "选择一个讨论或社群入口，不和实践体验并行。"),
+            ("晚间收尾", "evening", {"星空露营", "青春舞台"}, "用低压力场景收束当天，也适合继续聊。"),
+        ]
+        if "morning_person" not in intents:
+            slots = [slot for slot in slots if slot[0] != "晨间入口"]
+        if "early_sleep" in intents:
+            slots = [slot for slot in slots if slot[1] != "evening"]
+        if "max_density" in intents:
+            slots.insert(3, ("补充体验", "practice", {"探索空间", "热带雨林", "青年团聚"}, "效率优先时增加一个不重叠的短窗口。"))
+        max_items = 6 if "max_density" in intents else 2 if "mobility_limited" in intents else 4
     for label, role, containers, reason in slots:
+        if len(rows) >= max_items:
+            break
         selected = None
         for item in ranked_choices(
             activities,
@@ -429,6 +539,9 @@ def build_plan(profile: str, date: str) -> dict:
             intents=intents,
         ):
             route_item, session = effective_item(item, terms, role, intents)
+            route_zone = location_zone(str(route_item.get("location", "")))
+            if "mobility_limited" in intents and anchor_zone and route_zone != "未知" and zone_distance(anchor_zone, route_zone) > 0:
+                continue
             window = planned_window(route_item, role, occupied)
             if overlaps(window, occupied):
                 continue
@@ -441,6 +554,10 @@ def build_plan(profile: str, date: str) -> dict:
         facet = facets.get(activity_id, {})
         occupied.append(window)
         exclude_ids.add(activity_id)
+        if not anchor_zone:
+            candidate_zone = location_zone(str(route_item.get("location", "")))
+            if candidate_zone != "未知":
+                anchor_zone = candidate_zone
         rows.append(
             {
                 "label": label,
@@ -459,7 +576,11 @@ def build_plan(profile: str, date: str) -> dict:
             }
         )
     rows.sort(key=lambda row: minutes(row["suggested_window"].split("-")[0]))
-    return {"date": date, "profile": profile, "items": rows}
+    previous = None
+    for row in rows:
+        row["move_note"] = transition_note(previous, row)
+        previous = row
+    return {"date": date, "profile": profile, "intents": sorted(intents), "items": rows}
 
 
 def validate_plan(plan: dict) -> list[str]:
@@ -475,7 +596,7 @@ def validate_plan(plan: dict) -> list[str]:
         windows.append(parsed)
         if item["location"] in {"云栖小镇国际会展中心", "云栖小镇"}:
             errors.append(f"地点不够具体且没有说明需复核: {item['title']}")
-    if not any(item["container"] == "新生论坛" for item in plan["items"]):
+    if "no_participation" not in set(plan.get("intents", [])) and not any(item["container"] == "新生论坛" for item in plan["items"]):
         errors.append("缺少新生论坛认知主线")
     return errors
 
@@ -483,13 +604,17 @@ def validate_plan(plan: dict) -> list[str]:
 def print_markdown(plan: dict) -> None:
     print(f"推荐路线（{plan['date']}）")
     print()
+    if not plan.get("items"):
+        for line in plan.get("advice", ["没有生成活动路线。"]):
+            print(f"- {line}")
+        return
     print("说明：下面是可执行的停留顺序。官方长时段活动只安排一个进入窗口，不代表需要全程占用；同一时间只保留一个去处。")
     print()
-    print("| 建议窗口 | 官方时段 | 板块 | 活动 | 地点 | 为什么适合 |")
-    print("|---|---|---|---|---|---|")
+    print("| 建议窗口 | 官方时段 | 板块 | 活动 | 地点 | 换场 | 为什么适合 |")
+    print("|---|---|---|---|---|---|---|")
     for item in plan["items"]:
         print(
-            "| {suggested_window} | {official_time} | {container} | {title} | {location} | {why_fit} |".format(
+            "| {suggested_window} | {official_time} | {container} | {title} | {location} | {move_note} | {why_fit} |".format(
                 **item
             )
         )

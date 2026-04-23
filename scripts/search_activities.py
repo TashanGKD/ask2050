@@ -579,6 +579,16 @@ def main() -> int:
                 activity = activity_lookup.get(activity_id)
                 if activity:
                     print(f"  来源: {activity['url']}")
+        printed += 1
+
+    if printed == 0:
+        query_text = args.q or topic_query_text(args.topic) or "当前条件"
+        print(f"没有找到与「{query_text}」直接匹配的 2050@2026 活动。")
+        print("可以试试这些方向重新检索：")
+        print("- AI / Agent / AI4Science / AI+教育")
+        print("- 探索空间 / 动手工作坊 / 硬件机器人")
+        print("- 思想约会 / 哲学人文 / 社区连接")
+        print("也可以放宽日期、去掉过窄关键词，或改问“我是什么背景，哪天在场，想听报告还是找人聊”。")
 
     if args.debug:
         print(f"matched={len(results)} matched_units={len(unit_results)} matched_sources={len(source_results)}")
