@@ -153,12 +153,19 @@ def matched_term_count(haystack: str, terms: list[str]) -> int:
     return sum(1 for term in terms if term and term in haystack)
 
 
+def is_weak_year_only_query(query: str) -> bool:
+    value = str(query or "").strip().lower()
+    return value in {"2024", "2025"}
+
+
 def query_matches(haystack: str, query: str, *, manual_match: bool = False) -> bool:
     if manual_match:
         return True
     q_lower = query.lower().strip()
     if not q_lower:
         return True
+    if is_weak_year_only_query(q_lower):
+        return False
     if q_lower in haystack:
         return True
     terms = query_terms(query)
@@ -190,6 +197,8 @@ def query_score(haystack: str, query: str, *, manual_match: bool = False) -> int
     q_lower = query.lower().strip()
     if not q_lower:
         return 1
+    if is_weak_year_only_query(q_lower):
+        return 0
     score = 0
     if q_lower in haystack:
         score += 20
@@ -258,6 +267,29 @@ def focus_field_boost(sessions: list[dict], query: str) -> int:
         if any(hall in query for hall in hall_names) and any(hall in location for hall in hall_names):
             score += 18
     return score
+
+
+def session_display_override(item: dict, sessions: list[dict], query: str) -> tuple[str, str, str] | None:
+    if not query or not sessions:
+        return None
+    item_haystack = " ".join(
+        [
+            str(item.get("title", "")),
+            str(item.get("summary", "")),
+            str(item.get("container", "")),
+            str(item.get("location", "")),
+        ]
+    ).lower()
+    session_score = focus_field_boost(sessions, query)
+    item_score = query_score(item_haystack, query) + field_boost(item, query)
+    if session_score <= item_score:
+        return None
+    session = sessions[0]
+    return (
+        str(session.get("date") or item.get("date", "")),
+        str(session.get("time") or item.get("time", "")),
+        str(session.get("location") or item.get("location", "")),
+    )
 
 
 def source_field_boost(record: dict, query: str) -> int:
@@ -619,7 +651,10 @@ def main() -> int:
         display_date = item["date"]
         display_time = item["time"]
         display_location = item["location"]
-        if args.date and args.date != item.get("date") and item_focus_sessions:
+        override = session_display_override(item, item_focus_sessions, args.q)
+        if override:
+            display_date, display_time, display_location = override
+        elif args.date and args.date != item.get("date") and item_focus_sessions:
             display_date = item_focus_sessions[0].get("date") or display_date
             display_time = item_focus_sessions[0].get("time") or display_time
             display_location = item_focus_sessions[0].get("location") or display_location

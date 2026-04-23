@@ -160,6 +160,7 @@ OUTPUT_CASES = [
     {"name": "tashan_article_parts", "q": "他山青年论坛", "require": ["补充活动线索", "文章小节", "日期: 2026-04-25", "AI 时代科研协作模式如何重构", "王瑞", "科研龙虾领养与应用"], "forbid": ["source |", "matched_activity_ids", "D:/2050", "2026-04-26"]},
     {"name": "fang_zerui_date_guard", "q": "房泽锐", "require": ["日期: 2026-04-25", "AI 时代下的跨学科交叉新范式", "科研龙虾领养与应用"], "forbid": ["2026-04-26", "source |", "matched_activity_ids", "瑞 国科大"]},
     {"name": "scientific_lobster_date_guard", "q": "科研龙虾", "require": ["日期: 2026-04-25", "科研龙虾领养与应用", "房泽锐"], "forbid": ["2026-04-26", "source |", "matched_activity_ids"]},
+    {"name": "mind_where_date_guard", "q": "\"心\"在哪\"理\"？", "require": ["2026-04-26 09:00-10:30", "A区 1F 慧云厅", "王梓豪 2025级本科生", "日期: 2026-04-26"], "forbid": ["2026-04-25", "23:15-23:30", "A区 2F 360环屏(千人云栖厅)"]},
 ]
 
 EXPECTED_FORUM_LOCATIONS = {
