@@ -59,10 +59,12 @@ PROFILE_ALIASES = {
 
 INTENT_KEYWORDS = {
     "research_science": ["ai4s", "ai4science", "科研", "博士", "天文学", "科学研究", "物理"],
+    "space_astronomy": ["天文学", "太空", "宇宙", "地外文明", "星空", "露营", "银河", "科幻"],
     "education": ["教育", "科普", "科教", "课程", "学习", "老师", "学校", "教研"],
     "hardware": ["硬件", "机器人", "芯片", "具身", "制造", "robotics-hardware"],
     "philosophy": ["哲学", "思想", "人文", "深聊", "观点", "社会科学"],
     "community": ["社区", "社群", "运营", "找同伴", "小团体", "合作"],
+    "startup_product": ["创业", "产品", "一人公司", "独立开发", "少数派", "产品共创", "独立开发者", "超级个体"],
     "arts": ["艺术", "创作", "音乐", "表演", "影像", "设计"],
     "low_energy": ["低能量", "轻松", "放松", "不想太累", "随便逛"],
     "no_participation": ["睡觉", "躺平", "不想参加", "只想休息", "不想出门"],
@@ -80,6 +82,8 @@ EVENING_TERMS = ["晚上", "夜间", "露营", "音乐", "舞台", "放松收尾
 HARDWARE_TERMS = ["硬件", "机器人", "芯片", "具身", "制造", "openclaw", "物理外挂", "maker"]
 COMMUNITY_TERMS = ["社区", "社群", "共创", "合作", "waytoagi", "builder", "开源", "找同伴"]
 STRONG_COMMUNITY_TERMS = ["社区", "社群", "合作", "waytoagi", "builder", "开源", "找同伴"]
+STARTUP_TERMS = ["创业", "产品", "一人公司", "独立开发", "少数派", "共创", "超级个体", "ncc", "opc"]
+SPACE_TERMS = ["天文", "太空", "宇宙", "地外", "星空", "银河", "露营", "科幻", "冷湖"]
 ROMANCE_TERMS = ["说媒", "相亲", "恋爱", "婚恋"]
 
 
@@ -236,6 +240,7 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
     text = haystack(item, facet)
     title = str(item.get("title", "")).lower()
     container = str(item.get("container", ""))
+    semantic_text = " ".join([title, str(item.get("summary", "")).lower(), container.lower()])
     score = 0
     for term in terms:
         if term in title:
@@ -261,8 +266,14 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
             score += 18
         if facet.get("intensity") == "low":
             score += 10
-    if role == "forum" and "ai4science" in text:
-        score += 130 if "research_science" in intents or "ai4science" in terms else -25
+    explicit_ai4science = any(term in terms for term in ["ai4s", "ai4science", "agi4science"])
+    if role == "forum" and ("ai4science" in text or "agi4science" in text):
+        if explicit_ai4science:
+            score += 240
+        elif "research_science" in intents:
+            score += 80
+        else:
+            score -= 25
     if role == "forum" and "hardware" in intents and contains_any(text, ["硬件", "机器人", "芯片", "具身", "制造", "robotics-hardware"]):
         score += 70
         if contains_any(title, ["硬件", "机器人", "芯片", "具身", "制造"]):
@@ -279,12 +290,20 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
         score += 45
         if contains_any(title, ["社区", "社群", "青年", "共创"]):
             score += 30
+    if role == "forum" and "startup_product" in intents and contains_any(text, STARTUP_TERMS):
+        score += 60
+        if contains_any(title, STARTUP_TERMS):
+            score += 35
     if role == "forum" and any(term in terms for term in ["太空", "宇宙", "地外文明", "物理"]) and (
         "太空" in text or "宇宙" in text or "地外文明" in text or "物理" in text
     ):
         score += 35
-    if "ai4science" in terms and "ai4science" in title:
-        score += 90
+    if "space_astronomy" in intents and contains_any(semantic_text, SPACE_TERMS):
+        score += 140
+        if contains_any(title, SPACE_TERMS):
+            score += 70
+    if explicit_ai4science and ("ai4science" in text or "agi4science" in text):
+        score += 160
     if "科学" in terms and "科学" in title:
         score += 25
     if role == "practice" and ("硬件" in text or "动手" in text):
@@ -303,6 +322,10 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
             score += 55
     if role == "practice" and "community" in intents and contains_any(text, ["社区", "共创", "伙伴", "找同伴"]):
         score += 35
+    if role in {"practice", "bridge", "deep_talk", "social"} and "startup_product" in intents and contains_any(text, STARTUP_TERMS):
+        score += 70
+        if contains_any(title, STARTUP_TERMS):
+            score += 40
     if role == "practice" and "arts" not in intents and contains_any(title, ["音乐", "舞蹈", "混音", "声音橡皮泥"]):
         score -= 85
     if contains_any(title, ROMANCE_TERMS) and not contains_any(" ".join(terms), ROMANCE_TERMS + ["找对象", "情感"]):
@@ -400,6 +423,7 @@ def score_session(session: dict, terms: list[str], role: str, intents: set[str] 
     intents = intents or set()
     text = session_haystack(session)
     title = str(session.get("title", "")).lower()
+    semantic_text = " ".join([title, str(session.get("summary", "")).lower(), str(session.get("container", "")).lower()])
     score = 0
     for term in terms:
         if term in title:
@@ -408,10 +432,16 @@ def score_session(session: dict, terms: list[str], role: str, intents: set[str] 
             score += 8
     if role == "forum":
         score += 35
-    if "ai4science" in text:
-        score += 120 if "research_science" in intents or "ai4science" in terms else -20
-    if "ai4science" in terms and "ai4science" in text:
-        score += 80
+    explicit_ai4science = any(term in terms for term in ["ai4s", "ai4science", "agi4science"])
+    if "ai4science" in text or "agi4science" in text:
+        if explicit_ai4science:
+            score += 220
+        elif "research_science" in intents:
+            score += 80
+        else:
+            score -= 20
+    if explicit_ai4science and ("ai4science" in text or "agi4science" in text):
+        score += 120
     if "科学" in terms and ("science" in text or "科学" in text):
         score += 25
     if role == "forum" and "hardware" in intents and contains_any(text, ["硬件", "机器人", "芯片", "具身", "制造", "chip"]):
@@ -426,6 +456,10 @@ def score_session(session: dict, terms: list[str], role: str, intents: set[str] 
         score += 65
     if role == "forum" and "community" in intents and contains_any(text, ["社区", "社群", "青年", "共创", "合作"]):
         score += 45
+    if role == "forum" and "startup_product" in intents and contains_any(text, STARTUP_TERMS):
+        score += 65
+    if role == "forum" and "space_astronomy" in intents and contains_any(semantic_text, SPACE_TERMS):
+        score += 140
     return score
 
 
@@ -692,6 +726,10 @@ def build_plan(profile: str, date: str) -> dict:
                 str(route_item.get(key, ""))
                 for key in ["title", "summary", "container", "location"]
             ).lower()
+            semantic_direct_text = " ".join(
+                str(route_item.get(key, ""))
+                for key in ["title", "summary", "container"]
+            ).lower()
             facet = facets.get(str(item.get("activity_id")), {})
             if "low_energy" in intents:
                 if facet.get("intensity") == "high":
@@ -725,6 +763,16 @@ def build_plan(profile: str, date: str) -> dict:
                 COMMUNITY_TERMS + ["互助", "志愿", "青年", "团聚", "对话"],
             ):
                 adjusted_score -= 220
+            if "startup_product" in intents and role in {"practice", "bridge", "deep_talk", "social"} and not contains_any(
+                direct_text,
+                STARTUP_TERMS + COMMUNITY_TERMS,
+            ):
+                adjusted_score -= 320
+            if "space_astronomy" in intents and role in {"practice", "bridge", "deep_talk", "social"} and not contains_any(
+                semantic_direct_text,
+                SPACE_TERMS + ["社区", "深聊", "哲学"],
+            ):
+                adjusted_score -= 300
             if "max_density" in intents and role == "evening" and not contains_any(
                 direct_text,
                 HARDWARE_TERMS + COMMUNITY_TERMS + ["音乐", "露营"],

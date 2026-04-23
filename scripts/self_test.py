@@ -1079,6 +1079,50 @@ def main() -> int:
         fail("plan_itinerary.py should not treat casual '下午轻松' as an afternoon-only constraint")
     if "晨读" not in json.dumps(morning_soft_plan, ensure_ascii=False):
         fail("plan_itinerary.py morning profile should still use morning slot when the user also says afternoon can be light")
+    startup_indie = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", "一人公司 独立开发者 少数派 产品共创 想找同类", "--date", "2026-04-24", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if startup_indie.returncode != 0:
+        fail(f"plan_itinerary.py startup indie profile failed: {startup_indie.stderr.strip() or startup_indie.stdout.strip()}")
+    startup_text = startup_indie.stdout
+    if "罕见病基因 AI 黑客松" in startup_text:
+        fail("plan_itinerary.py should not use a medical hackathon as filler for startup/product indie profile")
+    for required_text in ["一人一世界", "AI小酒馆"]:
+        if required_text not in startup_text:
+            fail(f"plan_itinerary.py startup/product route missing expected 4/24 anchor: {required_text}")
+    space_evening = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", "天文学 太空 地外文明 哲学 晚上露营 深聊", "--date", "2026-04-24", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if space_evening.returncode != 0:
+        fail(f"plan_itinerary.py space evening profile failed: {space_evening.stderr.strip() or space_evening.stdout.strip()}")
+    space_evening_text = space_evening.stdout
+    for forbidden_text in ["罕见病基因 AI 黑客松", "玩.在一起"]:
+        if forbidden_text in space_evening_text:
+            fail(f"plan_itinerary.py space/evening route included unrelated filler: {forbidden_text}")
+    if "星空之夜" not in space_evening_text:
+        fail("plan_itinerary.py space/evening route should include the star-camping evening anchor")
+    space_day = subprocess.run(
+        [sys.executable, str(PLAN_SCRIPT), "--profile", "天文学 太空 地外文明 哲学 晚上露营 深聊", "--date", "2026-04-25", "--json"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if space_day.returncode != 0:
+        fail(f"plan_itinerary.py space day profile failed: {space_day.stderr.strip() or space_day.stdout.strip()}")
+    if "2050@太空计算专题论坛" not in space_day.stdout:
+        fail("plan_itinerary.py pure space/astronomy route should prefer the space-computing forum over generic AI4Science")
     mobility_philosophy_profile = "行动不便 不想跨区 少走路 哲学 人文 深聊"
     completed = subprocess.run(
         [sys.executable, str(PLAN_SCRIPT), "--profile", mobility_philosophy_profile, "--date", "2026-04-25", "--json"],
