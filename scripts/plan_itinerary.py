@@ -59,6 +59,11 @@ PROFILE_ALIASES = {
     "半天": ["半天", "只排半天"],
     "睡觉": ["休息", "不想参加", "低意愿"],
     "躺平": ["休息", "不想参加", "低意愿"],
+    "新生论坛": ["新生论坛"],
+    "探索空间": ["探索空间", "展台", "展区"],
+    "思想约会": ["思想约会"],
+    "青年团聚": ["青年团聚", "团聚"],
+    "热带雨林": ["热带雨林"],
 }
 
 INTENT_KEYWORDS = {
@@ -123,6 +128,10 @@ def parse_time_range(value: str) -> tuple[int, int] | None:
     if end <= start:
         end += 24 * 60
     return start, end
+
+
+def overlap_window(left: tuple[int, int], right: tuple[int, int]) -> bool:
+    return left[0] < right[1] and right[0] < left[1]
 
 
 def profile_terms(profile: str) -> list[str]:
@@ -216,6 +225,82 @@ def transition_note(previous: dict | None, current: dict) -> str:
     return f"从上一站约 {minutes_needed} 分钟；建议 {depart} 左右出发。"
 
 
+INTENT_LABELS = {
+    "research_science": "科研/科学",
+    "space_astronomy": "太空/天文",
+    "education": "教育/科普",
+    "hardware": "硬件/机器人",
+    "philosophy": "哲学/深聊",
+    "community": "社区/找同伴",
+    "startup_product": "产品/创业",
+    "arts": "艺术/创作",
+    "low_energy": "低能量",
+    "mobility_limited": "少走路",
+    "max_density": "高密度",
+}
+
+ROLE_LABELS = {
+    "晨间入口": "低压力进入现场",
+    "午间桥接": "填补同主题短窗口",
+    "论坛延展": "补一个不重叠的主题输入",
+    "认知主线": "建立当天判断框架",
+    "实践体验": "把主题落到项目或体验",
+    "补充体验": "增加可执行的同主题停留点",
+    "深聊/社群": "找人聊、找组织或形成连接",
+    "晚间收尾": "低压力收束和继续交流",
+}
+
+
+def matched_profile_labels(intents: set[str], text: str) -> list[str]:
+    labels = []
+    lower_text = text.lower()
+    for intent, label in INTENT_LABELS.items():
+        if intent not in intents:
+            continue
+        if intent in {"low_energy", "mobility_limited", "max_density"}:
+            labels.append(label)
+            continue
+        if intent == "hardware" and contains_any(lower_text, HARDWARE_TERMS):
+            labels.append(label)
+        elif intent == "community" and contains_any(lower_text, COMMUNITY_TERMS):
+            labels.append(label)
+        elif intent == "startup_product" and contains_any(lower_text, STARTUP_FORUM_TERMS):
+            labels.append(label)
+        elif intent == "education" and contains_any(lower_text, EDUCATION_CONNECTION_TERMS):
+            labels.append(label)
+        elif intent == "space_astronomy" and contains_any(lower_text, SPACE_TERMS):
+            labels.append(label)
+        elif intent == "philosophy" and contains_any(lower_text, ["哲学", "思想", "人文", "深聊", "观点"]):
+            labels.append(label)
+        elif intent == "research_science" and contains_any(lower_text, ["科研", "科学", "ai4science", "物理", "数学"]):
+            labels.append(label)
+        elif intent == "arts" and contains_any(lower_text, ["艺术", "创作", "影像", "音乐", "设计"]):
+            labels.append(label)
+    return list(dict.fromkeys(labels))
+
+
+def service_reason(label: str, route_item: dict, facet: dict, intents: set[str]) -> tuple[list[str], str, str]:
+    text = " ".join(
+        str(route_item.get(key, ""))
+        for key in ["title", "summary", "container", "location"]
+    )
+    matched = matched_profile_labels(intents, text)
+    role = ROLE_LABELS.get(label, label)
+    summary = str(route_item.get("summary") or facet.get("route_note") or "").strip()
+    if matched:
+        reason = f"匹配你的{ '、'.join(matched[:3]) }取向；这一站用于{role}。{summary}"
+    else:
+        reason = f"这一站用于{role}。{summary}"
+    fallback = "如果现场太赶，把这一站降为备选，优先保留前后更贴近画像的主线。"
+    if label == "认知主线":
+        fallback = "如果只能短暂停留，建议听开头或最相关的一段，把后续同窗活动作为备选。"
+    elif label in {"实践体验", "补充体验", "午间桥接"}:
+        fallback = "如果换场太紧，保留论坛主线，把这一站改成路过看展或备选。"
+    elif label in {"深聊/社群", "晚间收尾"}:
+        fallback = "如果当时精力不够，直接跳过，不影响白天主线。"
+    return matched, reason, fallback
+
+
 def haystack(item: dict, facet: dict | None) -> str:
     parts = [
         item.get("title", ""),
@@ -257,6 +342,14 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
         score += 70
     if role == "practice" and container in {"探索空间", "热带雨林"}:
         score += 25
+    if role == "practice" and "探索空间" in terms and container == "探索空间":
+        score += 140
+    if role == "practice" and "探索空间" in terms and container != "探索空间":
+        score -= 320
+    if role == "deep_talk" and "思想约会" in terms and container == "思想约会":
+        score += 120
+    if role == "social" and any(term in terms for term in ["青年团聚", "团聚"]) and container == "青年团聚":
+        score += 120
     if role == "bridge" and container in {"探索空间", "热带雨林"}:
         score += 22
     if role == "deep_talk" and container in {"思想约会", "星空露营"}:
@@ -589,15 +682,23 @@ def choose(
     return candidates[0] if candidates else None
 
 
-def planned_window(item: dict, role: str, occupied: list[tuple[int, int]]) -> tuple[int, int]:
+def planned_window(
+    item: dict,
+    role: str,
+    occupied: list[tuple[int, int]],
+    *,
+    compact: bool = False,
+) -> tuple[int, int]:
     official = parse_time_range(str(item.get("time", "")))
     if not official:
         raise ValueError(f"activity without parseable time: {item.get('activity_id')}")
     start, end = official
     duration = end - start
     if (item.get("container") in LONG_WINDOW_CONTAINERS and duration > 90) or duration > 180:
+        forum_primary = 90 if compact else 120
+        forum_secondary = 150 if compact else 180
         role_windows = {
-            "forum": [(start, min(start + 120, end)), (start + 60, min(start + 180, end))],
+            "forum": [(start, min(start + forum_primary, end)), (start + 60, min(start + forum_secondary, end))],
             "bridge": [(max(start, 11 * 60), min(max(start, 11 * 60) + 45, end)), (max(start, 12 * 60), min(max(start, 12 * 60) + 45, end))],
             "practice": [(max(start, 13 * 60), min(max(start, 13 * 60) + 45, end)), (max(start, 14 * 60), min(max(start, 14 * 60) + 45, end))],
             "deep_talk": [(max(start, 14 * 60), min(max(start, 14 * 60) + 60, end))],
@@ -633,8 +734,8 @@ def overlaps(candidate: tuple[int, int], occupied: list[tuple[int, int]]) -> boo
     return any(start < other_end and other_start < end for other_start, other_end in occupied)
 
 
-def build_plan(profile: str, date: str) -> dict:
-    cache_key = (profile, date)
+def build_plan(profile: str, date: str, requested_window: tuple[int, int] | None = None) -> dict:
+    cache_key = (profile, date, requested_window or ("", ""))
     if cache_key in PLAN_CACHE:
         return clone_json(PLAN_CACHE[cache_key])
     activities = load_json(REF / "activity_index.min.json")
@@ -646,6 +747,7 @@ def build_plan(profile: str, date: str) -> dict:
     occupied: list[tuple[int, int]] = []
     rows = []
     anchor_zone = ""
+    compact_windows = bool(requested_window) or "half_day" in intents
 
     if "no_participation" in intents:
         plan = {
@@ -687,6 +789,8 @@ def build_plan(profile: str, date: str) -> dict:
             max_items = min(max_items, 3)
         if "low_energy" in intents:
             max_items = min(max_items, 3)
+        if requested_window and requested_window[1] - requested_window[0] <= 300:
+            max_items = min(max_items, 2)
     for label, role, containers, reason in slots:
         if len(rows) >= max_items:
             break
@@ -706,8 +810,10 @@ def build_plan(profile: str, date: str) -> dict:
             route_zone = location_zone(str(route_item.get("location", "")))
             if "mobility_limited" in intents and anchor_zone and route_zone != "未知" and zone_distance(anchor_zone, route_zone) > 0:
                 continue
-            window = planned_window(route_item, role, occupied)
+            window = planned_window(route_item, role, occupied, compact=compact_windows)
             if overlaps(window, occupied):
+                continue
+            if requested_window and not overlap_window(window, requested_window):
                 continue
             if window[0] < 9 * 60 and "morning_person" not in intents:
                 continue
@@ -719,6 +825,8 @@ def build_plan(profile: str, date: str) -> dict:
                 continue
             if "afternoon_only" in intents and window[0] < 13 * 60:
                 base_score -= 90
+            if role == "evening" and window[0] < 18 * 60:
+                continue
             if "half_day" in intents and window[0] >= 18 * 60 and not wants_evening:
                 continue
             if window[1] > 19 * 60 and not wants_evening and not (role == "forum" and date == "2026-04-24"):
@@ -834,6 +942,7 @@ def build_plan(profile: str, date: str) -> dict:
             candidate_zone = location_zone(str(route_item.get("location", "")))
             if candidate_zone != "未知":
                 anchor_zone = candidate_zone
+        matched_labels, fit_reason, fallback_note = service_reason(label, route_item, facet, intents)
         rows.append(
             {
                 "label": label,
@@ -846,7 +955,10 @@ def build_plan(profile: str, date: str) -> dict:
                 "suggested_window": f"{fmt(window[0])}-{fmt(window[1])}",
                 "location": location_note(str(route_item.get("location", ""))),
                 "reason": reason,
-                "why_fit": route_item.get("summary") or facet.get("route_note") or item.get("summary", ""),
+                "route_role": ROLE_LABELS.get(label, label),
+                "matched_profile": matched_labels,
+                "why_fit": fit_reason,
+                "fallback_note": fallback_note,
                 "intensity": INTENSITY_LABELS.get(str(facet.get("intensity", "")), str(facet.get("intensity", "")) or "待判断"),
                 "source": route_item.get("source") or item.get("url", ""),
             }
@@ -855,10 +967,16 @@ def build_plan(profile: str, date: str) -> dict:
     previous = None
     for row in rows:
         row["move_note"] = transition_note(previous, row)
+        if row["move_note"].startswith("两站衔接很紧"):
+            row["fallback_note"] = row["move_note"]
         previous = row
     advice = []
     if not rows and "no_participation" not in intents:
         advice.append("当前日期和画像约束下没有合适主线；建议放宽到下午/晚上、减少主题限制，或换到 4/25、4/26 再排。")
+    if requested_window:
+        advice.append(f"这次已按 {fmt(requested_window[0])}-{fmt(requested_window[1])} 的在场窗口收缩候选；如果现场时间放宽，再补排其余时段。")
+    if "探索空间" in profile and not any(row.get("container") == "探索空间" for row in rows):
+        advice.append("你点名想看探索空间，但这个时段里和主论坛不冲突的合适停留窗口不多；如果愿意把论坛缩短到 60-75 分钟，或把到场时间提前到 14:30 前，可以再补一个展台停留。")
     if rows and not any(row.get("container") == "新生论坛" for row in rows) and forum_anchor_is_optional(profile, date, intents):
         advice.append("这一天可用的新生论坛主线在晚间；你给出的画像更偏低强度/半天/早睡，所以先不硬塞，若晚上仍有精力可把 AI 小酒馆作为备选。")
     if "half_day" in intents:
@@ -905,18 +1023,23 @@ def print_markdown(plan: dict) -> None:
         return
     print("说明：下面是可执行的停留顺序。官方长时段活动只安排一个进入窗口，不代表需要全程占用；同一时间只保留一个去处。")
     print()
-    print("| 建议窗口 | 官方时段 | 板块 | 活动 | 地点 | 换场 | 为什么适合 |")
-    print("|---|---|---|---|---|---|---|")
+    print("| 建议窗口 | 官方时段 | 板块 | 活动 | 地点 | 换场 | 为什么适合 | 太赶时 |")
+    print("|---|---|---|---|---|---|---|---|")
     for item in plan["items"]:
         print(
             "| "
             + " | ".join(
                 cell(item.get(key, ""))
-                for key in ["suggested_window", "official_time", "container", "title", "location", "move_note", "why_fit"]
+                for key in ["suggested_window", "official_time", "container", "title", "location", "move_note", "why_fit", "fallback_note"]
             )
             + " |"
         )
     print()
+    if plan.get("advice"):
+        print("补充说明：")
+        for line in plan.get("advice", []):
+            print(f"- {line}")
+        print()
     print("备选规则：如果现场确认某个 09:00-15:30 长时段活动必须全程参加，就不要再把同一时段的思想约会或探索空间排进主线，只能改成备选。")
 
 
@@ -924,10 +1047,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="生成带时间冲突校验的 ask2050 示例日程")
     parser.add_argument("--profile", required=True, help="用户画像和偏好")
     parser.add_argument("--date", default="2026-04-25", help="日期，例如 2026-04-25")
+    parser.add_argument("--time-window", help="在场时段，例如 13:00-18:00")
     parser.add_argument("--json", action="store_true", help="输出 JSON")
     args = parser.parse_args()
 
-    plan = build_plan(args.profile, args.date)
+    requested_window = parse_time_range(args.time_window) if args.time_window else None
+    if args.time_window and not requested_window:
+        raise SystemExit("FAIL: 无法解析 --time-window，请使用 13:00-18:00 这样的格式")
+    plan = build_plan(args.profile, args.date, requested_window=requested_window)
     errors = validate_plan(plan)
     if errors:
         raise SystemExit("FAIL: " + "; ".join(errors))

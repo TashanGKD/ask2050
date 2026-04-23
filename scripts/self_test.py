@@ -15,6 +15,7 @@ REF = ROOT / "references"
 MANUAL = REF / "manual"
 SCRIPT = ROOT / "scripts" / "search_activities.py"
 PLAN_SCRIPT = ROOT / "scripts" / "plan_itinerary.py"
+MULTIDAY_PLAN_SCRIPT = ROOT / "scripts" / "plan_multiday.py"
 SOURCE_CHANNELS_SCRIPT = ROOT / "scripts" / "source_channels.py"
 REBUILD_SLICES_SCRIPT = ROOT / "scripts" / "rebuild_reference_slices.py"
 OPENCLAW_SMOKE_SCRIPT = ROOT / "scripts" / "openclaw_smoke_test.py"
@@ -41,6 +42,7 @@ REQUIRED_FILES = [
     MANUAL / "supplemental_events.json",
     SCRIPT,
     PLAN_SCRIPT,
+    MULTIDAY_PLAN_SCRIPT,
     SOURCE_CHANNELS_SCRIPT,
     REBUILD_SLICES_SCRIPT,
     EXTRACT_OFFICIAL_DETAIL_SCRIPT,
@@ -159,6 +161,7 @@ OUTPUT_CASES = [
 ]
 
 EXPECTED_FORUM_LOCATIONS = {
+    "12200": "A区 2F 2050学习节(五云厅)",
     "12260": "A区 3F 皓云厅",
     "12491": "A区 1F 贤云厅",
     "12309": "A区 2F 2050学习节(五云厅)",
@@ -185,6 +188,13 @@ EXPECTED_FORUM_LOCATIONS = {
     "12372": "A区 3F 青云厅",
     "12314": "A区 3F 皓云厅",
     "12787": "云栖小镇国际会展中心 A区一楼 智云厅",
+}
+
+EXPECTED_BACKFILLED_LOCATIONS = {
+    "12589": "C区国际会展中心二层屋顶跑道",
+    "12248": "云栖小镇国际会展中心二期下沉广场探索空间，篮球场边",
+    "12446": "A区国际会展中心·探索空间",
+    "12200": "A区 2F 2050学习节(五云厅)",
 }
 
 ITINERARY_PROFILE = (
@@ -410,13 +420,16 @@ def main() -> int:
         "主线宁可少而准",
         "换场太紧时，把后一站写成备选",
         "用户问多日、三天、全程、完整 2050 路线时",
-        "对每个在场日期分别运行 `plan_itinerary.py`",
+        "python scripts/plan_multiday.py",
+        "优先运行 `plan_multiday.py`",
+        "需要细化某一天时，再对该日期运行 `plan_itinerary.py`",
         "再做跨日综合",
         "每日主题 + 主路线 + 可替换项 + 体力提醒",
         "同一时间只能有一个主去处",
         "官方只给总场馆时，不要编厅号",
         "不要无故把晨读、晨跑、露营等轻活动塞进路线",
         "python scripts/plan_itinerary.py",
+        "--time-window 13:00-18:00",
         "低能量用户，不是删除新生论坛，而是降低强度",
         "先判断用户真正要解决什么",
         "用户说“睡觉、不想参加、躺平、只想休息”时，尊重低参与意愿",
@@ -657,6 +670,12 @@ def main() -> int:
     activity_lookup = {str(item.get("activity_id")): item for item in activities}
     location_mismatches = []
     for activity_id, expected_location in EXPECTED_FORUM_LOCATIONS.items():
+        activity = activity_lookup.get(activity_id)
+        if not activity:
+            location_mismatches.append((activity_id, "missing", expected_location))
+        elif activity.get("location") != expected_location:
+            location_mismatches.append((activity_id, activity.get("location"), expected_location))
+    for activity_id, expected_location in EXPECTED_BACKFILLED_LOCATIONS.items():
         activity = activity_lookup.get(activity_id)
         if not activity:
             location_mismatches.append((activity_id, "missing", expected_location))
@@ -1091,6 +1110,39 @@ def main() -> int:
         fail("plan_itinerary.py half-day route spans too much of the day")
     if any(start >= 19 * 60 for start, _ in half_day_windows):
         fail("plan_itinerary.py half-day route should not include evening without explicit evening preference")
+    afternoon_window = subprocess.run(
+        [
+            sys.executable,
+            str(PLAN_SCRIPT),
+            "--profile",
+            "AI4S科研博士 想找合作伙伴 想看新生论坛和探索空间 半天参加 只在下午",
+            "--date",
+            "2026-04-25",
+            "--time-window",
+            "13:00-18:00",
+            "--json",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if afternoon_window.returncode != 0:
+        fail(f"plan_itinerary.py afternoon time-window route failed: {afternoon_window.stderr.strip() or afternoon_window.stdout.strip()}")
+    afternoon_plan = json.loads(afternoon_window.stdout)
+    if not afternoon_plan.get("items"):
+        fail("plan_itinerary.py afternoon time-window route should still produce a usable route")
+    for item in afternoon_plan.get("items", []):
+        match = re.match(r"(\d{2}):(\d{2})-(\d{2}):(\d{2})$", str(item.get("suggested_window", "")))
+        if not match:
+            fail(f"plan_itinerary.py afternoon time-window route has invalid window: {item.get('suggested_window')}")
+        start = int(match.group(1)) * 60 + int(match.group(2))
+        end = int(match.group(3)) * 60 + int(match.group(4))
+        if end <= 13 * 60 or start >= 18 * 60:
+            fail(f"plan_itinerary.py afternoon time-window route escaped requested window: {item.get('suggested_window')}")
+    if "这次已按 13:00-18:00 的在场窗口收缩候选" not in json.dumps(afternoon_plan, ensure_ascii=False):
+        fail("plan_itinerary.py afternoon time-window route should explain the time-window constraint")
     morning_soft_afternoon = subprocess.run(
         [sys.executable, str(PLAN_SCRIPT), "--profile", "晨型 早起 科普教育 想上午优先 下午轻松", "--date", "2026-04-25", "--json"],
         cwd=ROOT,
@@ -1201,8 +1253,34 @@ def main() -> int:
         fail("plan_itinerary.py markdown route should preserve pipe-like title text with escaping")
     for line in hardware_markdown.stdout.splitlines():
         if line.startswith("| ") and not line.startswith("|---") and not line.startswith("| 建议窗口"):
-            if len(re.findall(r"(?<!\\)\|", line)) != 8:
+            if len(re.findall(r"(?<!\\)\|", line)) != 9:
                 fail(f"plan_itinerary.py markdown route row has a broken table shape: {line}")
+    multiday = subprocess.run(
+        [
+            sys.executable,
+            str(MULTIDAY_PLAN_SCRIPT),
+            "--profile",
+            "AI4S科研博士 天文学 AI交叉 科普科教 开源技术 社区运营 哲学思考 深度讨论 小团体交流 有动手体验",
+            "--dates",
+            "2026-04-24,2026-04-25,2026-04-26",
+            "--json",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        encoding="utf-8",
+    )
+    if multiday.returncode != 0:
+        fail(f"plan_multiday.py failed: {multiday.stderr.strip() or multiday.stdout.strip()}")
+    multiday_plan = json.loads(multiday.stdout)
+    if len(multiday_plan.get("daily", [])) != 3:
+        fail("plan_multiday.py should keep one daily section per requested date")
+    if "cross_day_notes" not in multiday_plan:
+        fail("plan_multiday.py should include cross-day guidance")
+    multiday_text = json.dumps(multiday_plan, ensure_ascii=False)
+    for required_text in ["2026-04-24", "2026-04-25", "2026-04-26", "theme", "energy_note", "main_route"]:
+        if required_text not in multiday_text:
+            fail(f"plan_multiday.py output missing {required_text}")
     for item in constraint_plans["early_sleep"].get("items", []):
         match = re.match(r"(\d{2}):(\d{2})-", str(item.get("suggested_window", "")))
         if match and int(match.group(1)) >= 19:

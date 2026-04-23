@@ -1,6 +1,6 @@
 # 地点：A区
 
-- 记录数: 142
+- 记录数: 144
 
 ### 09:00-15:30 罕见病基因 AI 黑客松：用 AI 破解生命难题
 - 容器: 热带雨林
@@ -321,6 +321,14 @@
 - 标签: `2026-04-25` `新生论坛` `education` `city-rural-future` `arts-media-design` `forum` `meetup`
 - 这 part 是干嘛的: 旨在聚集那些有梦想、致力于解决问题和创造新事物的人并促进灵感交流与碰撞迭代。
 - 来源: https://2050.org/#/activity/12664
+
+### 09:00-15:30 WaytoAGI社区特展
+- 容器: 探索空间
+- 地点: A区国际会展中心·探索空间
+- 召集人: 梦娜
+- 标签: `2026-04-25` `探索空间` `ai` `robotics-hardware` `city-rural-future` `community-youth` `hackathon` `workshop` `exhibition-demo` `meetup`
+- 这 part 是干嘛的: 把社区的训练营、硬件、伙伴们的项目与热爱，线下打开给更多人看。
+- 来源: https://2050.org/#/activity/12446
 
 ### 09:00-15:30 “心”在哪理？Where is Mind？
 - 容器: 新生论坛
@@ -953,6 +961,14 @@
 - 标签: `2026-04-26` `新生论坛` `robotics-hardware` `community-youth` `forum` `roundtable` `exhibition-demo` `meetup`
 - 这 part 是干嘛的: 从薛定谔的猫到混沌系统，在量子跃迁与非线性的碰撞中，硬聊出物理直觉。
 - 来源: https://2050.org/#/activity/12480
+
+### 09:00-15:30 AI 向善・让罕见病需求不 “罕见”—— 开源社区的科技破局实践
+- 容器: 新生论坛
+- 地点: A区 2F 2050学习节(五云厅)
+- 召集人: 2050的朋友
+- 标签: `2026-04-26` `新生论坛` `ai` `health-medical` `startup-product` `city-rural-future` `arts-media-design` `social-impact` `community-youth` `opensource-tech` `forum` `exhibition-demo`
+- 这 part 是干嘛的: 聚焦罕见病被忽视的生活需求，以开源生态联动患者与开发者，共建可复用的技术解决方案，填补需求空白
+- 来源: https://2050.org/#/activity/12200
 
 ### 09:30-10:30 多模态人工智能心搏骤停精准防治与急救复苏链建设与探索
 - 容器: 新生论坛

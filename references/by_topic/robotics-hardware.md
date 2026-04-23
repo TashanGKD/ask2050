@@ -156,7 +156,7 @@
 
 ### 09:00-15:30 WaytoAGI社区特展
 - 容器: 探索空间
-- 地点: 云栖小镇国际会展中心
+- 地点: A区国际会展中心·探索空间
 - 召集人: 梦娜
 - 标签: `2026-04-25` `探索空间` `ai` `robotics-hardware` `city-rural-future` `community-youth` `hackathon` `workshop` `exhibition-demo` `meetup`
 - 这 part 是干嘛的: 把社区的训练营、硬件、伙伴们的项目与热爱，线下打开给更多人看。

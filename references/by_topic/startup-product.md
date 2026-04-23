@@ -868,7 +868,7 @@
 
 ### 09:00-15:30 AI 向善・让罕见病需求不 “罕见”—— 开源社区的科技破局实践
 - 容器: 新生论坛
-- 地点: 云栖小镇国际会展中心
+- 地点: A区 2F 2050学习节(五云厅)
 - 召集人: 2050的朋友
 - 标签: `2026-04-26` `新生论坛` `ai` `health-medical` `startup-product` `city-rural-future` `arts-media-design` `social-impact` `community-youth` `opensource-tech` `forum` `exhibition-demo`
 - 这 part 是干嘛的: 聚焦罕见病被忽视的生活需求，以开源生态联动患者与开发者，共建可复用的技术解决方案，填补需求空白
