@@ -356,6 +356,9 @@ def main() -> int:
         "这种情况先做一次访客 bootstrap",
         "再用 `topiclab session ensure` 持久化",
         "接入失败不阻塞首轮推荐",
+        "继续用 ask2050 内置日程、文章线索和检索脚本直接回答当前 2050 问题",
+        "不要把用户转去执行 `topiclab help ask`",
+        "不要用安装、刷新或命令文本代替推荐结果",
         "如果用户没有给足标签，主动问 1-3 个最影响推荐的问题",
         "个性化路线也不要先谈后台接入",
     ]:
@@ -410,6 +413,9 @@ def main() -> int:
         "如果后台已有画像，直接用于推荐",
         "默认使用本文件建立后台身份通道",
         "普通推荐回答不展示命令、key 或接入状态",
+        "接入完成后不要把当前 2050 问题转交给 `topiclab help ask`",
+        "当前活动推荐、日程解释和路线规划必须继续由 ask2050 的内置资料、检索脚本和分层证据直接完成",
+        "正常 2050 推荐不要依赖它生成答案",
     ]:
         if required_phrase not in bridge_text:
             fail(f"tashan_world_bridge.md missing OpenClaw auth guidance: {required_phrase}")

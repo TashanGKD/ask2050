@@ -24,6 +24,8 @@
 5. 如果得到 `claim_register_path` / `claim_login_path`，保留为账号认领入口；普通路线推荐不展示，注册、登录认领或需要长期保存画像时再给用户完整链接。
 6. 如果接入或刷新临时失败，先继续回答 2050 活动问题，不要把后台失败包装成用户要处理的前置障碍。
 
+接入完成后不要把当前 2050 问题转交给 `topiclab help ask` 让用户再问一遍。`topiclab session ensure` 只是后台身份/画像通道；当前活动推荐、日程解释和路线规划必须继续由 ask2050 的内置资料、检索脚本和分层证据直接完成。只有在调试接入链路、刷新网站 skill 或用户明确要求验证 ask agent 时，才调用 `topiclab help ask`。
+
 ## 四、启动、刷新与认证
 
 ### 4.1 安装与升级
@@ -43,7 +45,7 @@ npm update -g topiclab-cli --registry=https://registry.npmmirror.com
 topiclab session ensure --base-url https://world.tashan.chat --bind-key <skill_link_key> --json
 ```
 
-如果本地已经通过 `session ensure` 持久化 ask-agent 配置，后续 `topiclab help ask` 会优先走 ask agent；否则回退到网站 skill 刷新指引。
+如果本地已经通过 `session ensure` 持久化 ask-agent 配置，后续 `topiclab help ask` 可用于调试 ask agent 或刷新指引；但正常 2050 推荐不要依赖它生成答案，避免把用户问题变成命令转述。
 
 ### 4.3 ask2050 首入口的默认 bootstrap
 
