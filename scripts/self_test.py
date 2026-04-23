@@ -157,7 +157,9 @@ OUTPUT_CASES = [
     {"name": "earth_sustainability_report", "q": "AI与地球可持续发展 Nancy House", "require": ["文章小节", "AI与地球可持续发展新生论坛", "机遇与平衡", "Nancy House"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "opc_report_focus", "q": "AI + OPC 文科生 Agent 协作赚到钱", "require": ["重点 part:", "AI + OPC：一个人的 AI 时代生存指南", "AI 时代的文科生：如何跟 Agent 协作并赚到钱", "周晨"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
     {"name": "qian_xuesen_complexity_report", "q": "钱学森 复杂科学 魏云初", "require": ["重点 part:", "钱学森读书会", "钱学森与复杂科学", "魏云初"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
-    {"name": "tashan_article_parts", "q": "他山青年论坛", "require": ["补充活动线索", "文章小节", "AI 时代科研协作模式如何重构", "国科大"], "forbid": ["source |", "matched_activity_ids", "D:/2050"]},
+    {"name": "tashan_article_parts", "q": "他山青年论坛", "require": ["补充活动线索", "文章小节", "日期: 2026-04-25", "AI 时代科研协作模式如何重构", "王瑞", "科研龙虾领养与应用"], "forbid": ["source |", "matched_activity_ids", "D:/2050", "2026-04-26"]},
+    {"name": "fang_zerui_date_guard", "q": "房泽锐", "require": ["日期: 2026-04-25", "AI 时代下的跨学科交叉新范式", "科研龙虾领养与应用"], "forbid": ["2026-04-26", "source |", "matched_activity_ids", "瑞 国科大"]},
+    {"name": "scientific_lobster_date_guard", "q": "科研龙虾", "require": ["日期: 2026-04-25", "科研龙虾领养与应用", "房泽锐"], "forbid": ["2026-04-26", "source |", "matched_activity_ids"]},
 ]
 
 EXPECTED_FORUM_LOCATIONS = {
@@ -621,6 +623,17 @@ def main() -> int:
             fail(f"supplemental event needs searchable aliases: {event.get('supplemental_id')}")
         if str(event.get("date", "")) not in EXPECTED_DATE_COUNTS:
             fail(f"supplemental event date outside 2050@2026 scope: {event.get('supplemental_id')}")
+    tashan_supplemental = next((event for event in supplemental_events if event.get("supplemental_id") == "supp-tashan-youth-forum-20260425"), None)
+    if not tashan_supplemental:
+        fail("tashan supplemental forum event is missing")
+    if tashan_supplemental.get("date") != "2026-04-25" or tashan_supplemental.get("time") != "15:00-18:00":
+        fail("tashan supplemental forum date/time regressed")
+    if tashan_supplemental.get("host") != "李瑀旸":
+        fail("tashan supplemental forum host regressed")
+    agenda_highlights = tashan_supplemental.get("agenda_highlights", [])
+    for required_text in ["AI时代科研协作模式如何重构｜王瑞", "科研龙虾领养与应用｜房泽锐"]:
+        if required_text not in agenda_highlights:
+            fail(f"tashan supplemental forum agenda missing: {required_text}")
 
     activity_ids = {str(item.get("activity_id")) for item in activities}
     required_activity_fields = {

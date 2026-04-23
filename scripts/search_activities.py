@@ -98,7 +98,7 @@ QUERY_ALIASES = {
     "罕见病医疗": ["从大模型到罕见病", "认真聊一聊AI+医疗", "五云厅", "OpenRD"],
     "ai医疗": ["AI+医疗", "从大模型到罕见病", "五云厅"],
     "他山": ["他山青年论坛", "中国科学院大学", "国科大", "中科院", "学科交叉", "科研协作", "科教升级"],
-    "他山青年论坛": ["中国科学院大学", "国科大", "中科院", "学科交叉", "科研协作", "科教升级", "青云厅"],
+    "他山青年论坛": ["人工智能驱动的科研协作与科教升级", "学科交叉", "科研协作", "科教升级", "王瑞", "房泽锐", "郑博元", "李瑀旸"],
     "国科大": ["中国科学院大学", "他山青年论坛", "学科交叉", "科研协作"],
     "中科院": ["中国科学院", "中国科学院大学", "他山青年论坛", "科研协作"],
     "中国科学院大学": ["国科大", "中科院", "他山青年论坛", "学科交叉"],
@@ -290,6 +290,14 @@ def supplemental_terms(event: dict) -> list[str]:
         value = event.get(key)
         if isinstance(value, list):
             terms.extend(str(item) for item in value)
+    for key in ["agenda_highlights"]:
+        value = event.get(key)
+        if isinstance(value, list):
+            terms.extend(str(item) for item in value)
+    for key in ["host", "source_note"]:
+        value = event.get(key)
+        if value:
+            terms.append(str(value))
     return [str(term) for term in terms if term]
 
 
@@ -298,15 +306,33 @@ def supplemental_field_boost(event: dict, query: str) -> int:
     title = str(event.get("title", "")).lower()
     summary = str(event.get("summary", "")).lower()
     organizer = str(event.get("organizer", "")).lower()
+    host = str(event.get("host", "")).lower()
     score = 0
     for term in terms:
         if term in title:
             score += 14
         if term in organizer:
             score += 10
+        if term in host:
+            score += 10
         if term in summary:
             score += 5
     return score
+
+
+def matching_agenda_highlights(event: dict, query: str) -> list[str]:
+    highlights = [str(item) for item in event.get("agenda_highlights", []) if item]
+    if not highlights:
+        return []
+    if not query:
+        return highlights[:5]
+    terms = query_terms(query)
+    matched = []
+    for item in highlights:
+        haystack = item.lower()
+        if query_matches(haystack, query) or any(term and term in haystack for term in terms):
+            matched.append(item)
+    return (matched or highlights[:5])[:6]
 
 
 def item_tags(item: dict) -> list[str]:
@@ -650,6 +676,10 @@ def main() -> int:
             print(f"  主题: {event.get('summary')}")
         if event.get("organizer"):
             print(f"  组织方: {event.get('organizer')}")
+        if event.get("host"):
+            print(f"  召集人: {event.get('host')}")
+        for item in matching_agenda_highlights(event, args.q):
+            print(f"  日程: {item}")
         print("  来源: 人工补充线索，未并入官网活动表；到场前请复核现场日程。")
         printed += 1
 
@@ -697,6 +727,8 @@ def main() -> int:
         location_hint = unit.get("location_hint") or "地点待确认"
         print(f"文章小节 | {record.get('container')} | {unit.get('section_title')} | {time_range} | {location_hint}")
         print(f"  来源文章: {display_source_title(record.get('article_title'))}")
+        if unit.get("date_tags"):
+            print(f"  日期: {', '.join(str(tag) for tag in unit.get('date_tags', []))}")
         print(f"  主题: {', '.join(unit.get('topic_tags', []))}")
         for talk in matching_unit_talks(unit, args.q):
             print(f"  报告: {talk.get('title')} | {talk.get('speaker')} | {', '.join(str(tag) for tag in talk.get('tags', []))}")
