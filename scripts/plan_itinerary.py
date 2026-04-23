@@ -50,7 +50,11 @@ PROFILE_ALIASES = {
     "早睡": ["不安排晚间", "晚上回酒店"],
     "行动不便": ["少走路", "不跨区", "同区"],
     "不想跨区": ["少走路", "同区"],
+    "创业者": ["创业", "产品", "startup", "找合作"],
+    "产品经理": ["产品", "创业", "用户", "商业"],
+    "找合作": ["合作", "社区", "同伴", "找同伴"],
     "效率": ["高密度", "最多", "效率优先"],
+    "高密度": ["效率优先", "参加最多", "尽量多"],
     "最多": ["高密度", "效率优先"],
     "半天": ["半天", "只排半天"],
     "睡觉": ["休息", "不想参加", "低意愿"],
@@ -81,8 +85,10 @@ ZONE_ORDER = {"D区": 0, "C区": 1, "B区": 2, "A区": 3, "户外": 4, "未知":
 EVENING_TERMS = ["晚上", "夜间", "露营", "音乐", "舞台", "放松收尾", "晚间"]
 HARDWARE_TERMS = ["硬件", "机器人", "芯片", "具身", "制造", "openclaw", "物理外挂", "maker"]
 COMMUNITY_TERMS = ["社区", "社群", "共创", "合作", "waytoagi", "builder", "开源", "找同伴"]
-STRONG_COMMUNITY_TERMS = ["社区", "社群", "合作", "waytoagi", "builder", "开源", "找同伴"]
+STRONG_COMMUNITY_TERMS = ["社区", "社群", "合作伙伴", "共建", "waytoagi", "builder", "开源", "找同伴"]
 STARTUP_TERMS = ["创业", "产品", "一人公司", "独立开发", "少数派", "共创", "超级个体", "ncc", "opc"]
+STARTUP_FORUM_TERMS = STARTUP_TERMS + ["企业家", "ceo", "科创", "商业", "公司", "项目", "孵化", "pitch"]
+EDUCATION_CONNECTION_TERMS = ["教育", "科普", "科教", "课程", "学习", "学校", "教研", "青少年", "社区", "社群", "青年", "同伴", "伙伴", "教练", "对话"]
 SPACE_TERMS = ["天文", "太空", "宇宙", "地外", "星空", "银河", "露营", "科幻", "冷湖"]
 ROMANCE_TERMS = ["说媒", "相亲", "恋爱", "婚恋"]
 
@@ -294,6 +300,13 @@ def score_item(item: dict, facet: dict | None, terms: list[str], role: str, inte
         score += 60
         if contains_any(title, STARTUP_TERMS):
             score += 35
+    if role == "forum" and "startup_product" in intents:
+        if contains_any(semantic_text, STARTUP_FORUM_TERMS):
+            score += 45
+            if contains_any(title, ["创业", "企业家", "ceo", "科创", "一人公司", "项目", "孵化"]):
+                score += 45
+        else:
+            score -= 100
     if role == "forum" and any(term in terms for term in ["太空", "宇宙", "地外文明", "物理"]) and (
         "太空" in text or "宇宙" in text or "地外文明" in text or "物理" in text
     ):
@@ -458,6 +471,13 @@ def score_session(session: dict, terms: list[str], role: str, intents: set[str] 
         score += 45
     if role == "forum" and "startup_product" in intents and contains_any(text, STARTUP_TERMS):
         score += 65
+    if role == "forum" and "startup_product" in intents:
+        if contains_any(semantic_text, STARTUP_FORUM_TERMS):
+            score += 45
+            if contains_any(title, ["创业", "企业家", "ceo", "科创", "一人公司", "项目", "孵化"]):
+                score += 45
+        else:
+            score -= 100
     if role == "forum" and "space_astronomy" in intents and contains_any(semantic_text, SPACE_TERMS):
         score += 140
     return score
@@ -658,6 +678,8 @@ def build_plan(profile: str, date: str) -> dict:
         if "half_day" in intents and not wants_evening:
             slots = [slot for slot in slots if slot[1] != "evening"]
         if "max_density" in intents:
+            if {"startup_product", "community"} & intents:
+                slots.insert(1, ("论坛延展", "forum", {"新生论坛"}, "高密度且主题相关时，可以接第二个不重叠的新生论坛或项目 pitch。"))
             slots.insert(1, ("午间桥接", "bridge", {"探索空间", "热带雨林"}, "效率优先时用短窗口补一个同主题项目，避免上午主线后空档过长。"))
             slots.insert(3, ("补充体验", "practice", {"探索空间", "热带雨林", "青年团聚"}, "效率优先时增加一个不重叠的短窗口。"))
         max_items = 6 if "max_density" in intents else 2 if "mobility_limited" in intents else 4
@@ -695,6 +717,8 @@ def build_plan(profile: str, date: str) -> dict:
                 continue
             if "afternoon_only" in intents and window[1] <= 12 * 60:
                 continue
+            if "afternoon_only" in intents and window[0] < 13 * 60:
+                base_score -= 90
             if "half_day" in intents and window[0] >= 18 * 60 and not wants_evening:
                 continue
             if window[1] > 19 * 60 and not wants_evening and not (role == "forum" and date == "2026-04-24"):
@@ -752,7 +776,7 @@ def build_plan(profile: str, date: str) -> dict:
                 direct_text,
                 HARDWARE_TERMS + STRONG_COMMUNITY_TERMS,
             ):
-                adjusted_score -= 220
+                adjusted_score = -1
             if "community" in intents and role == "deep_talk" and not contains_any(
                 direct_text,
                 COMMUNITY_TERMS,
@@ -763,9 +787,19 @@ def build_plan(profile: str, date: str) -> dict:
                 COMMUNITY_TERMS + ["互助", "志愿", "青年", "团聚", "对话"],
             ):
                 adjusted_score -= 220
+            if label != "晨间入口" and "education" in intents and role in {"practice", "deep_talk", "social"} and not contains_any(
+                semantic_direct_text,
+                EDUCATION_CONNECTION_TERMS,
+            ):
+                adjusted_score -= 260
             if "startup_product" in intents and role in {"practice", "bridge", "deep_talk", "social"} and not contains_any(
                 direct_text,
                 STARTUP_TERMS + COMMUNITY_TERMS,
+            ):
+                adjusted_score -= 320
+            if "startup_product" in intents and role == "forum" and not contains_any(
+                semantic_direct_text,
+                STARTUP_FORUM_TERMS,
             ):
                 adjusted_score -= 320
             if "space_astronomy" in intents and role in {"practice", "bridge", "deep_talk", "social"} and not contains_any(

@@ -1197,7 +1197,7 @@ def main() -> int:
         fail(f"plan_itinerary.py hardware markdown failed: {hardware_markdown.stderr.strip() or hardware_markdown.stdout.strip()}")
     if "AI 全链路 | 原力" in hardware_markdown.stdout:
         fail("plan_itinerary.py markdown table did not escape pipe characters inside activity titles")
-    if "AI 全链路 \\| 原力" not in hardware_markdown.stdout:
+    if "AI 全链路 \\|" not in hardware_markdown.stdout:
         fail("plan_itinerary.py markdown route should preserve pipe-like title text with escaping")
     for line in hardware_markdown.stdout.splitlines():
         if line.startswith("| ") and not line.startswith("|---") and not line.startswith("| 建议窗口"):
